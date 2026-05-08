@@ -34,6 +34,8 @@ display:flex;
 flex-direction:column;
 }
 
+/* HEADER */
+
 header{
 position:fixed;
 top:0;
@@ -61,6 +63,8 @@ overflow:hidden;
 text-overflow:ellipsis;
 }
 
+/* MENU BUTTON */
+
 .menu-btn{
 background:linear-gradient(135deg,var(--bma),var(--bma2));
 border:none;
@@ -75,4 +79,458 @@ transition:.2s;
 .menu-btn:hover{
 transform:scale(1.05);
 }
+
+/* SIDEBAR */
+
+#sidebar{
+position:fixed;
+top:60px;
+left:-300px;
+width:300px;
+height:calc(100vh - 60px);
+background:#021512;
+border-right:1px solid rgba(255,255,255,.08);
+transition:.3s cubic-bezier(.2,.8,.2,1);
+overflow-y:auto;
+z-index:9998;
+}
+
+#sidebar.open{
+left:0;
+}
+
+.sidebar-title{
+padding:20px;
+font-size:18px;
+font-weight:bold;
+border-bottom:1px solid rgba(255,255,255,.08);
+background:rgba(255,255,255,.03);
+}
+
+/* MENU ITEM */
+
+.sys-btn{
+display:flex;
+align-items:center;
+gap:12px;
+width:100%;
+padding:16px 18px;
+background:none;
+border:none;
+color:white;
+text-align:left;
+cursor:pointer;
+transition:.25s;
+border-bottom:1px solid rgba(255,255,255,.05);
+position:relative;
+overflow:hidden;
+}
+
+.sys-btn:hover{
+background:rgba(0,122,94,.18);
+padding-left:24px;
+}
+
+.sys-btn.active{
+background:rgba(0,122,94,.28);
+}
+
+.icon{
+width:18px;
+height:18px;
+fill:#00e0a5;
+flex-shrink:0;
+}
+
+/* HOME */
+
+#homePage{
+position:fixed;
+top:60px;
+left:0;
+right:0;
+bottom:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background-image:url('./home.jpg');
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+overflow:auto;
+}
+
+.home-overlay{
+width:min(1000px,92%);
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.1);
+border-radius:24px;
+padding:40px;
+box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
+
+.hero-title{
+font-size:40px;
+font-weight:bold;
+margin-bottom:12px;
+}
+
+.hero-desc{
+font-size:18px;
+opacity:.9;
+line-height:1.7;
+}
+
+.card-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:18px;
+margin-top:30px;
+}
+
+.home-card{
+background:var(--card);
+border:1px solid rgba(255,255,255,.08);
+border-radius:18px;
+padding:22px;
+transition:.25s;
+}
+
+.home-card:hover{
+transform:translateY(-5px);
+background:rgba(255,255,255,.08);
+}
+
+.home-card h3{
+margin-top:0;
+margin-bottom:10px;
+}
+
+/* IFRAME */
+
+#frame{
+position:fixed;
+top:60px;
+left:0;
+width:100%;
+height:calc(100vh - 60px);
+border:none;
+display:none;
+background:#061c17;
+}
+
+/* LOADER */
+
+#loader{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+display:flex;
+align-items:center;
+justify-content:center;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+z-index:10000;
+}
+
+#loader.show{
+opacity:1;
+pointer-events:auto;
+}
+
+.loader-circle{
+width:70px;
+height:70px;
+border-radius:50%;
+border:5px solid rgba(255,255,255,.15);
+border-top:5px solid var(--bma2);
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+to{
+transform:rotate(360deg);
+}
+}
+
+/* HOME BUTTON */
+
+#homeFloat{
+position:fixed;
+right:20px;
+bottom:20px;
+background:linear-gradient(135deg,var(--bma),var(--bma2));
+color:white;
+border:none;
+padding:14px 18px;
+border-radius:14px;
+cursor:pointer;
+font-weight:bold;
+display:none;
+box-shadow:0 10px 25px rgba(0,122,94,.45);
+z-index:9999;
+}
+
+#homeFloat:hover{
+transform:scale(1.05);
+}
+
+/* RIPPLE */
+
+.sys-btn span{
+position:absolute;
+border-radius:50%;
+transform:scale(0);
+background:rgba(255,255,255,.4);
+animation:ripple .6s linear;
+}
+
+@keyframes ripple{
+to{
+transform:scale(4);
+opacity:0;
+}
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+header h1{
+font-size:15px;
+}
+
+.hero-title{
+font-size:28px;
+}
+
+.hero-desc{
+font-size:15px;
+}
+
+.home-overlay{
+padding:24px;
+}
+
+#sidebar{
+width:100%;
+left:-100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<button class="menu-btn" onclick="toggleMenu()">☰ เมนู</button>
+<h1 id="title">ระบบเก็บข้อมูลผู้ฝึกอาชีพ</h1>
+</header>
+
+<div id="sidebar">
+<div class="sidebar-title">ระบบทั้งหมด</div>
+</div>
+
+<div id="homePage">
+
+<div class="home-overlay">
+
+<div class="hero-title">
+ศูนย์รวมระบบฝึกอาชีพ เขตจตุจักร
+</div>
+
+<div class="hero-desc">
+ระบบศูนย์กลางสำหรับบริหารจัดการข้อมูลผู้ฝึกอาชีพ รายงานสถิติ และระบบติดตามผล
+</div>
+
+<div class="card-grid">
+
+<div class="home-card">
+<h3>ระบบผู้ฝึกอาชีพ</h3>
+<p>บริหารข้อมูลผู้เข้าฝึกอาชีพ</p>
+</div>
+
+<div class="home-card">
+<h3>KM Smart Hub</h3>
+<p>ระบบองค์ความรู้ภายในองค์กร</p>
+</div>
+
+<div class="home-card">
+<h3>รายงานตัว</h3>
+<p>ระบบติดตามการรายงานตัว</p>
+</div>
+
+<div class="home-card">
+<h3>ติดตามผล</h3>
+<p>ระบบติดตามผู้สำเร็จหลักสูตร</p>
+</div>
+
+</div>
+</div>
+</div>
+
+<iframe id="frame"></iframe>
+
+<div id="loader">
+<div class="loader-circle"></div>
+</div>
+
+<button id="homeFloat" onclick="goHome()">
+🏠 กลับหน้าหลัก
+</button>
+
+<script>
+
+const systems=[
+
+{
+name:'ระบบเก็บข้อมูลผู้ฝึกอาชีพ',
+file:'training.html'
+},
+
+{
+name:'KM Smart Hub',
+file:'km_hub.html'
+},
+
+{
+name:'รายงานตัว จันทร์-ศุกร์',
+file:'weekday_report.html'
+},
+
+{
+name:'รายงานตัว เสาร์-อาทิตย์',
+file:'weekend_report.html'
+},
+
+{
+name:'ติดตามผลผู้สำเร็จ',
+file:'followup.html'
+}
+
+];
+
+const sidebar=document.getElementById('sidebar');
+const frame=document.getElementById('frame');
+const title=document.getElementById('title');
+const loader=document.getElementById('loader');
+const homePage=document.getElementById('homePage');
+const homeBtn=document.getElementById('homeFloat');
+
+systems.forEach(sys=>{
+
+const button=document.createElement('button');
+
+button.className='sys-btn';
+
+button.innerHTML=`
+<svg class="icon" viewBox="0 0 24 24">
+<path d="M12 2L2 7l10 5 10-5-10-5zm0 7L2 14l10 5 10-5-10-5z"/>
+</svg>
+${sys.name}
+`;
+
+button.onclick=(e)=>{
+ripple(e);
+openSystem(sys,button);
+};
+
+sidebar.appendChild(button);
+
+});
+
+function toggleMenu(){
+sidebar.classList.toggle('open');
+}
+
+function openSystem(sys,btn){
+
+loader.classList.add('show');
+
+sidebar.classList.remove('open');
+
+setTimeout(()=>{
+
+frame.src=sys.file;
+
+frame.style.display='block';
+
+homePage.style.display='none';
+
+homeBtn.style.display='block';
+
+title.textContent=sys.name;
+
+loader.classList.remove('show');
+
+},500);
+
+document.querySelectorAll('.sys-btn').forEach(b=>{
+b.classList.remove('active');
+});
+
+btn.classList.add('active');
+
+}
+
+function goHome(){
+
+frame.src='';
+
+frame.style.display='none';
+
+homePage.style.display='flex';
+
+homeBtn.style.display='none';
+
+title.textContent='หน้าหลัก';
+
+document.querySelectorAll('.sys-btn').forEach(b=>{
+b.classList.remove('active');
+});
+
+}
+
+function ripple(e){
+
+const circle=document.createElement('span');
+
+const rect=e.currentTarget.getBoundingClientRect();
+
+const d=Math.max(rect.width,rect.height);
+
+circle.style.width=d+'px';
+circle.style.height=d+'px';
+
+circle.style.left=(e.clientX-rect.left-d/2)+'px';
+
+circle.style.top=(e.clientY-rect.top-d/2)+'px';
+
+e.currentTarget.appendChild(circle);
+
+setTimeout(()=>circle.remove(),600);
+
+}
+
+window.addEventListener('click',function(e){
+
+const menuBtn=document.querySelector('.menu-btn');
+
+if(
+sidebar.classList.contains('open') &&
+!sidebar.contains(e.target) &&
+!menuBtn.contains(e.target)
+){
+sidebar.classList.remove('open');
+}
+
+});
+
+</script>
+
+</body>
 </html>
