@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบติดตามผล ผู้สำเร็จหลักสูตรการฝึกอาชีพ เขตจตุจักร</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- ลดการใช้ library ที่ทำให้โค้ดใหญ่เกินไป -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #020617; color: #f1f5f9; height: 100vh; overflow: hidden; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .badge-pill { padding: 4px 12px; border-radius: 999px; font-size: 10px; font-weight: 800; display: inline-block; text-transform: uppercase; }
+        .badge-weekday { background: #0ea5e9; color: white; }
+        .badge-weekend { background: #f97316; color: white; }
+        .badge-error { background: #ef4444; color: white; animation: pulse 2s infinite; }
+        .badge-success { background: #10b981; color: white; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        .img-cell { 
+            width: 45px; 
+            height: 45px; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            border: 1px solid #334155; 
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .img-cell:hover {
+            transform: scale(1.1);
+            border-color: #0ea5e9;
+        }
+        .chart-container-extra { height: 270px; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
+        .present-header { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.8rem; text-align: center; }
+        .stat-value { font-size: 2.3rem; font-weight: 800; line-height: 1; }
+        .tab-active { background: #0ea5e9 !important; box-shadow: 0 0 15px rgba(14, 165, 233, 0.4); }
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        /* Modal for image zoom */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(2, 6, 23, 0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .modal-image {
+            max-width: 80vw;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 3px solid #0ea5e9;
+            box-shadow: 0 0 50px rgba(14, 165, 233, 0.3);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* New Features Styles */
+        .filter-bar {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .search-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            width: 100%;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+        }
+        .filter-select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            width: 100%;
+        }
+        .filter-select:focus {
+            outline: none;
+            border-color: #0ea5e9;
+        }
+        .export-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        .action-btn {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(14, 165, 233, 0.4);
+        }
+        .action-btn-small {
+            background: rgba(30, 41, 59, 0.9);
+            color: white;
+            border: 1px solid #334155;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        .action-btn-small:hover {
+            background: #0ea5e9;
+            border-color: #0ea5e9;
+        }
+        .chart-interactive {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .chart-interactive:hover {
+            transform: scale(1.02);
+        }
+        .detail-modal-content {
+            background: #0f172a;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .student-card {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .student-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .stat-card {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border-left: 4px solid;
+        }
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #0ea5e9;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Dark/Light Mode */
+        body.light-mode {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        body.light-mode .glass {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0ea5e9, #10b981);
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen p-4">
+
+    <header class="flex justify-between items-center shrink-0 mb-4 px-6">
+        <div class="flex items-center gap-4">
+            <div>
+                <h1 class="text-xl font-black text-sky-400 uppercase tracking-tighter">ระบบติดตามผล ผู้สำเร็จหลักสูตรการฝึกอาชีพ เขตจตุจักร</h1>
+                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Total <span id="totalStudents">0</span> Students - Unlimited Edition</p>
+            </div>
+            <div class="flex gap-2">
+                <button id="themeToggle" class="action-btn-small" title="เปลี่ยนธีม">
+                    <i class="fas fa-moon"></i>
+                </button>
+				<button onclick="exportToPDF()" class="action-btn-small" title="Export เป็น PDF" 
+                        style="background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%); color: white; border: none;">
+                        <i class="fas fa-file-pdf"></i> PDF
+				</button>
+                <button onclick="exportToExcel()" class="action-btn-small" title="Export เป็น Excel" 
+						style="background: linear-gradient(135deg, #217346 0%, #1A5C38 100%); color: white; border: none;">
+						<i class="fas fa-file-excel"></i> Excel
+				</button>
+            </div>
+        </div>
+        <div class="flex bg-slate-900 p-1 rounded-xl border border-white/10">
+            <button onclick="switchView('present')" id="tab-present" class="view-tab px-6 py-2 rounded-lg text-xs font-bold transition-all">PRESENTATION</button>
+            <button onclick="switchView('backend')" id="tab-backend" class="view-tab px-6 py-2 rounded-lg text-xs font-bold transition-all tab-active">BACKEND</button>
+            <button onclick="switchView('analytics')" id="tab-analytics" class="view-tab px-6 py-2 rounded-lg text-xs font-bold transition-all">ANALYTICS</button>
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <div id="filterBar" class="filter-bar">
+        <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <div>
+                <input type="text" id="searchInput" class="search-input" placeholder="ค้นหาชื่อ..." onkeyup="applyFilters()">
+            </div>
+            <div>
+                <select id="courseFilter" class="filter-select" onchange="applyFilters()">
+                    <option value="">ทั้งหมด (วิชา)</option>
+                </select>
+            </div>
+            <div>
+                <select id="genderFilter" class="filter-select" onchange="applyFilters()">
+                    <option value="">ทั้งหมด (เพศ)</option>
+                    <option value="ชาย">ชาย</option>
+                    <option value="หญิง">หญิง</option>
+                </select>
+            </div>
+            <div>
+                <select id="scheduleFilter" class="filter-select" onchange="applyFilters()">
+                    <option value="">ทั้งหมด (วันเรียน)</option>
+                    <option value="จันทร์">จันทร์-ศุกร์</option>
+                    <option value="เสาร์">เสาร์-อาทิตย์</option>
+                </select>
+            </div>
+            <div>
+                <select id="statusFilter" class="filter-select" onchange="applyFilters()">
+                    <option value="">ทั้งหมด (สถานะ)</option>
+                    <option value="complete">สมบูรณ์</option>
+                    <option value="incomplete">ข้อมูลไม่ครบ</option>
+                </select>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="clearFilters()" class="action-btn-small w-full">
+                    <i class="fas fa-times"></i> ล้าง
+                </button>
+                <button onclick="applyFilters()" class="action-btn w-full">
+                    <i class="fas fa-filter"></i> กรอง
+                </button>
+            </div>
+        </div>
+        <div class="mt-3 flex justify-between items-center">
+            <div class="text-sm text-slate-400" id="filterStatus">
+                แสดงข้อมูลทั้งหมด <span id="filterCount">0</span> รายการ
+            </div>
+            <div class="flex gap-2">
+                <button onclick="showMissingData()" class="action-btn-small">
+                    <i class="fas fa-exclamation-triangle"></i> ตรวจสอบข้อมูลขาด
+                </button>
+                <button onclick="generateReport()" class="export-btn">
+                    <i class="fas fa-chart-bar"></i> สร้างรายงาน
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow overflow-hidden">
+        <!-- Backend View -->
+        <div id="view-backend" class="h-full grid grid-cols-12 gap-4">
+            <div class="col-span-12 lg:col-span-3">
+                <div class="glass p-5 rounded-[1.5rem] flex flex-col gap-3">
+                    <input type="file" id="csvFile" class="hidden" multiple onchange="handleImport(event)">
+                    <label for="csvFile" class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-700 rounded-[1.5rem] cursor-pointer hover:border-sky-500 bg-slate-900/40 text-center transition-all">
+                        <i class="fas fa-cloud-upload-alt text-2xl text-slate-500 mb-2"></i>
+                        <span class="text-[10px] font-black text-slate-400 uppercase">Upload CSV (ไม่จำกัดจำนวน)</span>
+                    </label>
+                    <button onclick="showDataQuality()" class="w-full py-2 text-[9px] text-amber-500/40 hover:text-amber-500 font-bold uppercase">
+                        <i class="fas fa-clipboard-check mr-1"></i> Data Quality Check
+                    </button>
+                    <button onclick="clearDB()" class="w-full py-2 text-[9px] text-red-500/40 hover:text-red-500 font-bold uppercase">
+                        <i class="fas fa-trash-alt mr-1"></i> Format Database
+                    </button>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="glass p-5 rounded-[1.5rem] mt-4">
+                    <h3 class="font-bold text-sky-400 mb-3 uppercase text-sm">Quick Stats</h3>
+                    <div id="quickStats" class="space-y-2">
+                        <!-- จะถูกเติมด้วย JavaScript -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-12 lg:col-span-9 glass rounded-[2rem] overflow-hidden">
+                <div class="overflow-y-auto h-full custom-scroll">
+                    <table class="w-full text-left text-[12px] border-separate border-spacing-0">
+                        <thead class="bg-slate-900 sticky top-0 z-20 text-slate-500 font-bold uppercase">
+                            <tr>
+                                <th class="px-5 py-4">ชื่อ-นามสกุล <button onclick="sortTable('name')" class="ml-1 text-xs"><i class="fas fa-sort"></i></button></th>
+                                <th class="px-5 py-4">หลักสูตร <button onclick="sortTable('schedule')" class="ml-1 text-xs"><i class="fas fa-sort"></i></button></th>
+                                <th class="px-5 py-4 text-center">ภาพ</th>
+                                <th class="px-5 py-4">วิชา <button onclick="sortTable('course')" class="ml-1 text-xs"><i class="fas fa-sort"></i></button></th>
+                                <th class="px-5 py-4">สถานะข้อมูล</th>
+                                <th class="px-5 py-4 text-center">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Presentation View -->
+        <div id="view-present" class="hidden h-full overflow-y-auto custom-scroll px-2 pb-10">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-black text-white">สรุปผลการสำรวจ</h2>
+                    <p class="text-slate-400">ข้อมูลทั้งหมด <span id="totalStudents2">0</span> คน แบ่งตามหมวดหมู่ (แสดง 5 อันดับแรก)</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="switchChartType('pie')" class="action-btn-small">
+                        <i class="fas fa-chart-pie"></i>
+                    </button>
+                    <button onclick="switchChartType('bar')" class="action-btn-small">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                    <button onclick="switchChartType('doughnut')" class="action-btn-small">
+                        <i class="fas fa-chart-line"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6" id="stats-row"></div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass p-6 rounded-[2rem] flex flex-col items-center">
+                    <h3 class="present-header uppercase">สัดส่วนเพศ</h3>
+                    <div class="chart-container-extra">
+                        <canvas id="chartGender" class="chart-interactive" onclick="showDetailModal('gender', this)"></canvas>
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-[2rem] flex flex-col items-center">
+                    <h3 class="present-header uppercase">พื้นที่ที่นำความรู้ไปประกอบอาชีพ(5 อันดับแรก)</h3>
+                    <div class="chart-container-extra">
+                        <canvas id="chartLocation" class="chart-interactive" onclick="showDetailModal('location', this)"></canvas>
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-[2rem] flex flex-col items-center">
+                    <h3 class="present-header uppercase">แหล่งรายได้ (5 อันดับแรก)</h3>
+                    <div class="chart-container-extra">
+                        <canvas id="chartSource" class="chart-interactive" onclick="showDetailModal('incomeSource', this)"></canvas>
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-[2rem] flex flex-col items-center">
+                    <h3 class="present-header uppercase text-sky-400">5 อันดับวิชาที่มีผู้ตอบแบบสอบถามมากที่สุด</h3>
+                    <div class="chart-container-extra">
+                        <canvas id="chartCourse" class="chart-interactive" onclick="showDetailModal('course', this)"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Insights -->
+            <div class="glass p-6 rounded-[2rem] mt-6">
+                <h3 class="present-header uppercase text-emerald-400 mb-6">ข้อมูลเชิงลึก</h3>
+                <div class="stats-grid" id="insightsGrid">
+                    <!-- จะถูกเติมด้วย JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div id="view-analytics" class="hidden h-full overflow-y-auto custom-scroll px-2 pb-10">
+            <div class="glass p-6 rounded-[2rem] mb-6">
+                <h3 class="present-header uppercase text-purple-400 mb-6">Advanced Analytics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-lg mb-4">ข้อมูลเปรียบเทียบ</h4>
+                        <div id="comparisonChartContainer" class="chart-container-extra" style="height: 300px;">
+                            <canvas id="chartComparison"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-4">แนวโน้ม</h4>
+                        <div class="space-y-4">
+                            <div class="bg-slate-900/50 p-4 rounded-lg">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-slate-400">วิชาที่มีผู้ตอบแบบสอบถามมากที่สุด</span>
+                                    <span class="font-bold text-sky-400">วิเคราะห์</span>
+                                </div>
+                                <div id="trendAnalysis"></div>
+                            </div>
+                            <div class="bg-slate-900/50 p-4 rounded-lg">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-slate-400">กลุ่มรายได้</span>
+                                    <span class="font-bold text-emerald-400">สรุป</span>
+                                </div>
+                                <div id="incomeAnalysis"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass p-6 rounded-[2rem]">
+                    <h4 class="present-header uppercase">กลุ่มเป้าหมายตามวิชา</h4>
+                    <div class="mt-4 space-y-3" id="targetGroups">
+                        <!-- จะถูกเติมด้วย JavaScript -->
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-[2rem]">
+                    <h4 class="present-header uppercase">คำแนะนำ</h4>
+                    <div class="mt-4 space-y-3" id="recommendations">
+                        <!-- จะถูกเติมด้วย JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="imageModal" class="image-modal">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <img id="modalImage" class="modal-image" src="" alt="Zoomed Image">
+    </div>
+
+    <div id="detailModal" class="image-modal">
+        <div class="detail-modal-content">
+            <button class="modal-close" onclick="closeDetailModal()">×</button>
+            <h3 id="detailModalTitle" class="text-xl font-bold text-white mb-4"></h3>
+            <div id="detailModalContent" class="space-y-2 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <div id="reportModal" class="image-modal">
+        <div class="detail-modal-content">
+            <button class="modal-close" onclick="closeReportModal()">×</button>
+            <h3 class="text-xl font-bold text-white mb-4">สร้างรายงาน</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-slate-400 mb-2">รูปแบบรายงาน</label>
+                    <select id="reportType" class="filter-select">
+                        <option value="summary">สรุปย่อ</option>
+                        <option value="detailed">รายละเอียดเต็ม</option>
+                        <option value="comparison">เปรียบเทียบ</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-2">รวมข้อมูล</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="reportStats" checked class="mr-2"> สถิติพื้นฐาน
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="reportCharts" checked class="mr-2"> แผนภูมิ
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="reportStudents" class="mr-2"> รายชื่อทั้งหมด
+                        </label>
+                    </div>
+                </div>
+                <button onclick="generateReportNow()" class="export-btn w-full">
+                    <i class="fas fa-download mr-2"></i> ดำเนินการสร้างรายงาน
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="image-modal">
+        <div class="detail-modal-content">
+            <div class="text-center">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h3 class="text-xl font-bold text-white mb-2" id="loadingTitle">กำลังดำเนินการ</h3>
+                <p class="text-slate-400 mb-4" id="loadingMessage">กรุณารอสักครู่...</p>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        const db = new Dexie("VocaPro_Enhanced_v19");
+        db.version(1).stores({ 
+            students: "++id, name, gender, course, schedule, location, incomeSource, incomeRange, img, isComplete" 
+        });
+        
+        let charts = {};
+        let currentChartType = 'pie';
+        let currentFilters = {};
+        let sortConfig = { field: null, direction: 'asc' };
+
+        // Loading Modal Functions
+        function showLoading(title = "กำลังดำเนินการ", message = "กรุณารอสักครู่...") {
+            document.getElementById('loadingTitle').textContent = title;
+            document.getElementById('loadingMessage').textContent = message;
+            document.getElementById('loadingModal').classList.add('active');
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingModal').classList.remove('active');
+            document.getElementById('progressFill').style.width = '0%';
+        }
+
+        // Update total count function
+        function updateTotalCount(data) {
+            const total = data ? data.length : 0;
+            document.getElementById('totalStudents').textContent = total;
+            document.getElementById('totalStudents2').textContent = total;
+        }
+
+        // Image functions
+        function getImg(url) {
+            if (!url || url.length < 10) return '';
+            url = url.replace(/&amp;/g, '&');
+            let fileId = '';
+            
+            const patterns = [
+                /[?&]id=([a-zA-Z0-9_-]{25,})/,
+                /\/d\/([a-zA-Z0-9_-]{25,})/,
+                /\/file\/d\/([a-zA-Z0-9_-]{25,})/,
+                /\/open\?id=([a-zA-Z0-9_-]{25,})/
+            ];
+            
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1]) {
+                    fileId = match[1];
+                    break;
+                }
+            }
+            
+            if (!fileId && url.includes('id=')) {
+                const parts = url.split('id=');
+                if (parts[1]) fileId = parts[1].split(/[&?]/)[0];
+            }
+            
+            if (!fileId) return url;
+            return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400-h400`;
+        }
+
+        function openImageInNewTab(url) {
+            if (url.includes('drive.google.com')) {
+                const fileId = url.match(/id=([a-zA-Z0-9_-]{25,})/)?.[1];
+                if (fileId) window.open(`https://drive.google.com/file/d/${fileId}/preview`, '_blank');
+            }
+        }
+
+        // Helper function to get top 5 items
+        function getTop5(data, key) {
+            const counts = {};
+            data.forEach(item => {
+                const value = item[key] || 'ไม่ระบุ';
+                counts[value] = (counts[value] || 0) + 1;
+            });
+            
+            // Convert to array and sort by count (descending)
+            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            
+            // Take top 5
+            const top5 = sorted.slice(0, 5);
+            
+            // Convert back to object
+            return Object.fromEntries(top5);
+        }
+
+        // Enhanced Functions
+        async function handleImport(event) {
+            showLoading("กำลังอัปโหลดข้อมูล", "กรุณารอสักครู่...");
+            
+            try {
+                const files = event.target.files;
+                for (let file of files) {
+                    const text = await file.text();
+                    const rows = text.split(/\r?\n/).filter(line => line.trim() !== "").slice(1);
+                    
+                    const records = rows.map((r, index) => {
+                        const c = r.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+                        const clean = (v) => v ? v.replace(/^"|"$/g, '').trim() : '';
+                        
+                        const name = clean(c[1]) || `ผู้ตอบคนที่ ${index + 1}`;
+                        const hasImg = clean(c[15]) && clean(c[15]).length > 10;
+                        const hasCourse = clean(c[5]) && clean(c[5]) !== "";
+                        const isComplete = !!(hasImg && hasCourse);
+
+                        return {
+                            name: name,
+                            gender: clean(c[3]) || "ไม่ระบุ",
+                            course: clean(c[5]) || "ไม่ระบุ",
+                            schedule: clean(c[6]) || "ไม่ระบุ",
+                            location: clean(c[9]) || "ไม่ระบุ",
+                            incomeSource: clean(c[11]) || "ไม่ระบุ",
+                            incomeRange: clean(c[12]) || "ไม่ระบุ",
+                            img: clean(c[15]) || "",
+                            isComplete: isComplete
+                        };
+                    }).filter(x => x !== null);
+                    
+                    await db.students.bulkAdd(records);
+                }
+                
+                loadData();
+                populateFilterOptions();
+                hideLoading();
+                
+                // แสดงผลลัพธ์
+                const data = await db.students.toArray();
+                alert(`อัปโหลดสำเร็จ! มีข้อมูลทั้งหมด ${data.length} รายการ`);
+                
+            } catch (error) {
+                hideLoading();
+                alert('เกิดข้อผิดพลาดในการอัปโหลด: ' + error.message);
+            }
+        }
+
+        async function loadData() {
+            const data = await db.students.toArray();
+            const filteredData = applyDataFilters(data);
+            renderTable(filteredData);
+            updateQuickStats(data);
+            updateTotalCount(data);
+            
+            if (!document.getElementById('view-present').classList.contains('hidden')) {
+                renderCharts(filteredData);
+                renderInsights(filteredData);
+            }
+            if (!document.getElementById('view-analytics').classList.contains('hidden')) {
+                renderAnalytics(filteredData);
+            }
+        }
+
+        function applyDataFilters(data) {
+            let filtered = [...data];
+            
+            // Apply search filter
+            if (currentFilters.search) {
+                const searchTerm = currentFilters.search.toLowerCase();
+                filtered = filtered.filter(s => 
+                    s.name.toLowerCase().includes(searchTerm) ||
+                    s.course.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Apply other filters
+            if (currentFilters.course) {
+                filtered = filtered.filter(s => s.course === currentFilters.course);
+            }
+            if (currentFilters.gender) {
+                filtered = filtered.filter(s => s.gender === currentFilters.gender);
+            }
+            if (currentFilters.schedule) {
+                filtered = filtered.filter(s => s.schedule.includes(currentFilters.schedule));
+            }
+            if (currentFilters.status) {
+                if (currentFilters.status === 'complete') {
+                    filtered = filtered.filter(s => s.isComplete);
+                } else {
+                    filtered = filtered.filter(s => !s.isComplete);
+                }
+            }
+            
+            // Apply sorting
+            if (sortConfig.field) {
+                filtered.sort((a, b) => {
+                    const aVal = a[sortConfig.field];
+                    const bVal = b[sortConfig.field];
+                    if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+            
+            // Update filter count
+            document.getElementById('filterCount').textContent = filtered.length;
+            
+            // ปลดล็อกการจำกัด 64 บรรทัด - เอา .slice(0, 64) ออก
+            return filtered;
+        }
+
+        function renderTable(data) {
+            const fallbackSvg = `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHJ4PSI4IiBmaWxsPSIjMUEyODJFIi8+PHBhdGggZD0iTTE4Ljc1IDE1TDE4Ljc1IDMwIiBzdHJva2U9IiM2NDc0OEIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI2LjI1IDE1TDI2LjI1IDMwIiBzdHJva2U9IiM2NDc0OEIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE1IDE4Ljc1SDMwIiBzdHJva2U9IiM2NDc0OEIiIHN0cm9rZS13aWR0aD0iIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=`;
+            
+            document.getElementById('table-body').innerHTML = data.map((s, index) => {
+                const imgUrl = s.img ? getImg(s.img) : '';
+                
+                return `
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="px-5 py-3 font-bold text-sky-100">
+                        <div class="flex items-center">
+                            <span class="w-6 h-6 bg-slate-800 rounded-full flex items-center justify-center text-xs mr-2">${index + 1}</span>
+                            ${s.name}
+                        </div>
+                    </td>
+                    <td class="px-5 py-3">
+                        <span class="badge-pill ${s.schedule.includes('เสาร์') ? 'badge-weekend' : 'badge-weekday'}">
+                            ${s.schedule}
+                        </span>
+                    </td>
+                    <td class="px-5 py-3 text-center">
+                        ${s.img ? 
+                            `<img src="${imgUrl}" 
+                                  class="img-cell mx-auto" 
+                                  onerror="this.src='${fallbackSvg}'"
+                                  onclick="openImageInNewTab('${s.img.replace(/'/g, "\\'")}')"
+                                  alt="รูป ${s.name.replace(/'/g, "\\'")}"
+                                  title="คลิกเพื่อดูรูปใหญ่">` 
+                            : '<span class="text-slate-700">-</span>'
+                        }
+                    </td>
+                    <td class="px-5 py-3 text-slate-400">${s.course}</td>
+                    <td class="px-5 py-3 text-right">
+                        <span class="badge-pill ${s.isComplete ? 'badge-success' : 'badge-error'}">
+                            ${s.isComplete ? 'สมบูรณ์' : 'ข้อมูลไม่ครบ'}
+                        </span>
+                    </td>
+                    <td class="px-5 py-3 text-center">
+                        <button onclick="editStudent(${s.id})" class="action-btn-small mr-1">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteStudent(${s.id})" class="action-btn-small bg-red-900/30 hover:bg-red-600">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // Filter Functions
+        async function populateFilterOptions() {
+            const data = await db.students.toArray();
+            const courses = [...new Set(data.map(s => s.course).filter(c => c))];
+            const courseSelect = document.getElementById('courseFilter');
+            
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course;
+                option.textContent = course;
+                courseSelect.appendChild(option);
+            });
+        }
+
+        function applyFilters() {
+            currentFilters = {
+                search: document.getElementById('searchInput').value,
+                course: document.getElementById('courseFilter').value,
+                gender: document.getElementById('genderFilter').value,
+                schedule: document.getElementById('scheduleFilter').value,
+                status: document.getElementById('statusFilter').value
+            };
+            
+            loadData();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('courseFilter').value = '';
+            document.getElementById('genderFilter').value = '';
+            document.getElementById('scheduleFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            
+            currentFilters = {};
+            loadData();
+        }
+
+        function sortTable(field) {
+            if (sortConfig.field === field) {
+                sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortConfig.field = field;
+                sortConfig.direction = 'asc';
+            }
+            loadData();
+        }
+
+        // Chart Functions - แก้ไขให้ดึงแค่ 5 อันดับแรก
+        function renderCharts(data) {
+            if (!data.length) return;
+            
+            // ดึงข้อมูล 5 อันดับแรกสำหรับแต่ละหมวดหมู่
+            const genderTop5 = getTop5(data, 'gender');
+            const locationTop5 = getTop5(data, 'location');
+            const sourceTop5 = getTop5(data, 'incomeSource');
+            const courseTop5 = getTop5(data, 'course');
+
+            document.getElementById('stats-row').innerHTML = `
+                <div class="glass p-5 rounded-[1.2rem] border-l-4 border-sky-500">
+                    <p class="text-sky-500 text-[9px] font-black uppercase">Total Students</p>
+                    <h2 class="stat-value text-sky-400">${data.length}</h2>
+                </div>
+                <div class="glass p-5 rounded-[1.2rem] border-l-4 border-[#ef4444]">
+                    <p class="text-[#ef4444] text-xs font-black uppercase">หลักสูตร วันจันทร์ - วันศุกร์</p>
+                    <h2 class="stat-value text-[#ef4444]">${data.filter(x=>x.schedule.includes('จันทร์')).length}</h2>
+                </div>
+                <div class="glass p-5 rounded-[1.2rem] border-l-4 border-orange-500">
+                    <p class="text-orange-400 text-[12px] font-black uppercase">หลักสูตร วันเสาร์ - วันอาทิตย์</p> 
+                    <h2 class="stat-value text-orange-400">${data.filter(x=>x.schedule.includes('เสาร์')).length}</h2>
+                </div>
+                <div class="glass p-5 rounded-[1.2rem] border-l-4 border-emerald-500">
+                    <p class="text-slate-500 text-[9px] font-black uppercase">Completion Rate</p>
+                    <h2 class="stat-value text-emerald-400">${Math.round((data.filter(x=>x.isComplete).length / data.length) * 100)}%</h2>
+                </div>`;
+
+            const palette = ['#38bdf8', '#6366f1', '#10b981', '#f59e0b', '#f43f5e', '#a855f7'];
+            
+            drawChart('chartGender', genderTop5, palette);
+            drawChart('chartLocation', locationTop5, palette);
+            drawChart('chartSource', sourceTop5, palette);
+            drawChart('chartCourse', courseTop5, palette);
+        }
+
+        function drawChart(ctxId, dataObj, colors) {
+            if (charts[ctxId]) charts[ctxId].destroy();
+            
+            const ctx = document.getElementById(ctxId);
+            const isCourse = ctxId === 'chartCourse';
+            
+            // ถ้าไม่มีข้อมูลให้แสดงข้อความ
+            if (Object.keys(dataObj).length === 0) {
+                ctx.parentElement.innerHTML = `
+                    <div class="text-center text-slate-500">
+                        <i class="fas fa-chart-pie text-4xl mb-2"></i>
+                        <p>ไม่มีข้อมูล</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            charts[ctxId] = new Chart(ctx, {
+                type: currentChartType,
+                data: {
+                    labels: Object.keys(dataObj),
+                    datasets: [{ 
+                        data: Object.values(dataObj), 
+                        backgroundColor: colors, 
+                        borderColor: '#0f172a', 
+                        borderWidth: 2, 
+                        hoverOffset: 25 
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: isCourse ? 'right' : 'bottom', 
+                            labels: { color: '#cbd5e1', font: { size: 10, weight: 'bold' }, boxWidth: 8, padding: 8 } 
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} คน (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    onClick: (evt, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const label = charts[ctxId].data.labels[index];
+                            showDetailModal(ctxId.replace('chart', ''), label);
+                        }
+                    }
+                }
+            });
+        }
+
+        function switchChartType(type) {
+            currentChartType = type;
+            loadData();
+        }
+
+        // Detail Modal
+        async function showDetailModal(type, label) {
+            const data = await db.students.toArray();
+            let filtered = [];
+            let title = '';
+            
+            switch(type) {
+                case 'gender':
+                    filtered = data.filter(s => s.gender === label);
+                    title = `รายชื่อผู้ตอบแบบสำรวจ เพศ: ${label}`;
+                    break;
+                case 'location':
+                    filtered = data.filter(s => s.location === label);
+                    title = `รายชื่อผู้ตอบแบบสำรวจ พื้นที่: ${label}`;
+                    break;
+                case 'incomeSource':
+                    filtered = data.filter(s => s.incomeSource === label);
+                    title = `รายชื่อผู้ตอบแบบสำรวจ แหล่งรายได้: ${label}`;
+                    break;
+                case 'course':
+                    filtered = data.filter(s => s.course === label);
+                    title = `รายชื่อผู้ตอบแบบสำรวจ วิชา: ${label}`;
+                    break;
+                default:
+                    if (typeof label === 'string') {
+                        filtered = data.filter(s => s[type] === label);
+                        title = `รายชื่อผู้ตอบแบบสำรวจ: ${label}`;
+                    }
+            }
+            
+            document.getElementById('detailModalTitle').textContent = title;
+            document.getElementById('detailModalContent').innerHTML = filtered.map(s => `
+                <div class="student-card">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-white">${s.name}</div>
+                            <div class="text-sm text-slate-400">${s.course}</div>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="badge-pill ${s.schedule.includes('เสาร์') ? 'badge-weekend' : 'badge-weekday'} text-xs">
+                                ${s.schedule}
+                            </span>
+                            <span class="badge-pill ${s.isComplete ? 'badge-success' : 'badge-error'} text-xs">
+                                ${s.isComplete ? 'สมบูรณ์' : 'ไม่ครบ'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // Quick Stats
+        function updateQuickStats(data) {
+            const total = data.length;
+            const complete = data.filter(s => s.isComplete).length;
+            const weekday = data.filter(s => s.schedule.includes('จันทร์')).length;
+            const weekend = data.filter(s => s.schedule.includes('เสาร์')).length;
+            
+            document.getElementById('quickStats').innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400">สมบูรณ์</span>
+                    <span class="font-bold text-emerald-400">${complete}/${total}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400">วันธรรมดา</span>
+                    <span class="font-bold text-indigo-400">${weekday}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400">วันหยุด</span>
+                    <span class="font-bold text-orange-400">${weekend}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400">อัตราสมบูรณ์</span>
+                    <span class="font-bold text-sky-400">${Math.round((complete/total)*100)}%</span>
+                </div>
+            `;
+        }
+
+        // Insights
+        function renderInsights(data) {
+            const insights = calculateInsights(data);
+            document.getElementById('insightsGrid').innerHTML = `
+                <div class="stat-card border-l-sky-500">
+                    <div class="text-slate-400 text-sm">วิชาที่มีผู้ตอบแบบสอบถามมากที่สุด</div>
+                    <div class="text-white font-bold text-lg">${insights.topCourse.name}</div>
+                    <div class="text-sky-400 text-sm">${insights.topCourse.count} คน (${insights.topCourse.percent}%)</div>
+                </div>
+                <div class="stat-card border-l-emerald-500">
+                    <div class="text-slate-400 text-sm">กลุ่มเพศหลัก</div>
+                    <div class="text-white font-bold text-lg">${insights.topGender.name}</div>
+                    <div class="text-emerald-400 text-sm">${insights.topGender.percent}% ของทั้งหมด</div>
+                </div>
+                <div class="stat-card border-l-purple-500">
+                    <div class="text-slate-400 text-sm">พื้นที่ที่ได้นำความรู้ไปประกอบอาชีพ</div>
+                    <div class="text-white font-bold text-lg">${insights.topLocation.name}</div>
+                    <div class="text-purple-400 text-sm">${insights.topLocation.count} คน</div>
+                </div>
+                <div class="stat-card border-l-amber-500">
+                    <div class="text-slate-400 text-sm">แหล่งรายได้หลัก</div>
+                    <div class="text-white font-bold text-lg">${insights.topIncomeSource.name}</div>
+                    <div class="text-amber-400 text-sm">${insights.topIncomeSource.percent}%</div>
+                </div>
+            `;
+        }
+
+        function calculateInsights(data) {
+            const total = data.length;
+            
+            // Count by course
+            const courseCounts = data.reduce((acc, s) => {
+                acc[s.course] = (acc[s.course] || 0) + 1;
+                return acc;
+            }, {});
+            
+            const topCourseEntry = Object.entries(courseCounts).sort((a,b) => b[1] - a[1])[0] || ['ไม่ระบุ', 0];
+            
+            // Count by gender
+            const genderCounts = data.reduce((acc, s) => {
+                acc[s.gender] = (acc[s.gender] || 0) + 1;
+                return acc;
+            }, {});
+            
+            const topGenderEntry = Object.entries(genderCounts).sort((a,b) => b[1] - a[1])[0] || ['ไม่ระบุ', 0];
+            
+            // Count by location
+            const locationCounts = data.reduce((acc, s) => {
+                acc[s.location] = (acc[s.location] || 0) + 1;
+                return acc;
+            }, {});
+            
+            const topLocationEntry = Object.entries(locationCounts).sort((a,b) => b[1] - a[1])[0] || ['ไม่ระบุ', 0];
+            
+            // Count by income source
+            const incomeCounts = data.reduce((acc, s) => {
+                acc[s.incomeSource] = (acc[s.incomeSource] || 0) + 1;
+                return acc;
+            }, {});
+            
+            const topIncomeEntry = Object.entries(incomeCounts).sort((a,b) => b[1] - a[1])[0] || ['ไม่ระบุ', 0];
+            
+            return {
+                topCourse: {
+                    name: topCourseEntry[0],
+                    count: topCourseEntry[1],
+                    percent: Math.round((topCourseEntry[1] / total) * 100)
+                },
+                topGender: {
+                    name: topGenderEntry[0],
+                    count: topGenderEntry[1],
+                    percent: Math.round((topGenderEntry[1] / total) * 100)
+                },
+                topLocation: {
+                    name: topLocationEntry[0],
+                    count: topLocationEntry[1],
+                    percent: Math.round((topLocationEntry[1] / total) * 100)
+                },
+                topIncomeSource: {
+                    name: topIncomeEntry[0],
+                    count: topIncomeEntry[1],
+                    percent: Math.round((topIncomeEntry[1] / total) * 100)
+                }
+            };
+        }
+
+        // Analytics
+        function renderAnalytics(data) {
+            // Comparison chart
+            const weekdayData = data.filter(s => s.schedule.includes('จันทร์'));
+            const weekendData = data.filter(s => s.schedule.includes('เสาร์'));
+            
+            const comparisonCtx = document.getElementById('chartComparison');
+            if (charts.comparison) charts.comparison.destroy();
+            
+            charts.comparison = new Chart(comparisonCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['วันธรรมดา', 'วันหยุด'],
+                    datasets: [{
+                        label: 'จำนวนนักเรียน',
+                        data: [weekdayData.length, weekendData.length],
+                        backgroundColor: ['#0ea5e9', '#f97316'],
+                        borderColor: ['#0ea5e9', '#f97316'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#cbd5e1' },
+                            grid: { color: '#334155' }
+                        },
+                        x: {
+                            ticks: { color: '#cbd5e1' },
+                            grid: { color: '#334155' }
+                        }
+                    }
+                }
+            });
+            
+            // Trend analysis
+            const weekdayCourses = getTop5(weekdayData, 'course');
+            const weekendCourses = getTop5(weekendData, 'course');
+            
+            const topWeekdayCourse = Object.entries(weekdayCourses).sort((a,b) => b[1] - a[1])[0];
+            const topWeekendCourse = Object.entries(weekendCourses).sort((a,b) => b[1] - a[1])[0];
+            
+            document.getElementById('trendAnalysis').innerHTML = `
+                <div class="text-sm">
+                    <div class="mb-1">วันธรรมดา: <span class="text-sky-400">${topWeekdayCourse ? topWeekdayCourse[0] : 'ไม่มีข้อมูล'}</span> (${topWeekdayCourse ? topWeekdayCourse[1] : 0} คน)</div>
+                    <div>วันหยุด: <span class="text-orange-400">${topWeekendCourse ? topWeekendCourse[0] : 'ไม่มีข้อมูล'}</span> (${topWeekendCourse ? topWeekendCourse[1] : 0} คน)</div>
+                </div>
+            `;
+            
+            // Income analysis
+            const incomeGroups = getTop5(data, 'incomeRange');
+            
+            document.getElementById('incomeAnalysis').innerHTML = `
+                <div class="space-y-2">
+                    ${Object.entries(incomeGroups).map(([range, count]) => `
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">${range}</span>
+                            <div class="w-24 bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full" style="width: ${(count / data.length) * 100}%"></div>
+                            </div>
+                            <span class="text-sm font-bold">${count}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Target groups
+            const targetGroups = calculateTargetGroups(data);
+            document.getElementById('targetGroups').innerHTML = targetGroups.map(group => `
+                <div class="bg-slate-900/50 p-3 rounded-lg">
+                    <div class="font-bold text-white mb-1">${group.name}</div>
+                    <div class="text-sm text-slate-400">${group.description}</div>
+                    <div class="text-xs text-sky-400 mt-1">${group.count} คน (${group.percent}%)</div>
+                </div>
+            `).join('');
+            
+            // Recommendations
+            document.getElementById('recommendations').innerHTML = `
+                <div class="bg-slate-900/50 p-3 rounded-lg">
+                    <div class="font-bold text-emerald-400 mb-1">เพิ่มหลักสูตร</div>
+                    <div class="text-sm">ควรเพิ่มหลักสูตรในหมวดหมู่ "${Object.keys(getTop5(data, 'course'))[0] || 'ศิลปะประดิษฐ์'}"</div>
+                </div>
+                <div class="bg-slate-900/50 p-3 rounded-lg">
+                    <div class="font-bold text-amber-400 mb-1">ปรับเวลาเรียน</div>
+                    <div class="text-sm">เพิ่มคลาสวันธรรมดาตอนเย็นสำหรับกลุ่มทำงาน</div>
+                </div>
+                <div class="bg-slate-900/50 p-3 rounded-lg">
+                    <div class="font-bold text-purple-400 mb-1">ตลาดใหม่</div>
+                    <div class="text-sm">ขยายการตลาดไปยังพื้นที่ "${Object.keys(getTop5(data, 'location'))[0] || 'กรุงเทพฯ'}"</div>
+                </div>
+            `;
+        }
+
+        function calculateTargetGroups(data) {
+            return [
+                {
+                    name: "วัยทำงานวันธรรมดา",
+                    description: "ทำงานประจำ เรียนหลังเลิกงาน",
+                    count: data.filter(s => s.schedule.includes('จันทร์') && s.incomeSource.includes('งานประจำ')).length,
+                    percent: Math.round((data.filter(s => s.schedule.includes('จันทร์') && s.incomeSource.includes('งานประจำ')).length / data.length) * 100)
+                },
+                {
+                    name: "ผู้ประกอบการวันหยุด",
+                    description: "ทำธุรกิจส่วนตัว เรียนวันเสาร์-อาทิตย์",
+                    count: data.filter(s => s.schedule.includes('เสาร์') && s.incomeSource.includes('ธุรกิจ')).length,
+                    percent: Math.round((data.filter(s => s.schedule.includes('เสาร์') && s.incomeSource.includes('ธุรกิจ')).length / data.length) * 100)
+                },
+                {
+                    name: "แม่บ้าน/พ่อบ้าน",
+                    description: "มีเวลาว่างในวันธรรมดา",
+                    count: data.filter(s => s.incomeSource.includes('บ้าน') || s.incomeSource.includes('ครอบครัว')).length,
+                    percent: Math.round((data.filter(s => s.incomeSource.includes('บ้าน') || s.incomeSource.includes('ครอบครัว')).length / data.length) * 100)
+                }
+            ];
+        }
+
+        // ============================
+        // EXPORT FUNCTIONS - แก้ไขใหม่ทั้งหมด
+        // ============================
+
+        // 1. Export to PDF Function - แก้ไขภาษาไทย
+        async function exportToPDF() {
+            showLoading("กำลังสร้าง PDF", "กำลังสร้างรายงานในรูปแบบ PDF...");
+            
+            try {
+                const data = await db.students.toArray();
+                
+                // สร้าง HTML สำหรับ PDF
+                const reportHTML = generatePDFHTML(data);
+                
+                // สร้าง hidden container สำหรับ PDF
+                const pdfContainer = document.createElement('div');
+                pdfContainer.id = 'pdf-print-container';
+                pdfContainer.style.cssText = `
+                    position: fixed;
+                    top: -10000px;
+                    left: -10000px;
+                    width: 794px;
+                    background: white;
+                    color: black;
+                    padding: 40px;
+                    font-family: 'Prompt', sans-serif;
+                    z-index: 99999;
+                    box-sizing: border-box;
+                `;
+                pdfContainer.innerHTML = reportHTML;
+                document.body.appendChild(pdfContainer);
+                
+                // ใช้ CSS Print เพื่อพิมพ์เป็น PDF
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="th">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Voca Dashboard Report</title>
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
+                            
+                            body {
+                                font-family: 'Prompt', sans-serif;
+                                color: #1e293b;
+                                line-height: 1.6;
+                                margin: 0;
+                                padding: 40px;
+                                background: white;
+                            }
+                            
+                            .header {
+                                background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+                                color: white;
+                                padding: 2rem;
+                                border-radius: 1rem;
+                                margin-bottom: 2rem;
+                                text-align: center;
+                            }
+                            
+                            .stat-card {
+                                background: #f8fafc;
+                                border-radius: 0.75rem;
+                                padding: 1.5rem;
+                                margin-bottom: 1rem;
+                                border-left: 4px solid;
+                            }
+                            
+                            .student-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin: 1rem 0;
+                                font-size: 12px;
+                            }
+                            
+                            .student-table th {
+                                background: #334155;
+                                color: white;
+                                padding: 0.75rem;
+                                text-align: left;
+                                font-weight: bold;
+                            }
+                            
+                            .student-table td {
+                                padding: 0.75rem;
+                                border-bottom: 1px solid #e2e8f0;
+                            }
+                            
+                            .student-table tr:nth-child(even) {
+                                background: #f1f5f9;
+                            }
+                            
+                            .badge {
+                                padding: 0.25rem 0.75rem;
+                                border-radius: 999px;
+                                font-size: 0.75rem;
+                                font-weight: bold;
+                            }
+                            
+                            .badge-success {
+                                background: #10b981;
+                                color: white;
+                            }
+                            
+                            .badge-error {
+                                background: #ef4444;
+                                color: white;
+                            }
+                            
+                            .section {
+                                margin: 2rem 0;
+                                page-break-inside: avoid;
+                            }
+                            
+                            .stats-grid {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                                gap: 1rem;
+                                margin: 1rem 0;
+                            }
+                            
+                            @media print {
+                                body {
+                                    padding: 20px;
+                                }
+                                
+                                .no-print {
+                                    display: none !important;
+                                }
+                                
+                                .header {
+                                    -webkit-print-color-adjust: exact;
+                                    print-color-adjust: exact;
+                                }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${reportHTML}
+                        <div class="no-print" style="text-align: center; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; color: #64748b;">
+                            <p>เอกสารนี้สร้างโดย ศูนย์ฝึกอาชีพเขตจตุจักร</p>
+                            <p>© ${new Date().getFullYear()} - กด Ctrl+P เพื่อพิมพ์เป็น PDF</p>
+                        </div>
+                        <script>
+                            window.onload = function() {
+                                window.print();
+                                setTimeout(function() {
+                                    window.close();
+                                }, 1000);
+                            };
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                
+                printWindow.document.close();
+                
+                // ลบ container
+                setTimeout(() => {
+                    document.body.removeChild(pdfContainer);
+                }, 1000);
+                
+                hideLoading();
+                
+            } catch (error) {
+                hideLoading();
+                alert('เกิดข้อผิดพลาดในการสร้าง PDF: ' + error.message);
+            }
+        }
+
+        function generatePDFHTML(data) {
+            const total = data.length;
+            const complete = data.filter(s => s.isComplete).length;
+            const weekday = data.filter(s => s.schedule.includes('จันทร์')).length;
+            const weekend = data.filter(s => s.schedule.includes('เสาร์')).length;
+            
+            const genderTop5 = getTop5(data, 'gender');
+            const courseTop5 = getTop5(data, 'course');
+            const locationTop5 = getTop5(data, 'location');
+            const sourceTop5 = getTop5(data, 'incomeSource');
+            
+            return `
+                <div class="header">
+                    <h1 style="margin: 0; font-size: 28px; color: #0ea5e9;">ศูนย์ฝึกอาชีพเขตจตุจักร</h1>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">วันที่สร้างรายงาน: ${new Date().toLocaleDateString('th-TH')}</p>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9;">ข้อมูลทั้งหมด ${total} คน</p>
+                </div>
+                
+                <div class="section">
+                    <h2 style="color: #0ea5e9; border-bottom: 2px solid #0ea5e9; padding-bottom: 10px;">สรุปสถิติ</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card" style="border-left-color: #0ea5e9;">
+                            <h3 style="margin: 0 0 10px 0; color: #334155;">นักเรียนทั้งหมด</h3>
+                            <p style="font-size: 32px; font-weight: bold; color: #0ea5e9; margin: 0;">${total}</p>
+                        </div>
+                        <div class="stat-card" style="border-left-color: #10b981;">
+                            <h3 style="margin: 0 0 10px 0; color: #334155;">ข้อมูลสมบูรณ์</h3>
+                            <p style="font-size: 32px; font-weight: bold; color: #10b981; margin: 0;">${complete} (${Math.round((complete/total)*100)}%)</p>
+                        </div>
+                        <div class="stat-card" style="border-left-color: #8b5cf6;">
+                            <h3 style="margin: 0 0 10px 0; color: #334155;">เรียนวันธรรมดา</h3>
+                            <p style="font-size: 32px; font-weight: bold; color: #8b5cf6; margin: 0;">${weekday}</p>
+                        </div>
+                        <div class="stat-card" style="border-left-color: #f59e0b;">
+                            <h3 style="margin: 0 0 10px 0; color: #334155;">เรียนวันหยุด</h3>
+                            <p style="font-size: 32px; font-weight: bold; color: #f59e0b; margin: 0;">${weekend}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 style="color: #0ea5e9; border-bottom: 2px solid #0ea5e9; padding-bottom: 10px;">ข้อมูล 5 อันดับแรก</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                        <div>
+                            <h3 style="color: #10b981;">เพศ</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                ${Object.entries(genderTop5).map(([key, value]) => `
+                                    <li style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                        <span style="font-weight: bold;">${key}</span>: 
+                                        <span style="color: #0ea5e9;">${value} คน</span>
+                                        <span style="color: #64748b; font-size: 12px;">(${Math.round((value/total)*100)}%)</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 style="color: #8b5cf6;">วิชายอดนิยม</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                ${Object.entries(courseTop5).map(([key, value]) => `
+                                    <li style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                        <span style="font-weight: bold;">${key}</span>: 
+                                        <span style="color: #0ea5e9;">${value} คน</span>
+                                        <span style="color: #64748b; font-size: 12px;">(${Math.round((value/total)*100)}%)</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 style="color: #f59e0b;">พื้นที่อาชีพ</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                ${Object.entries(locationTop5).map(([key, value]) => `
+                                    <li style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                        <span style="font-weight: bold;">${key}</span>: 
+                                        <span style="color: #0ea5e9;">${value} คน</span>
+                                        <span style="color: #64748b; font-size: 12px;">(${Math.round((value/total)*100)}%)</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 style="color: #ef4444;">แหล่งรายได้</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                ${Object.entries(sourceTop5).map(([key, value]) => `
+                                    <li style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                                        <span style="font-weight: bold;">${key}</span>: 
+                                        <span style="color: #0ea5e9;">${value} คน</span>
+                                        <span style="color: #64748b; font-size: 12px;">(${Math.round((value/total)*100)}%)</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 style="color: #0ea5e9; border-bottom: 2px solid #0ea5e9; padding-bottom: 10px;">รายชื่อนักเรียน (${total} คน)</h2>
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>ชื่อ-นามสกุล</th>
+                                <th>วิชา</th>
+                                <th>วันเรียน</th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.slice(0, 100).map((student, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${student.name}</td>
+                                    <td>${student.course}</td>
+                                    <td>${student.schedule.includes('เสาร์') ? 'เสาร์-อาทิตย์' : 'จันทร์-ศุกร์'}</td>
+                                    <td>
+                                        <span class="badge ${student.isComplete ? 'badge-success' : 'badge-error'}">
+                                            ${student.isComplete ? 'สมบูรณ์' : 'ไม่ครบ'}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    ${total > 100 ? `<p style="text-align: center; color: #64748b; margin-top: 10px;">แสดง 100 คนแรก จากทั้งหมด ${total} คน</p>` : ''}
+                </div>
+            `;
+        }
+
+        // 2. Export to Excel Function - ใช้งานปกติ
+        async function exportToExcel() {
+            showLoading("กำลังสร้าง Excel", "กำลังสร้างรายงานในรูปแบบ Excel...");
+            
+            try {
+                const data = await db.students.toArray();
+                
+                // สร้าง CSV content แทนการใช้ library ใหญ่
+                let csvContent = "ลำดับ,ชื่อ-นามสกุล,เพศ,วิชา,วันเรียน,พื้นที่อาชีพ,แหล่งรายได้,ช่วงรายได้,สถานะข้อมูล,มีรูปภาพ\n";
+                
+                data.forEach((student, index) => {
+                    const row = [
+                        index + 1,
+                        `"${student.name}"`,
+                        student.gender,
+                        `"${student.course}"`,
+                        student.schedule,
+                        student.location,
+                        student.incomeSource,
+                        student.incomeRange,
+                        student.isComplete ? 'สมบูรณ์' : 'ข้อมูลไม่ครบ',
+                        student.img ? 'ใช่' : 'ไม่'
+                    ];
+                    csvContent += row.join(',') + '\n';
+                });
+                
+                // สร้าง Blob และดาวน์โหลด
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', `voca-data-${new Date().toISOString().slice(0, 10)}.csv`);
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                hideLoading();
+                alert('สร้างไฟล์ Excel สำเร็จ! (บันทึกเป็นไฟล์ CSV ที่เปิดกับ Excel ได้)');
+                
+            } catch (error) {
+                hideLoading();
+                alert('เกิดข้อผิดพลาดในการสร้าง Excel: ' + error.message);
+            }
+        }
+
+        // 3. Data Quality Check Function
+        async function showDataQuality() {
+            showLoading("กำลังวิเคราะห์ข้อมูล", "กำลังตรวจสอบคุณภาพข้อมูล...");
+            
+            try {
+                const data = await db.students.toArray();
+                const total = data.length;
+                
+                // ตรวจสอบข้อมูล
+                let issues = [];
+                
+                data.forEach((student, index) => {
+                    if (!student.img || student.img.length < 10) {
+                        issues.push({
+                            type: 'รูปภาพ',
+                            student: student.name,
+                            message: 'ขาดรูปภาพ'
+                        });
+                    }
+                    if (!student.course || student.course === 'ไม่ระบุ') {
+                        issues.push({
+                            type: 'วิชา',
+                            student: student.name,
+                            message: 'ไม่ได้ระบุวิชา'
+                        });
+                    }
+                    if (!student.gender || student.gender === 'ไม่ระบุ') {
+                        issues.push({
+                            type: 'เพศ',
+                            student: student.name,
+                            message: 'ไม่ได้ระบุเพศ'
+                        });
+                    }
+                    if (!student.location || student.location === 'ไม่ระบุ') {
+                        issues.push({
+                            type: 'พื้นที่',
+                            student: student.name,
+                            message: 'ไม่ได้ระบุพื้นที่อาชีพ'
+                        });
+                    }
+                });
+                
+                hideLoading();
+                
+                // แสดงผลใน modal
+                const modal = document.getElementById('detailModal');
+                document.getElementById('detailModalTitle').textContent = 'ตรวจสอบคุณภาพข้อมูล';
+                document.getElementById('detailModalContent').innerHTML = `
+                    <div class="space-y-4">
+                        <div class="p-4 ${issues.length > 0 ? 'bg-amber-900/20' : 'bg-emerald-900/20'} rounded-lg">
+                            <h4 class="font-bold ${issues.length > 0 ? 'text-amber-400' : 'text-emerald-400'} mb-2">สรุปผลการตรวจสอบ</h4>
+                            <div class="text-sm space-y-1">
+                                <div class="flex justify-between">
+                                    <span>นักเรียนทั้งหมด:</span>
+                                    <span class="font-bold">${total} คน</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>ข้อมูลสมบูรณ์:</span>
+                                    <span class="font-bold text-emerald-400">${data.filter(s => s.isComplete).length} คน</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>ข้อมูลไม่ครบ:</span>
+                                    <span class="font-bold text-amber-400">${data.filter(s => !s.isComplete).length} คน</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>อัตราสมบูรณ์:</span>
+                                    <span class="font-bold ${data.filter(s => s.isComplete).length / total > 0.8 ? 'text-emerald-400' : 'text-amber-400'}">
+                                        ${Math.round((data.filter(s => s.isComplete).length / total) * 100)}%
+                                    </span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>พบปัญหา:</span>
+                                    <span class="font-bold ${issues.length > 0 ? 'text-amber-400' : 'text-emerald-400'}">${issues.length} รายการ</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${issues.length > 0 ? `
+                        <div class="bg-slate-900/50 rounded-lg p-4">
+                            <h5 class="font-bold text-slate-300 mb-3">รายการปัญหา</h5>
+                            <div class="max-h-64 overflow-y-auto space-y-2">
+                                ${issues.map(issue => `
+                                    <div class="p-3 bg-slate-800/30 rounded-lg border-l-4 ${issue.type === 'รูปภาพ' ? 'border-amber-500' : issue.type === 'วิชา' ? 'border-red-500' : 'border-blue-500'}">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="font-bold text-white">${issue.student}</div>
+                                                <div class="text-sm text-slate-400">${issue.message}</div>
+                                            </div>
+                                            <span class="text-xs px-2 py-1 rounded-full ${issue.type === 'รูปภาพ' ? 'bg-amber-900/50 text-amber-300' : issue.type === 'วิชา' ? 'bg-red-900/50 text-red-300' : 'bg-blue-900/50 text-blue-300'}">
+                                                ${issue.type}
+                                            </span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : `
+                        <div class="text-center p-8">
+                            <i class="fas fa-check-circle text-4xl text-emerald-500 mb-4"></i>
+                            <h4 class="text-xl font-bold text-emerald-400 mb-2">ข้อมูลสมบูรณ์ดี!</h4>
+                            <p class="text-slate-400">ไม่พบปัญหาด้านคุณภาพข้อมูล</p>
+                        </div>
+                        `}
+                    </div>
+                `;
+                
+                modal.classList.add('active');
+                
+            } catch (error) {
+                hideLoading();
+                alert('เกิดข้อผิดพลาดในการตรวจสอบข้อมูล: ' + error.message);
+            }
+        }
+
+        // 4. Show Missing Data Function
+        async function showMissingData() {
+            showLoading("กำลังค้นหาข้อมูล", "กำลังค้นหาข้อมูลที่ขาด...");
+            
+            try {
+                const data = await db.students.toArray();
+                const incomplete = data.filter(s => !s.isComplete);
+                
+                hideLoading();
+                
+                const modal = document.getElementById('detailModal');
+                document.getElementById('detailModalTitle').textContent = `ข้อมูลที่ไม่สมบูรณ์ (${incomplete.length} คน)`;
+                
+                if (incomplete.length === 0) {
+                    document.getElementById('detailModalContent').innerHTML = `
+                        <div class="text-center p-8">
+                            <i class="fas fa-check-circle text-4xl text-emerald-500 mb-4"></i>
+                            <h4 class="text-xl font-bold text-emerald-400 mb-2">ไม่มีข้อมูลขาด!</h4>
+                            <p class="text-slate-400">ข้อมูลทั้งหมดสมบูรณ์ดี</p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('detailModalContent').innerHTML = `
+                        <div class="space-y-3 max-h-96 overflow-y-auto">
+                            ${incomplete.map(s => {
+                                const issues = [];
+                                if (!s.img || s.img.length < 10) issues.push('รูปภาพ');
+                                if (!s.course || s.course === 'ไม่ระบุ') issues.push('วิชา');
+                                if (!s.gender || s.gender === 'ไม่ระบุ') issues.push('เพศ');
+                                if (!s.location || s.location === 'ไม่ระบุ') issues.push('พื้นที่');
+                                if (!s.incomeSource || s.incomeSource === 'ไม่ระบุ') issues.push('แหล่งรายได้');
+                                
+                                return `
+                                <div class="student-card">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-bold text-white">${s.name}</div>
+                                            <div class="text-sm text-slate-400">${s.course || 'ไม่ได้ระบุวิชา'}</div>
+                                        </div>
+                                        <div class="flex flex-col items-end">
+                                            <div class="flex gap-2 mb-1">
+                                                ${issues.map(issue => `
+                                                    <span class="text-xs px-2 py-1 rounded-full ${issue === 'รูปภาพ' ? 'bg-amber-900/50 text-amber-300' : issue === 'วิชา' ? 'bg-red-900/50 text-red-300' : 'bg-blue-900/50 text-blue-300'}">
+                                                        ${issue}
+                                                    </span>
+                                                `).join('')}
+                                            </div>
+                                            <span class="badge-pill badge-error text-xs">
+                                                ข้อมูลไม่ครบ
+                                            </span>
+                                        </div>
+                                    </div>
+                                    ${issues.length > 0 ? `
+                                    <div class="mt-2 pt-2 border-t border-slate-700/50">
+                                        <div class="text-xs text-slate-400">ปัญหาที่พบ: ${issues.join(', ')}</div>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+                
+                modal.classList.add('active');
+                
+            } catch (error) {
+                hideLoading();
+                alert('เกิดข้อผิดพลาดในการค้นหาข้อมูล: ' + error.message);
+            }
+        }
+
+        // 5. Generate Report Function - ใช้งานปกติ
+        function generateReport() {
+            document.getElementById('reportModal').classList.add('active');
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.remove('active');
+        }
+
+        async function generateReportNow() {
+            const reportType = document.getElementById('reportType').value;
+            const includeStats = document.getElementById('reportStats').checked;
+            const includeCharts = document.getElementById('reportCharts').checked;
+            const includeStudents = document.getElementById('reportStudents').checked;
+            
+            showLoading("กำลังสร้างรายงาน", "กำลังประมวลผลข้อมูล...");
+            
+            try {
+                const data = await db.students.toArray();
+                
+                // สร้าง HTML report
+                let reportHTML = `
+                    <!DOCTYPE html>
+                    <html lang="th">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Voca Dashboard Report</title>
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
+                            
+                            body { 
+                                font-family: 'Prompt', sans-serif; 
+                                color: #1e293b; 
+                                line-height: 1.6; 
+                                max-width: 1200px;
+                                margin: 0 auto;
+                                padding: 20px;
+                                background: #f8fafc;
+                            }
+                            .header { 
+                                background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); 
+                                color: white; 
+                                padding: 2rem; 
+                                border-radius: 1rem; 
+                                margin-bottom: 2rem; 
+                                text-align: center;
+                            }
+                            .stat-card { 
+                                background: white; 
+                                border-radius: 0.75rem; 
+                                padding: 1.5rem; 
+                                margin-bottom: 1rem; 
+                                border-left: 4px solid;
+                                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                            }
+                            .student-table { 
+                                width: 100%; 
+                                border-collapse: collapse; 
+                                margin: 1rem 0; 
+                                background: white;
+                                border-radius: 0.75rem;
+                                overflow: hidden;
+                                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                            }
+                            .student-table th { 
+                                background: #334155; 
+                                color: white; 
+                                padding: 1rem; 
+                                text-align: left; 
+                                font-weight: bold;
+                            }
+                            .student-table td { 
+                                padding: 1rem; 
+                                border-bottom: 1px solid #e2e8f0; 
+                            }
+                            .student-table tr:nth-child(even) { 
+                                background: #f8fafc; 
+                            }
+                            .student-table tr:hover {
+                                background: #f1f5f9;
+                            }
+                            .badge { 
+                                padding: 0.25rem 0.75rem; 
+                                border-radius: 999px; 
+                                font-size: 0.75rem; 
+                                font-weight: bold; 
+                                display: inline-block;
+                            }
+                            .badge-success { 
+                                background: #10b981; 
+                                color: white; 
+                            }
+                            .badge-error { 
+                                background: #ef4444; 
+                                color: white; 
+                            }
+                            .section { 
+                                margin: 2rem 0; 
+                            }
+                            .stats-grid {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                                gap: 1rem;
+                                margin: 1rem 0;
+                            }
+                            h1, h2, h3, h4 {
+                                color: #1e293b;
+                                margin-top: 0;
+                            }
+                            h1 {
+                                font-size: 2.5rem;
+                                margin-bottom: 0.5rem;
+                            }
+                            h2 {
+                                font-size: 1.8rem;
+                                border-bottom: 3px solid #0ea5e9;
+                                padding-bottom: 0.5rem;
+                                margin-bottom: 1rem;
+                            }
+                            h3 {
+                                font-size: 1.4rem;
+                                color: #475569;
+                            }
+                            .footer {
+                                margin-top: 3rem;
+                                padding-top: 1rem;
+                                border-top: 2px solid #e2e8f0;
+                                color: #64748b;
+                                text-align: center;
+                                font-size: 0.9rem;
+                            }
+                            @media print {
+                                body {
+                                    padding: 0;
+                                    background: white;
+                                }
+                                .header {
+                                    -webkit-print-color-adjust: exact;
+                                    print-color-adjust: exact;
+                                }
+                                .student-table {
+                                    page-break-inside: avoid;
+                                }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>ศูนย์ฝึกอาชีพเขตจตุจักร
+
+</h1>
+                            <p>วันที่สร้างรายงาน: ${new Date().toLocaleDateString('th-TH')} เวลา: ${new Date().toLocaleTimeString('th-TH')}</p>
+                            <p>ประเภทรายงาน: ${reportType === 'summary' ? 'สรุปย่อ' : reportType === 'detailed' ? 'รายละเอียดเต็ม' : 'เปรียบเทียบ'}</p>
+                        </div>
+                `;
+                
+                if (includeStats) {
+                    const total = data.length;
+                    const complete = data.filter(s => s.isComplete).length;
+                    const weekday = data.filter(s => s.schedule.includes('จันทร์')).length;
+                    const weekend = data.filter(s => s.schedule.includes('เสาร์')).length;
+                    
+                    reportHTML += `
+                        <div class="section">
+                            <h2>สรุปสถิติ</h2>
+                            <div class="stats-grid">
+                                <div class="stat-card" style="border-left-color: #0ea5e9;">
+                                    <h3>จำนวนนักเรียนทั้งหมด</h3>
+                                    <p style="font-size: 2.5rem; font-weight: bold; color: #0ea5e9; margin: 0.5rem 0;">${total}</p>
+                                    <p style="color: #64748b; margin: 0;">คน</p>
+                                </div>
+                                <div class="stat-card" style="border-left-color: #10b981;">
+                                    <h3>ข้อมูลสมบูรณ์</h3>
+                                    <p style="font-size: 2.5rem; font-weight: bold; color: #10b981; margin: 0.5rem 0;">${complete}</p>
+                                    <p style="color: #64748b; margin: 0;">${Math.round((complete/total)*100)}% ของทั้งหมด</p>
+                                </div>
+                                <div class="stat-card" style="border-left-color: #8b5cf6;">
+                                    <h3>เรียนจันทร์-ศุกร์</h3>
+                                    <p style="font-size: 2.5rem; font-weight: bold; color: #8b5cf6; margin: 0.5rem 0;">${weekday}</p>
+                                    <p style="color: #64748b; margin: 0;">${Math.round((weekday/total)*100)}% ของทั้งหมด</p>
+                                </div>
+                                <div class="stat-card" style="border-left-color: #f59e0b;">
+                                    <h3>เรียนเสาร์-อาทิตย์</h3>
+                                    <p style="font-size: 2.5rem; font-weight: bold; color: #f59e0b; margin: 0.5rem 0;">${weekend}</p>
+                                    <p style="color: #64748b; margin: 0;">${Math.round((weekend/total)*100)}% ของทั้งหมด</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (includeCharts) {
+                    // เพิ่มข้อมูลกราฟ
+                    const genderTop5 = getTop5(data, 'gender');
+                    const courseTop5 = getTop5(data, 'course');
+                    const locationTop5 = getTop5(data, 'location');
+                    const sourceTop5 = getTop5(data, 'incomeSource');
+                    
+                    reportHTML += `
+                        <div class="section">
+                            <h2>ข้อมูล 5 อันดับแรก</h2>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                                <div>
+                                    <h3 style="color: #10b981; background: #f0fdf4; padding: 0.75rem; border-radius: 0.5rem;">เพศ</h3>
+                                    <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                                        ${Object.entries(genderTop5).map(([key, value]) => `
+                                            <li style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                                                <span style="font-weight: bold;">${key}</span>
+                                                <span style="color: #0ea5e9; font-weight: bold;">${value} คน</span>
+                                                <span style="color: #64748b;">(${Math.round((value/data.length)*100)}%)</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h3 style="color: #8b5cf6; background: #f5f3ff; padding: 0.75rem; border-radius: 0.5rem;">วิชาที่มีผู้ตอบแบบสอบถามมากที่สุด</h3>
+                                    <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                                        ${Object.entries(courseTop5).map(([key, value]) => `
+                                            <li style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                                                <span style="font-weight: bold;">${key}</span>
+                                                <span style="color: #0ea5e9; font-weight: bold;">${value} คน</span>
+                                                <span style="color: #64748b;">(${Math.round((value/data.length)*100)}%)</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h3 style="color: #f59e0b; background: #fffbeb; padding: 0.75rem; border-radius: 0.5rem;">พื้นที่ที่ได้นำความรู้ไปประกอบอาชีพ</h3>
+                                    <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                                        ${Object.entries(locationTop5).map(([key, value]) => `
+                                            <li style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                                                <span style="font-weight: bold;">${key}</span>
+                                                <span style="color: #0ea5e9; font-weight: bold;">${value} คน</span>
+                                                <span style="color: #64748b;">(${Math.round((value/data.length)*100)}%)</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                                
+                                <div>
+                                    <h3 style="color: #ef4444; background: #fef2f2; padding: 0.75rem; border-radius: 0.5rem;">แหล่งรายได้</h3>
+                                    <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                                        ${Object.entries(sourceTop5).map(([key, value]) => `
+                                            <li style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
+                                                <span style="font-weight: bold;">${key}</span>
+                                                <span style="color: #0ea5e9; font-weight: bold;">${value} คน</span>
+                                                <span style="color: #64748b;">(${Math.round((value/data.length)*100)}%)</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (includeStudents && reportType !== 'summary') {
+                    reportHTML += `
+                        <div class="section">
+                            <h2>รายชื่อนักเรียน (${data.length} คน)</h2>
+                            <table class="student-table">
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>ชื่อ-นามสกุล</th>
+                                        <th>วิชา</th>
+                                        <th>วันเรียน</th>
+                                        <th>สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.slice(0, 200).map((student, index) => `
+                                        <tr>
+                                            <td style="font-weight: bold; color: #475569;">${index + 1}</td>
+                                            <td style="font-weight: bold; color: #1e293b;">${student.name}</td>
+                                            <td>${student.course}</td>
+                                            <td>${student.schedule.includes('เสาร์') ? '<span style="color: #f59e0b; font-weight: bold;">เสาร์-อาทิตย์</span>' : '<span style="color: #0ea5e9; font-weight: bold;">จันทร์-ศุกร์</span>'}</td>
+                                            <td>
+                                                <span class="badge ${student.isComplete ? 'badge-success' : 'badge-error'}">
+                                                    ${student.isComplete ? 'สมบูรณ์' : 'ไม่ครบ'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                            ${data.length > 200 ? `<p style="text-align: center; color: #64748b; margin-top: 10px;">แสดง 200 คนแรก จากทั้งหมด ${data.length} คน</p>` : ''}
+                        </div>
+                    `;
+                }
+                
+                reportHTML += `
+                        <div class="footer">
+                            <p>เอกสารนี้สร้างโดย ศูนย์ฝึกอาชีพเขตจตุจักร</p>
+                            <p>© ${new Date().getFullYear()} - สามารถพิมพ์เอกสารนี้ได้ (Ctrl+P)</p>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                // เปิดในหน้าต่างใหม่
+                const reportWindow = window.open('', '_blank');
+                reportWindow.document.write(reportHTML);
+                reportWindow.document.close();
+                
+                hideLoading();
+                closeReportModal();
+                
+            } catch (error) {
+                hideLoading();
+                alert('เกิดข้อผิดพลาดในการสร้างรายงาน: ' + error.message);
+            }
+        }
+
+        // Theme Toggle
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            const icon = this.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+                this.title = 'เปลี่ยนเป็น Dark Mode';
+            } else {
+                icon.className = 'fas fa-moon';
+                this.title = 'เปลี่ยนเป็น Light Mode';
+            }
+        });
+
+        // View Switching
+        function switchView(mode) {
+            document.getElementById('view-backend').classList.toggle('hidden', mode !== 'backend');
+            document.getElementById('view-present').classList.toggle('hidden', mode !== 'present');
+            document.getElementById('view-analytics').classList.toggle('hidden', mode !== 'analytics');
+            
+            document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('tab-active'));
+            document.getElementById('tab-' + mode).classList.add('tab-active');
+            
+            loadData();
+        }
+
+        // Student Management
+        function editStudent(id) {
+            alert(`แก้ไขนักเรียน ID: ${id}\n\nฟีเจอร์นี้อยู่ระหว่างการพัฒนา เร็วๆ นี้จะสามารถแก้ไขข้อมูลได้โดยตรงในตาราง`);
+        }
+
+        function deleteStudent(id) {
+            if (confirm('คุณแน่ใจที่จะลบข้อมูลนี้?')) {
+                showLoading("กำลังลบข้อมูล", "กำลังลบข้อมูลนักเรียน...");
+                db.students.delete(id).then(() => {
+                    hideLoading();
+                    loadData();
+                    alert('ลบข้อมูลสำเร็จ');
+                }).catch(error => {
+                    hideLoading();
+                    alert('เกิดข้อผิดพลาดในการลบข้อมูล: ' + error.message);
+                });
+            }
+        }
+
+        // Modal Functions
+        function openModal() {
+            // For image modal
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+
+        function clearDB() { 
+            if(confirm("คุณแน่ใจที่จะล้างข้อมูลทั้งหมด?\n\nการกระทำนี้ไม่สามารถย้อนกลับได้!")) { 
+                showLoading("กำลังล้างข้อมูล", "กำลังล้างฐานข้อมูลทั้งหมด...");
+                db.students.clear().then(() => {
+                    hideLoading();
+                    loadData();
+                    populateFilterOptions();
+                    alert('ล้างข้อมูลสำเร็จ');
+                }).catch(error => {
+                    hideLoading();
+                    alert('เกิดข้อผิดพลาดในการล้างข้อมูล: ' + error.message);
+                });
+            } 
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            populateFilterOptions();
+            
+            // Close modals on ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closeDetailModal();
+                    closeReportModal();
+                    hideLoading();
+                }
+            });
+            
+            // Close modals when clicking outside
+            document.querySelectorAll('.image-modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
