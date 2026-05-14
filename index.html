@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Digital Training Center Portal</title>
-<!-- DTCP Portal: FINAL_COMPLETE v16 | multi activity gallery added | activity highlight redesigned | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
+<!-- DTCP Portal: FINAL_COMPLETE v17 | activity button removed | article layout widened | multi activity gallery added | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
 
 <style>
 
@@ -845,39 +845,28 @@ ACTIVITY NEWS HIGHLIGHT
 }
 
 .activity-content{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:flex-start;
+    grid-column:1 / -1;
+
+    display:block;
+
+    width:100%;
 }
 
 .activity-content p{
     margin:0;
+
+    width:100%;
+
     color:#4b5563;
-    line-height:1.75;
+
+    line-height:1.9;
     font-size:16px;
+
+    text-align:left;
+}
 }
 
-.activity-content .news-activity-link{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    margin-top:12px;
-    padding:10px 14px;
-    border-radius:999px;
-    background:#047857;
-    color:#ffffff;
-    text-decoration:none;
-    font-weight:800;
-    font-size:15px;
-    box-shadow:0 8px 16px rgba(4,120,87,0.18);
-    transition:0.22s ease;
-}
 
-.activity-content .news-activity-link:hover{
-    transform:translateY(-1px);
-}
 
 
 /* =========================
@@ -1054,10 +1043,6 @@ RESPONSIVE
 
     .activity-head h4{
         font-size:22px;
-    }
-
-    .activity-content .news-activity-link{
-        width:100%;
     }
 
 
@@ -1535,15 +1520,6 @@ RESPONSIVE
                                 ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร ลงพื้นที่ออกหน่วยให้บริการประชาชน
                                 ส่งเสริมทักษะอาชีพ และประชาสัมพันธ์หลักสูตรฝึกอบรม
                             </p>
-
-                            <a
-                                href="assets/images/activities/activity01.jpg"
-                                class="news-activity-link"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                เปิดภาพกิจกรรม →
-                            </a>
 
                         </div>
 
