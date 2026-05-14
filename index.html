@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <title>Digital Training Center Portal</title>
 
 <style>
-@font-face {
-    font-family: 'SaoChingchaEmbedded';
-    src: url('./fonts/SaoChingcha.otf') format('opentype');
-    font-display: swap;
+
+@font-face{
+    font-family:'SaoChingchaEmbedded';
+    src:url('./fonts/SaoChingcha.otf') format('opentype');
+    font-display:swap;
 }
 
 :root{
-    --primary:#00796B;
-    --primary-dark:#005B4F;
-    --bg:#F4F7F6;
+    --primary:#00796b;
+    --primary-dark:#004d40;
+    --bg:#eef3f1;
     --card:#ffffff;
-    --text:#1F2937;
-    --muted:#6B7280;
-    --border:#E5E7EB;
+    --text:#17212b;
 }
 
 *{
@@ -32,124 +32,206 @@ body{
     font-family:'SaoChingchaEmbedded',sans-serif;
     background:var(--bg);
     color:var(--text);
+}
+
+.wrapper{
     display:flex;
     min-height:100vh;
 }
 
+/* ========================= */
+/* SIDEBAR */
+/* ========================= */
+
 .sidebar{
     width:280px;
-    background:linear-gradient(180deg,#00695C,#00796B);
-    color:white;
-    padding:28px 20px;
+    background:linear-gradient(
+        180deg,
+        #004d40,
+        #00796b
+    );
+
+    color:#fff;
+
+    padding:32px 22px;
+
     position:fixed;
     top:0;
     left:0;
-    height:100vh;
-    overflow:auto;
+    bottom:0;
+
+    overflow-y:auto;
 }
 
-.logo{
-    margin-bottom:36px;
-}
-
-.logo h1{
-    font-size:40px;
+.sidebar h2{
+    font-size:42px;
     margin-bottom:10px;
 }
 
-.logo p{
-    line-height:1.6;
-    opacity:.95;
+.sidebar .subtitle{
+    line-height:1.8;
+    opacity:0.92;
+    margin-bottom:40px;
 }
 
-.menu-title{
-    margin:28px 0 12px;
-    font-size:14px;
-    opacity:.8;
+.sidebar-section{
+    margin-bottom:34px;
 }
 
-.nav{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.nav a{
-    color:white;
-    text-decoration:none;
-    padding:14px 16px;
-    border-radius:14px;
-    transition:.2s;
+.sidebar-section h4{
     font-size:18px;
+    margin-bottom:18px;
+    opacity:0.9;
 }
 
-.nav a:hover{
-    background:rgba(255,255,255,.12);
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    text-decoration:none;
+    color:#fff;
+
+    padding:14px 16px;
+    border-radius:16px;
+
+    margin-bottom:10px;
+
+    transition:0.2s ease;
 }
+
+.sidebar a:hover{
+    background:rgba(255,255,255,0.12);
+}
+
+/* ========================= */
+/* MAIN */
+/* ========================= */
 
 .main{
+    flex:1;
     margin-left:280px;
-    padding:42px;
-    width:100%;
+    padding:36px;
 }
+
+/* ========================= */
+/* HERO */
+/* ========================= */
 
 .hero{
-    background:linear-gradient(135deg,#00796B,#009688);
-    color:white;
-    border-radius:34px;
-    padding:54px;
-    margin-bottom:36px;
     position:relative;
     overflow:hidden;
+
+    border-radius:32px;
+
+    min-height:420px;
+
+    padding:80px 60px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,70,55,0.88),
+            rgba(0,121,107,0.72)
+        ),
+        url('./assets/images/building.jpg');
+
+    background-size:cover;
+    background-position:center;
+
+    color:#fff;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,0.18);
 }
 
-.hero::after{
-    content:'';
+.hero-overlay{
     position:absolute;
-    right:-80px;
-    top:-80px;
-    width:240px;
-    height:240px;
-    border-radius:50%;
-    background:rgba(255,255,255,.08);
+    inset:0;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(255,255,255,0.14),
+            transparent 30%
+        );
 }
 
-.hero h2{
-    font-size:56px;
-    margin-bottom:22px;
+.hero-content{
     position:relative;
     z-index:2;
+
+    max-width:720px;
+}
+
+.hero-badge{
+    display:inline-block;
+
+    margin-bottom:20px;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,0.14);
+
+    backdrop-filter:blur(10px);
+
+    font-size:15px;
+    line-height:1.6;
+
+    color:#fff;
+}
+
+.hero h1{
+    font-size:58px;
+    line-height:1.05;
+
+    margin-bottom:24px;
+
+    font-weight:800;
+
+    color:#fff;
 }
 
 .hero p{
-    font-size:22px;
-    line-height:1.8;
-    max-width:900px;
-    position:relative;
-    z-index:2;
-}
+    max-width:650px;
 
-.hero-buttons{
-    margin-top:34px;
-    display:flex;
-    gap:18px;
-    flex-wrap:wrap;
-    position:relative;
-    z-index:2;
-}
-
-.hero-buttons a{
-    text-decoration:none;
-    padding:16px 28px;
-    border-radius:16px;
     font-size:20px;
-    transition:.2s;
+    line-height:1.9;
+
+    color:rgba(255,255,255,0.92);
+
+    margin-bottom:36px;
+}
+
+.hero-actions{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.btn-primary,
+.btn-secondary{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:16px 28px;
+
+    border-radius:16px;
+
+    text-decoration:none;
+
+    font-size:18px;
+    font-weight:700;
+
+    transition:0.25s ease;
 }
 
 .btn-primary{
-    background:white;
-    color:#00796B;
-    font-weight:bold;
+    background:#fff;
+    color:#00695c;
 }
 
 .btn-primary:hover{
@@ -157,300 +239,439 @@ body{
 }
 
 .btn-secondary{
-    background:rgba(255,255,255,.15);
-    color:white;
-    border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,0.14);
+
+    border:1px solid rgba(255,255,255,0.22);
+
+    color:#fff;
 }
+
+.btn-secondary:hover{
+    background:rgba(255,255,255,0.22);
+}
+
+.hero-logo-bma{
+    position:absolute;
+
+    top:28px;
+    left:28px;
+
+    width:84px;
+
+    z-index:2;
+
+    opacity:0.96;
+}
+
+.hero-logo-chatuchak{
+    position:absolute;
+
+    top:18px;
+    left:118px;
+
+    width:110px;
+
+    z-index:2;
+
+    opacity:0.96;
+}
+
+/* ========================= */
+/* CARDS */
+/* ========================= */
 
 .section-title{
-    font-size:40px;
-    margin-bottom:26px;
+    margin:40px 0 24px;
+    font-size:42px;
 }
 
-.grid{
+.card-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:28px;
-    margin-bottom:40px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
 }
 
 .card{
     background:var(--card);
     border-radius:28px;
-    padding:32px;
-    box-shadow:0 8px 30px rgba(0,0,0,.05);
-    transition:.2s;
+    padding:30px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.05);
+
+    transition:0.2s ease;
 }
 
 .card:hover{
     transform:translateY(-4px);
 }
 
-.icon{
-    width:68px;
-    height:68px;
-    border-radius:18px;
-    background:#E8F5F3;
+.card-icon{
+    width:72px;
+    height:72px;
+
+    border-radius:20px;
+
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:34px;
+
+    background:#eef7f5;
+
+    font-size:32px;
+
     margin-bottom:20px;
 }
 
 .card h3{
-    font-size:30px;
-    margin-bottom:14px;
+    font-size:32px;
+    margin-bottom:12px;
 }
 
 .card p{
-    color:var(--muted);
-    line-height:1.8;
-    font-size:18px;
+    line-height:1.9;
+    opacity:0.8;
     margin-bottom:18px;
 }
 
 .card a{
+    color:var(--primary);
     text-decoration:none;
-    color:#00796B;
-    font-size:18px;
-    font-weight:bold;
+    font-weight:700;
 }
+
+/* ========================= */
+/* NEWS */
+/* ========================= */
 
 .news{
-    background:white;
+    margin-top:36px;
+
+    background:#fff;
+
     border-radius:28px;
+
     padding:34px;
-    box-shadow:0 8px 30px rgba(0,0,0,.05);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.05);
 }
 
-.news h3{
-    font-size:36px;
-    margin-bottom:20px;
+.news h2{
+    font-size:40px;
+    margin-bottom:18px;
 }
 
 .news-item{
     padding:18px 0;
-    border-bottom:1px solid var(--border);
+    border-bottom:1px solid #e8eceb;
 }
 
 .news-item:last-child{
     border-bottom:none;
 }
 
-.news-item strong{
-    display:block;
+.news-item h4{
     margin-bottom:8px;
-    font-size:22px;
+    font-size:24px;
 }
 
-.news-item span{
-    color:var(--muted);
-    line-height:1.7;
-    font-size:17px;
-}
+/* ========================= */
+/* MOBILE */
+/* ========================= */
 
-@media(max-width:900px){
-
-    body{
-        flex-direction:column;
-    }
+@media(max-width:960px){
 
     .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
+        display:none;
     }
 
     .main{
         margin-left:0;
-        padding:20px;
+        padding:18px;
     }
 
     .hero{
-        padding:32px;
+        padding:130px 28px 40px;
+        min-height:auto;
     }
 
-    .hero h2{
-        font-size:38px;
+    .hero h1{
+        font-size:40px;
     }
 
     .hero p{
-        font-size:18px;
+        font-size:17px;
+        line-height:1.8;
+    }
+
+    .hero-logo-bma{
+        width:64px;
+        top:22px;
+        left:20px;
+    }
+
+    .hero-logo-chatuchak{
+        width:84px;
+        top:14px;
+        left:92px;
+    }
+
+    .hero-actions{
+        flex-direction:column;
+    }
+
+    .btn-primary,
+    .btn-secondary{
+        width:100%;
     }
 
     .section-title{
-        font-size:32px;
+        font-size:34px;
     }
 
+    .card h3{
+        font-size:28px;
+    }
 }
+
 </style>
 </head>
 
 <body>
 
-<aside class="sidebar">
+<div class="wrapper">
 
-    <div class="logo">
-        <h1>DTCP</h1>
-        <p>
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <h2>DTCP</h2>
+
+        <div class="subtitle">
             Digital Training Center Portal<br>
             ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
-        </p>
-    </div>
+        </div>
 
-    <div class="menu-title">เมนูหลัก</div>
+        <div class="sidebar-section">
 
-    <nav class="nav">
-        <a href="#">🏠 หน้าหลัก</a>
-    </nav>
+            <h4>เมนูหลัก</h4>
 
-    <div class="menu-title">ระบบการเรียน</div>
-
-    <nav class="nav">
-        <a href="https://chatuchakdatacenter-wq.github.io/training-register/" target="_blank">
-            📝 สมัครเรียนออนไลน์
-        </a>
-
-        <a href="https://chatuchakdatacenter-wq.github.io/training-register/" target="_blank">
-            📋 รายงานตัวผู้เรียน
-        </a>
-
-        <a href="#">
-            📊 ติดตามผลผู้สำเร็จ
-        </a>
-
-        <a href="#">
-            🗓️ ตารางการอบรม
-        </a>
-    </nav>
-
-    <div class="menu-title">ศูนย์ข้อมูล</div>
-
-    <nav class="nav">
-        <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/" target="_blank">
-            🧠 KM SMART HUB
-        </a>
-
-        <a href="#">
-            📢 ข่าวสารและประกาศ
-        </a>
-
-        <a href="#">
-            📂 ดาวน์โหลดเอกสาร
-        </a>
-
-        <a href="#">
-            📞 ติดต่อศูนย์
-        </a>
-    </nav>
-
-</aside>
-
-<main class="main">
-
-    <section class="hero">
-
-        <h2>Digital Training Center Portal</h2>
-
-        <p>
-            ศูนย์กลางบริการดิจิทัล สำหรับระบบการเรียน การสมัครอบรม
-            การติดตามผู้เรียน และศูนย์รวมองค์ความรู้ของศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
-        </p>
-
-        <div class="hero-buttons">
-
-            <a class="btn-primary"
-               href="https://chatuchakdatacenter-wq.github.io/training-register/"
-               target="_blank">
-               สมัครเรียนออนไลน์
-            </a>
-
-            <a class="btn-secondary"
-               href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/"
-               target="_blank">
-               KM SMART HUB
-            </a>
+            <a href="./index.html">🏠 หน้าแรก</a>
 
         </div>
 
-    </section>
+        <div class="sidebar-section">
 
-    <h2 class="section-title">Quick Access</h2>
+            <h4>ระบบการเรียน</h4>
 
-    <section class="grid">
+            <a href="./register/">📝 สมัครเรียนออนไลน์</a>
 
-        <div class="card">
-            <div class="icon">📝</div>
-            <h3>สมัครเรียนออนไลน์</h3>
-            <p>
-                ระบบรับสมัครเรียนออนไลน์ พร้อมตรวจสอบสถานะและติดตามข้อมูลผู้เรียน
-            </p>
+            <a href="./weekday_report.html">📋 รายงานตัวผู้เรียน</a>
 
-            <a href="https://chatuchakdatacenter-wq.github.io/training-register/" target="_blank">
-                เข้าสู่ระบบ →
-            </a>
+            <a href="./followup.html">📊 ติดตามผลผู้สำเร็จ</a>
+
+            <a href="./training.html">🗓️ ตารางการอบรม</a>
+
         </div>
 
-        <div class="card">
-            <div class="icon">🧠</div>
-            <h3>KM SMART HUB</h3>
-            <p>
-                ศูนย์รวมองค์ความรู้ ข่าวสาร เอกสาร และข้อมูลภายในองค์กร
-            </p>
+        <div class="sidebar-section">
 
-            <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/" target="_blank">
-                เข้าสู่ระบบ →
-            </a>
+            <h4>ศูนย์ข้อมูล</h4>
+
+            <a href="./kmhub/">🧠 KM Smart Hub</a>
+
+            <a href="#">📢 ข่าวสารและประกาศ</a>
+
+            <a href="#">📂 ดาวน์โหลดเอกสาร</a>
+
+            <a href="#">📞 ติดต่อศูนย์</a>
+
         </div>
 
-        <div class="card">
-            <div class="icon">📋</div>
-            <h3>รายงานตัวผู้เรียน</h3>
-            <p>
-                ระบบตรวจสอบและรายงานตัวผู้เรียน สำหรับผู้สมัครหลักสูตรต่าง ๆ
-            </p>
+    </aside>
 
-            <a href="https://chatuchakdatacenter-wq.github.io/training-register/" target="_blank">
-                เข้าสู่ระบบ →
-            </a>
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-overlay"></div>
+
+            <img
+                src="./assets/images/logo-bma.png"
+                class="hero-logo-bma"
+                alt="BMA Logo"
+            >
+
+            <img
+                src="./assets/images/logo-chatuchak.png"
+                class="hero-logo-chatuchak"
+                alt="Chatuchak Logo"
+            >
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    Chatuchak District Office<br>
+                    ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
+                </div>
+
+                <h1>
+                    Digital Training Center Portal
+                </h1>
+
+                <p>
+                    ศูนย์กลางบริการดิจิทัล สำหรับระบบการเรียน การสมัครอบรม
+                    การติดตามผู้เรียน และศูนย์รวมองค์ความรู้ของศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
+                </p>
+
+                <div class="hero-actions">
+
+                    <a href="./register/" class="btn-primary">
+                        สมัครเรียนออนไลน์
+                    </a>
+
+                    <a href="./kmhub/" class="btn-secondary">
+                        KM Smart Hub
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- QUICK ACCESS -->
+
+        <h2 class="section-title">
+            Quick Access
+        </h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📝
+                </div>
+
+                <h3>
+                    สมัครเรียนออนไลน์
+                </h3>
+
+                <p>
+                    ระบบรับสมัครเรียนออนไลน์ พร้อมตรวจสอบสถานะและติดตามข้อมูลผู้เรียน
+                </p>
+
+                <a href="./register/">
+                    เข้าสู่ระบบ →
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    KM Smart Hub
+                </h3>
+
+                <p>
+                    ศูนย์รวมองค์ความรู้ ข่าวสาร เอกสาร และข้อมูลภายในองค์กร
+                </p>
+
+                <a href="./kmhub/">
+                    เข้าสู่ระบบ →
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📋
+                </div>
+
+                <h3>
+                    รายงานตัวผู้เรียน
+                </h3>
+
+                <p>
+                    ระบบตรวจสอบและรายงานตัวผู้เรียน สำหรับผู้สมัครหลักสูตรต่าง ๆ
+                </p>
+
+                <a href="./weekday_report.html">
+                    เข้าสู่ระบบ →
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📊
+                </div>
+
+                <h3>
+                    ติดตามผลผู้สำเร็จ
+                </h3>
+
+                <p>
+                    ระบบติดตามผลหลังจบหลักสูตร และการนำทักษะไปประกอบอาชีพ
+                </p>
+
+                <a href="./followup.html">
+                    เข้าสู่ระบบ →
+                </a>
+
+            </div>
+
         </div>
 
-        <div class="card">
-            <div class="icon">📊</div>
-            <h3>ติดตามผลผู้สำเร็จ</h3>
-            <p>
-                ระบบติดตามผลหลังจบหลักสูตร และการนำทักษะไปประกอบอาชีพ
-            </p>
+        <!-- NEWS -->
 
-            <a href="#">
-                เข้าสู่ระบบ →
-            </a>
-        </div>
+        <section class="news">
 
-    </section>
+            <h2>
+                ข่าวสารและประกาศ
+            </h2>
 
-    <section class="news">
+            <div class="news-item">
 
-        <h3>ข่าวสารและประกาศ</h3>
+                <h4>
+                    เปิดรับสมัครหลักสูตรใหม่ ประจำเดือนนี้
+                </h4>
 
-        <div class="news-item">
-            <strong>เปิดรับสมัครหลักสูตรใหม่ ประจำเดือนนี้</strong>
-            <span>
-                สามารถตรวจสอบรายละเอียดหลักสูตร และสมัครเรียนออนไลน์ผ่านระบบ DTCP ได้แล้ววันนี้
-            </span>
-        </div>
+                <p>
+                    สามารถตรวจสอบรายละเอียดหลักสูตร และสมัครเรียนออนไลน์ผ่านระบบ DTCP ได้แล้ววันนี้
+                </p>
 
-        <div class="news-item">
-            <strong>อัปเดต KM SMART HUB เวอร์ชันใหม่</strong>
-            <span>
-                ปรับปรุงประสิทธิภาพการค้นหา และรองรับการใช้งานบนอุปกรณ์มือถือเต็มรูปแบบ
-            </span>
-        </div>
+            </div>
 
-    </section>
+            <div class="news-item">
 
-</main>
+                <h4>
+                    ระบบ KM Smart Hub เปิดใช้งานอย่างเป็นทางการ
+                </h4>
+
+                <p>
+                    ศูนย์รวมองค์ความรู้ดิจิทัล พร้อมรองรับการใช้งานทั้งมือถือและเดสก์ท็อป
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
 
 </body>
 </html>
