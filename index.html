@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Digital Training Center Portal</title>
-<!-- DTCP Portal: FINAL_COMPLETE v17 | activity button removed | article layout widened | multi activity gallery added | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
+<!-- DTCP Portal: FINAL_COMPLETE v18 | gallery layout restored | duplicate activity button removed | article width fixed | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
 
 <style>
 
@@ -854,16 +854,9 @@ ACTIVITY NEWS HIGHLIGHT
 
 .activity-content p{
     margin:0;
-
-    width:100%;
-
     color:#4b5563;
-
-    line-height:1.9;
+    line-height:1.75;
     font-size:16px;
-
-    text-align:left;
-}
 }
 
 
@@ -1034,11 +1027,12 @@ RESPONSIVE
     }
 
     .activity-gallery{
-        grid-template-columns:1fr;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        gap:10px;
     }
 
     .activity-gallery .news-thumb{
-        height:200px;
+        height:110px;
     }
 
     .activity-head h4{
@@ -1059,6 +1053,15 @@ RESPONSIVE
 }
 
 @media(max-width:520px){
+
+    .activity-gallery{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .activity-gallery .news-thumb{
+        height:118px;
+    }
 
     .hero{
         min-height:660px;
