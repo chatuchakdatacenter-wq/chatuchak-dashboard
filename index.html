@@ -254,81 +254,81 @@ HERO
 ========================= */
 
 .hero{
-    background:#fff;
+    position:relative;
 
-    border-radius:34px;
+    min-height:clamp(480px, 54vh, 620px);
+
+    border-radius:36px;
 
     overflow:hidden;
 
-    display:grid;
-    grid-template-columns:0.95fr 1.05fr;
+    display:flex;
+    align-items:center;
 
-    min-height:420px;
+    background:#fff;
 
     box-shadow:
-        0 8px 24px rgba(0,0,0,0.05);
+        0 12px 34px rgba(0,0,0,0.07);
 
     margin-bottom:24px;
+
+    isolation:isolate;
 }
 
 .hero-left{
-    padding:46px 42px;
+    position:relative;
+
+    z-index:5;
+
+    width:min(58%, 720px);
+
+    padding:clamp(44px, 5vw, 70px);
 
     display:flex;
     flex-direction:column;
     justify-content:center;
-
-    position:relative;
-
-    z-index:3;
-
-    background:
-        linear-gradient(
-            90deg,
-            #ffffff 0%,
-            rgba(255,255,255,0.95) 70%,
-            rgba(255,255,255,0.0) 100%
-        );
 }
 
 .hero-left h1{
-    font-size:64px;
-    line-height:1.02;
+    font-size:clamp(52px, 5.15vw, 76px);
+    line-height:0.96;
+
+    color:#065f46;
+
+    margin-bottom:18px;
+
+    font-weight:800;
+
+    letter-spacing:-1.4px;
+}
+
+.hero-left h3{
+    font-size:clamp(24px, 2.2vw, 32px);
 
     color:#065f46;
 
     margin-bottom:14px;
 
-    font-weight:800;
-}
-
-.hero-left h3{
-    font-size:26px;
-
-    color:#065f46;
-
-    margin-bottom:10px;
-
     font-weight:700;
 }
 
 .hero-left p{
-    font-size:18px;
+    font-size:clamp(17px, 1.25vw, 20px);
 
-    line-height:1.8;
+    line-height:1.85;
 
     color:#4b5563;
 
-    max-width:560px;
+    max-width:640px;
 }
 
 /* BUTTONS */
 
 .hero-buttons{
     display:flex;
-    gap:18px;
+    gap:16px;
 
-    margin-top:36px;
+    margin-top:34px;
 
     flex-wrap:wrap;
 }
@@ -336,11 +336,11 @@ HERO
 .btn{
     text-decoration:none;
 
-    padding:16px 26px;
+    padding:15px 24px;
 
     border-radius:16px;
 
-    font-size:17px;
+    font-size:clamp(16px, 1.05vw, 18px);
     font-weight:700;
 
     transition:0.25s ease;
@@ -350,7 +350,7 @@ HERO
     justify-content:center;
     gap:8px;
 
-    min-width:220px;
+    min-width:210px;
 }
 
 .btn-primary{
@@ -371,7 +371,7 @@ HERO
 
     color:#047857;
 
-    background:#fff;
+    background:rgba(255,255,255,0.9);
 }
 
 /* =========================
@@ -379,13 +379,12 @@ HERO IMAGE
 ========================= */
 
 .hero-image{
-    position:relative;
+    position:absolute;
+    inset:0;
+
+    z-index:1;
 
     overflow:hidden;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
 
     background:#f4f7f6;
 }
@@ -396,7 +395,53 @@ HERO IMAGE
 
     object-fit:cover;
 
+    object-position:center center;
+
+    transform:scale(1.035);
+
+    filter:
+        saturate(1.03)
+        contrast(1.03);
+
     display:block;
+}
+
+.hero-image::after{
+    content:'';
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.99) 0%,
+            rgba(255,255,255,0.97) 16%,
+            rgba(255,255,255,0.92) 28%,
+            rgba(255,255,255,0.72) 42%,
+            rgba(255,255,255,0.32) 56%,
+            rgba(255,255,255,0.05) 72%,
+            rgba(255,255,255,0.00) 100%
+        );
+
+    z-index:2;
+}
+
+.hero::before{
+    content:'';
+
+    position:absolute;
+    inset:0;
+
+    background:
+        radial-gradient(
+            circle at 12% 18%,
+            rgba(16,185,129,0.08),
+            transparent 28%
+        );
+
+    z-index:3;
+    pointer-events:none;
 }
 
 /* =========================
@@ -579,11 +624,15 @@ RESPONSIVE
     }
 
     .hero{
-        grid-template-columns:1fr;
+        min-height:500px;
     }
 
-    .hero-image{
-        min-height:420px;
+    .hero-left{
+        width:64%;
+    }
+
+    .hero-image img{
+        object-position:center center;
     }
 }
 
@@ -602,22 +651,47 @@ RESPONSIVE
     .main{
         margin-left:0;
         max-width:100%;
+        padding:18px;
+    }
+
+    .hero{
+        min-height:620px;
+        align-items:flex-start;
     }
 
     .hero-left{
-        padding:40px 28px;
+        width:100%;
+        padding:42px 28px;
     }
 
     .hero-left h1{
-        font-size:48px;
+        font-size:46px;
+        letter-spacing:-0.6px;
     }
 
     .hero-left h3{
-        font-size:28px;
+        font-size:24px;
     }
 
     .hero-left p{
-        font-size:18px;
+        font-size:17px;
+        max-width:92%;
+    }
+
+    .hero-image img{
+        object-position:center bottom;
+    }
+
+    .hero-image::after{
+        background:
+            linear-gradient(
+                180deg,
+                rgba(255,255,255,0.99) 0%,
+                rgba(255,255,255,0.94) 30%,
+                rgba(255,255,255,0.66) 52%,
+                rgba(255,255,255,0.18) 76%,
+                rgba(255,255,255,0.00) 100%
+            );
     }
 
     .hero-buttons{
@@ -641,6 +715,36 @@ RESPONSIVE
     .top-alert{
         flex-direction:column;
         align-items:flex-start;
+    }
+}
+
+@media(max-width:520px){
+
+    .hero{
+        min-height:660px;
+        border-radius:28px;
+    }
+
+    .hero-left{
+        padding:34px 22px;
+    }
+
+    .hero-left h1{
+        font-size:40px;
+    }
+
+    .hero-left h3{
+        font-size:22px;
+    }
+
+    .hero-left p{
+        font-size:16px;
+        line-height:1.75;
+        max-width:100%;
+    }
+
+    .card h3{
+        font-size:22px;
     }
 }
 
@@ -781,7 +885,18 @@ RESPONSIVE
 
         <section class="hero">
 
-            <!-- LEFT -->
+            <!-- IMAGE BACKGROUND -->
+
+            <div class="hero-image">
+
+                <img
+                    src="assets/images/building.jpg"
+                    alt="Training Center"
+                >
+
+            </div>
+
+            <!-- TEXT LAYER -->
 
             <div class="hero-left">
 
@@ -816,17 +931,6 @@ RESPONSIVE
                     </a>
 
                 </div>
-
-            </div>
-
-            <!-- RIGHT -->
-
-            <div class="hero-image">
-
-                <img
-                    src="assets/images/building.jpg"
-                    alt="Training Center"
-                >
 
             </div>
 
