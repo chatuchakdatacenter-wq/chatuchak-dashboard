@@ -1472,30 +1472,6 @@ MOBILE UX REFINEMENT FINAL
 
 
 
-/* FINAL: Desktop logo white area shape
-   ซ้ายสูง / กลางปกติ / ขวาต่ำ */
-@media(min-width:961px){
-    .sidebar .logo-area{
-        border-radius:0 !important;
-
-        /*
-          bottom shape points:
-          ซ้ายสูง = 78%
-          กลางปกติ = 90%
-          ขวาต่ำ = 100%
-        */
-        clip-path:polygon(
-            0 0,
-            100% 0,
-            100% 100%,
-            50% 90%,
-            0 78%
-        ) !important;
-    }
-}
-
-
-
 /* FINAL FIX: PR News image size only
    แก้เฉพาะรูปที่ดึงจาก Google Sheet ใน #prNewsContainer
    ไม่กระทบ gallery กิจกรรมเดิม */
@@ -1588,6 +1564,192 @@ MOBILE UX REFINEMENT FINAL
     }
 }
 
+
+/* =========================================================
+PORTAL STRUCTURE CLEANUP - SAFE
+- Sidebar เป็น Main Navigation
+- เมนูที่ยังไม่พร้อมมี badge เร็ว ๆ นี้
+- Contact รวมกับ Hotline เดิม
+========================================================= */
+
+.soon-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:3px 9px;
+    margin-left:auto;
+    border-radius:999px;
+    background:#fef3c7;
+    color:#92400e;
+    font-size:11px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.menu a.is-soon{
+    opacity:.78;
+    cursor:not-allowed;
+}
+
+.menu a.is-soon:hover{
+    transform:none;
+}
+
+.contact-extra{
+    position:relative;
+    z-index:2;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,0.14);
+}
+
+.contact-address{
+    color:rgba(255,255,255,0.92);
+    font-size:13px;
+    font-weight:600;
+    line-height:1.75;
+}
+
+.contact-actions{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+    flex-wrap:wrap;
+}
+
+.contact-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    min-height:40px;
+    padding:10px 14px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.12);
+    color:#ffffff !important;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:800;
+    border:1px solid rgba(255,255,255,0.16);
+}
+
+.contact-btn:hover{
+    background:rgba(255,255,255,0.18);
+}
+
+@media(max-width:960px){
+    .soon-badge{
+        margin-left:0;
+        margin-top:4px;
+        font-size:10px;
+        padding:2px 7px;
+    }
+
+    .contact-actions{
+        justify-content:center;
+    }
+
+    .contact-btn{
+        flex:1 1 120px;
+    }
+}
+
+
+/* FINAL FIX: PR News image portrait-safe position
+   รองรับภาพแนวตั้ง โดยให้ยึดด้านบนของภาพ */
+#prNewsContainer .news-thumb{
+    object-position:top center !important;
+}
+
+
+/* FINAL FIX: Clickable hotline without duplicate phone button */
+.hotline-call-link{
+    color:#ffffff !important;
+    text-decoration:none !important;
+    cursor:pointer;
+    border-radius:22px;
+}
+
+.hotline-call-link:hover .hotline-number strong{
+    text-decoration:underline;
+}
+
+.hotline-call-link:focus-visible{
+    outline:2px solid rgba(255,255,255,.75);
+    outline-offset:4px;
+}
+
+
+/* FINAL FIX: Quick Access cleanup */
+.card.is-soon-card{
+    position:relative;
+    opacity:.84;
+}
+
+.card-soon-badge{
+    position:absolute;
+    top:14px;
+    right:14px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:4px 10px;
+    border-radius:999px;
+    background:#fef3c7;
+    color:#92400e;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.1px;
+}
+
+.card.is-soon-card .is-disabled-link{
+    pointer-events:none;
+    color:#9ca3af !important;
+    cursor:not-allowed;
+}
+
+
+
+/* =========================================================
+FINAL: BMA Straight Logo Header
+- เส้นตรงเรียบ ทางการ
+- ไม่มี curve
+- สไตล์ BMA / หน่วยงานราชการ
+========================================================= */
+
+.sidebar .logo-area{
+    background:#ffffff !important;
+    border-radius:0 !important;
+    margin:-22px -18px 26px !important;
+    padding:18px 14px 20px !important;
+    position:relative !important;
+    overflow:hidden !important;
+    clip-path:none !important;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.06),
+        inset 0 -1px 0 rgba(0,92,70,0.08) !important;
+
+    border-bottom:
+        4px solid #10b981 !important;
+}
+
+.sidebar .logo-area::after{
+    display:none !important;
+}
+
+@media(max-width:960px){
+
+    .sidebar .logo-area{
+        margin:0 !important;
+        padding:12px 12px 14px !important;
+        border-radius:0 !important;
+        border-bottom:
+            3px solid #10b981 !important;
+    }
+}
+
+
 </style>
 </head>
 
@@ -1620,34 +1782,20 @@ MOBILE UX REFINEMENT FINAL
         <!-- MENU -->
 
         <div class="menu-title">
-            หน้าหลัก
+            บริการหลัก
         </div>
 
         <div class="menu">
-
-            <a class="active" href="#">
-                <span class="menu-icon">⌂</span>
-                หน้าแรก
-            </a>
 
             <a href="https://chatuchakdatacenter-wq.github.io/training-register/">
                 <span class="menu-icon">📝</span>
                 สมัครเรียนออนไลน์
             </a>
 
-            <a href="#">
+            <a href="#" class="is-soon" aria-disabled="true">
                 <span class="menu-icon">📋</span>
-                รายงานตัวผู้เรียน
-            </a>
-
-            <a href="#">
-                <span class="menu-icon">📈</span>
-                ติดตามผลผู้สำเร็จ
-            </a>
-
-            <a href="#">
-                <span class="menu-icon">📅</span>
-                ตารางการอบรม
+                ประกาศรายชื่อผู้มีสิทธิ์
+                <span class="soon-badge">เร็ว ๆ นี้</span>
             </a>
 
         </div>
@@ -1658,24 +1806,14 @@ MOBILE UX REFINEMENT FINAL
 
         <div class="menu">
 
-            <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/">
-                <span class="menu-icon">🧠</span>
-                KM SMART HUB
-            </a>
-
             <a href="#public-relations">
                 <span class="menu-icon">📢</span>
                 ข่าวประชาสัมพันธ์
             </a>
 
-            <a href="#">
-                <span class="menu-icon">📄</span>
-                ดาวน์โหลดเอกสาร
-            </a>
-
-            <a href="#">
-                <span class="menu-icon">☎</span>
-                ติดต่อศูนย์
+            <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/">
+                <span class="menu-icon">🧠</span>
+                KM SMART HUB
             </a>
 
         </div>
@@ -1684,7 +1822,7 @@ MOBILE UX REFINEMENT FINAL
 
         <div class="hotline">
 
-            <div class="hotline-call">
+            <a class="hotline-call hotline-call-link" href="tel:025136654" aria-label="โทร 02-513-6654">
 
                 <div class="hotline-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24">
@@ -1696,13 +1834,34 @@ MOBILE UX REFINEMENT FINAL
                     <strong>02-513-6654</strong>
                 </div>
 
-            </div>
+            </a>
 
             <div class="hotline-time">
                 เปิดให้บริการทุกวัน<br>
                 ตั้งแต่เวลา 08.00 – 16.00 น.<br>
-                ยกเว้นวันหยุดนักขัตฤกษ์
+                (ยกเว้นวันหยุดราชการ)
             </div>
+
+            <div class="contact-extra">
+
+                <div class="contact-address">
+                    📍 ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
+                </div>
+
+                <div class="contact-actions">
+
+                    <a
+                        class="contact-btn"
+                        href="https://maps.google.com/?q=ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        🗺 เปิดแผนที่
+                    </a>
+</div>
+
+            </div>
+
 
         </div>
 
@@ -1817,47 +1976,34 @@ MOBILE UX REFINEMENT FINAL
 
             </div>
 
-            <div class="card">
+            
+            <div class="card is-soon-card">
+
+                <div class="card-soon-badge">
+                    เร็ว ๆ นี้
+                </div>
 
                 <div class="card-icon">
                     📋
                 </div>
 
                 <h3>
-                    รายงานตัวผู้เรียน
+                    ประกาศรายชื่อผู้มีสิทธิ์
                 </h3>
 
                 <p>
-                    ระบบตรวจสอบและรายงานตัวผู้เรียน
-                    สำหรับผู้สมัครหลักสูตรต่าง ๆ
+                    ตรวจสอบประกาศรายชื่อผู้มีสิทธิ์เข้ารายงานตัว
+                    สำหรับหลักสูตรที่เปิดรับสมัคร
                 </p>
 
-                <a href="#">
-                    เข้าสู่ระบบ →
+                <a href="#" class="is-disabled-link" aria-disabled="true">
+                    ยังไม่เปิดใช้งาน
                 </a>
 
             </div>
 
-            <div class="card">
 
-                <div class="card-icon">
-                    📈
-                </div>
-
-                <h3>
-                    ติดตามผลผู้สำเร็จ
-                </h3>
-
-                <p>
-                    ระบบติดตามผลหลังจบหลักสูตร
-                    และการนำทักษะไปประกอบอาชีพ
-                </p>
-
-                <a href="#">
-                    เข้าสู่ระบบ →
-                </a>
-
-            </div>
+            
 
         </section>
 
@@ -2018,33 +2164,7 @@ MOBILE UX REFINEMENT FINAL
 
             </div>
 
-            <div class="news-item">
-
-                <div class="news-left">
-
-                    <div class="news-icon">
-                        📅
-                    </div>
-
-                    <div>
-
-                        <h4>
-                            ประกาศตารางการอบรม ประจำเดือนมิถุนายน
-                        </h4>
-
-                        <p>
-                            ตรวจสอบตารางการอบรม และสถานที่จัดอบรมได้ที่เมนู “ตารางการอบรม”
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <div class="news-date">
-                    15 พ.ค. 2567
-                </div>
-
-            </div>
+       
 
         </section>
 
