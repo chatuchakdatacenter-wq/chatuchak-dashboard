@@ -1777,7 +1777,8 @@ MOBILE UX REFINEMENT FINAL
 
             <div class="section-title">
                 <span class="section-line"></span>
-                ข่าวประชาสัมพันธ์</div>
+                ข่าวประชาสัมพันธ์
+            </div>
 
             
             <div id="prNewsContainer">
@@ -1964,11 +1965,11 @@ MOBILE UX REFINEMENT FINAL
 
 <script>
 /* =========================
-PR NEWS AUTO LOAD
+PR NEWS AUTO LOAD - JSONP MODE
 Google Sheet: PR_News
 ========================= */
 
-const PR_NEWS_API = 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=prNews';
+const PR_NEWS_BASE_URL = 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec';
 
 function escapeHTML(value) {
     return String(value ?? '')
@@ -1979,116 +1980,131 @@ function escapeHTML(value) {
         .replaceAll("'", '&#039;');
 }
 
-async function loadPRNews() {
+function renderPRNews(data) {
 
     const container =
         document.getElementById('prNewsContainer');
 
     if (!container) return;
 
-    try {
-
-        const response =
-            await fetch(PR_NEWS_API, { cache: 'no-store' });
-
-        if (!response.ok) {
-            throw new Error('PR News API response error');
-        }
-
-        const data =
-            await response.json();
-
-        if (!Array.isArray(data) || data.length === 0) {
-
-            container.innerHTML = `
-                <div class="news-item">
-                    <div class="news-left">
-                        <div class="news-icon">📭</div>
-                        <div>
-                            <h4>ยังไม่มีข่าวประชาสัมพันธ์</h4>
-                            <p>กรุณาเพิ่มข้อมูลในชีต PR_News และตั้งค่า status เป็น show</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            return;
-        }
-
-        container.innerHTML =
-            data.map(item => {
-
-                const title =
-                    escapeHTML(item.title || '-');
-
-                const detail =
-                    escapeHTML(item.detail || '-');
-
-                const date =
-                    escapeHTML(item.date || '');
-
-                const imageUrl =
-                    String(item.imageUrl || '').trim();
-
-                const type =
-                    String(item.type || 'news').toLowerCase();
-
-                const icon =
-                    type === 'activity' ? '📷' : '📢';
-
-                const imageBlock =
-                    imageUrl
-                    ? `
-                        <img
-                            src="${escapeHTML(imageUrl)}"
-                            class="news-thumb"
-                            alt="${title}"
-                            loading="lazy"
-                        >
-                    `
-                    : `
-                        <div class="news-icon">${icon}</div>
-                    `;
-
-                return `
-                    <div class="news-item">
-                        <div class="news-left">
-
-                            ${imageBlock}
-
-                            <div>
-                                <h4>${title}</h4>
-                                <p>${detail}</p>
-                            </div>
-
-                        </div>
-
-                        <div class="news-date">
-                            ${date}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-    } catch (error) {
-
-        console.error('PR News load error:', error);
+    if (!Array.isArray(data) || data.length === 0) {
 
         container.innerHTML = `
             <div class="news-item">
                 <div class="news-left">
-                    <div class="news-icon">⚠</div>
+                    <div class="news-icon">📭</div>
                     <div>
-                        <h4>ไม่สามารถโหลดข่าวประชาสัมพันธ์ได้</h4>
-                        <p>กรุณาตรวจสอบ Apps Script API หรือการเชื่อมต่ออินเทอร์เน็ต</p>
+                        <h4>ยังไม่มีข่าวประชาสัมพันธ์</h4>
+                        <p>กรุณาเพิ่มข้อมูลในชีต PR_News และตั้งค่า status เป็น show</p>
                     </div>
                 </div>
             </div>
         `;
+
+        return;
     }
+
+    container.innerHTML =
+        data.map(item => {
+
+            const title =
+                escapeHTML(item.title || '-');
+
+            const detail =
+                escapeHTML(item.detail || '-');
+
+            const date =
+                escapeHTML(item.date || '');
+
+            const imageUrl =
+                String(item.imageUrl || '').trim();
+
+            const type =
+                String(item.type || 'news').toLowerCase();
+
+            const icon =
+                type === 'activity' ? '📷' : '📢';
+
+            const imageBlock =
+                imageUrl
+                ? `
+                    <img
+                        src="${escapeHTML(imageUrl)}"
+                        class="news-thumb"
+                        alt="${title}"
+                        loading="lazy"
+                    >
+                `
+                : `
+                    <div class="news-icon">${icon}</div>
+                `;
+
+            return `
+                <div class="news-item">
+                    <div class="news-left">
+
+                        ${imageBlock}
+
+                        <div>
+                            <h4>${title}</h4>
+                            <p>${detail}</p>
+                        </div>
+
+                    </div>
+
+                    <div class="news-date">
+                        ${date}
+                    </div>
+                </div>
+            `;
+        }).join('');
 }
 
-loadPRNews();
+function handlePRNewsError() {
+
+    const container =
+        document.getElementById('prNewsContainer');
+
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="news-item">
+            <div class="news-left">
+                <div class="news-icon">⚠</div>
+                <div>
+                    <h4>ไม่สามารถโหลดข่าวประชาสัมพันธ์ได้</h4>
+                    <p>กรุณาตรวจสอบ Apps Script API หรือการเชื่อมต่ออินเทอร์เน็ต</p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function loadPRNewsJSONP() {
+
+    const oldScript =
+        document.getElementById('prNewsJsonpScript');
+
+    if (oldScript) {
+        oldScript.remove();
+    }
+
+    const script =
+        document.createElement('script');
+
+    script.id =
+        'prNewsJsonpScript';
+
+    script.src =
+        PR_NEWS_BASE_URL + '?action=prNews&callback=renderPRNews&v=' + Date.now();
+
+    script.onerror =
+        handlePRNewsError;
+
+    document.body.appendChild(script);
+}
+
+loadPRNewsJSONP();
 </script>
 
 </body>
