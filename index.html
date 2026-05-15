@@ -1850,70 +1850,6 @@ FINAL: Hotline SVG + Document Cards
 }
 
 
-/* =========================================================
-FINAL: Document Cards Background Overlay
-========================================================= */
-
-.docs-card{
-    position:relative;
-    overflow:hidden;
-    isolation:isolate;
-}
-
-.docs-card::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    z-index:-2;
-    background-size:cover;
-    background-position:center;
-    opacity:.18;
-    filter:saturate(1.05) contrast(1.03);
-}
-
-.docs-card::after{
-    content:'';
-    position:absolute;
-    inset:0;
-    z-index:-1;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.94) 0%,
-            rgba(255,255,255,.88) 50%,
-            rgba(232,245,240,.92) 100%
-        );
-}
-
-.docs-general-card::before{
-    background-image:url('https://raw.githubusercontent.com/chatuchakdatacenter-wq/chatuchak-dtcp/main/assets/images/cards/general-bg.jpg');
-}
-
-.docs-massage-card::before{
-    background-image:url('https://raw.githubusercontent.com/chatuchakdatacenter-wq/chatuchak-dtcp/main/assets/images/cards/massage-bg.jpg');
-    background-position:center top;
-}
-
-.docs-card .card-icon,
-.docs-card h3,
-.docs-card .docs-badge,
-.docs-card .docs-list,
-.docs-card .docs-note{
-    position:relative;
-    z-index:2;
-}
-
-.docs-card .card-icon{
-    background:rgba(232,245,240,.88);
-    backdrop-filter:blur(8px);
-}
-
-@media(max-width:960px){
-    .docs-card::before{
-        opacity:.16;
-    }
-}
-
 
 /* =========================================================
 FINAL: Document Cards Layout Tuning
@@ -2064,6 +2000,25 @@ FINAL: Badge Alignment + Hotline Fix
     }
 }
 
+
+/* =========================================================
+FINAL: Clean Document Cards
+========================================================= */
+
+.docs-card{
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f8fafc 100%
+        ) !important;
+}
+
+.docs-card::before,
+.docs-card::after{
+    display:none !important;
+}
+
 </style>
 </head>
 
@@ -2160,11 +2115,11 @@ FINAL: Badge Alignment + Hotline Fix
             <path d="M12 7v5l3 2"></path>
         </svg>
 
-        <span>เปิดให้บริการ</span>
+        <span>เวลาทำการ</span>
 
     </div>
 
-    เปิดให้บริการทุกวัน<br>
+    เปิดทุกวัน<br>
     08.00 – 16.00 น.<br>
     (ยกเว้นวันหยุดราชการ)
 
