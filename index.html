@@ -1750,6 +1750,275 @@ FINAL: BMA Straight Logo Header
 }
 
 
+
+/* =========================================================
+FINAL: Hotline SVG + Document Cards
+========================================================= */
+
+.hotline-time-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+    font-weight:800;
+    color:#ffffff;
+}
+
+.hotline-clock-icon{
+    width:20px;
+    height:20px;
+    stroke:#ffffff;
+    stroke-width:2.2;
+    fill:none;
+    flex-shrink:0;
+    opacity:.96;
+}
+
+.docs-cards{
+    margin-top:8px;
+}
+
+.docs-card{
+    position:relative;
+    overflow:hidden;
+}
+
+.docs-badge{
+    position:absolute;
+    top:16px;
+    right:16px;
+    padding:5px 10px;
+    border-radius:999px;
+    background:#e8f5f0;
+    color:#047857;
+    font-size:12px;
+    font-weight:900;
+}
+
+.docs-list{
+    margin-top:12px;
+    padding-left:0;
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.docs-list li{
+    position:relative;
+    padding-left:26px;
+    color:#374151;
+    line-height:1.7;
+}
+
+.docs-list li::before{
+    content:'✓';
+    position:absolute;
+    left:0;
+    top:0;
+    color:#10b981;
+    font-weight:900;
+}
+
+.docs-note{
+    margin-top:16px;
+    padding:12px 14px;
+    border-radius:16px;
+    background:#f0fdf4;
+    border:1px solid #d1fae5;
+    color:#065f46;
+    font-size:14px;
+    line-height:1.7;
+    font-weight:700;
+}
+
+@media(max-width:960px){
+
+    .docs-list li{
+        font-size:14px;
+        line-height:1.7;
+    }
+
+    .docs-badge{
+        font-size:10px;
+        padding:4px 8px;
+    }
+
+    .docs-note{
+        font-size:13px;
+    }
+}
+
+
+
+/* =========================================================
+FINAL: Document Cards Layout Tuning
+========================================================= */
+
+.docs-card{
+    padding-top:34px !important;
+}
+
+.docs-badge{
+    top:12px !important;
+    right:14px !important;
+    padding:4px 10px !important;
+    font-size:11px !important;
+    line-height:1.1 !important;
+    letter-spacing:.15px !important;
+    box-shadow:0 4px 12px rgba(16,185,129,.12);
+}
+
+.docs-card .card-icon{
+    margin-top:12px !important;
+    width:64px !important;
+    height:64px !important;
+    border-radius:18px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    font-size:28px !important;
+}
+
+.docs-card h3{
+    margin-top:18px !important;
+}
+
+.docs-card .docs-list{
+    margin-top:16px !important;
+}
+
+@media(max-width:960px){
+
+    .docs-card{
+        padding-top:28px !important;
+    }
+
+    .docs-badge{
+        top:10px !important;
+        right:10px !important;
+        font-size:10px !important;
+        padding:4px 8px !important;
+    }
+
+    .docs-card .card-icon{
+        margin-top:10px !important;
+        width:58px !important;
+        height:58px !important;
+        font-size:24px !important;
+    }
+
+    .docs-card h3{
+        margin-top:16px !important;
+    }
+}
+
+
+/* =========================================================
+FINAL: Document Cards Polish
+========================================================= */
+
+.docs-card{
+    padding-top:30px !important;
+}
+
+.docs-card .card-icon{
+    width:56px !important;
+    height:56px !important;
+    border-radius:16px !important;
+    font-size:24px !important;
+    margin-top:8px !important;
+    margin-bottom:12px !important;
+}
+
+.docs-card h3{
+    margin-top:10px !important;
+    margin-bottom:8px !important;
+}
+
+.docs-card .docs-list{
+    margin-top:12px !important;
+}
+
+.docs-badge{
+    max-width:150px !important;
+    white-space:nowrap !important;
+}
+
+@media(max-width:960px){
+
+    .docs-card{
+        padding-top:26px !important;
+    }
+
+    .docs-card .card-icon{
+        width:52px !important;
+        height:52px !important;
+        font-size:22px !important;
+        margin-top:8px !important;
+        margin-bottom:10px !important;
+    }
+
+    .docs-card h3{
+        margin-top:8px !important;
+    }
+
+    .docs-card .docs-list{
+        margin-top:10px !important;
+    }
+}
+
+
+/* =========================================================
+FINAL: Badge Alignment + Hotline Fix
+========================================================= */
+
+.docs-badge{
+    left:auto !important;
+    right:16px !important;
+    top:12px !important;
+
+    background:rgba(232,245,240,.96) !important;
+    color:#047857 !important;
+
+    padding:4px 10px !important;
+    border-radius:999px !important;
+
+    font-size:11px !important;
+    font-weight:900 !important;
+
+    box-shadow:
+        0 4px 12px rgba(16,185,129,.12) !important;
+}
+
+@media(max-width:960px){
+
+    .docs-badge{
+        right:12px !important;
+        top:10px !important;
+        font-size:10px !important;
+    }
+}
+
+
+/* =========================================================
+FINAL: Clean Document Cards
+========================================================= */
+
+.docs-card{
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f8fafc 100%
+        ) !important;
+}
+
+.docs-card::before,
+.docs-card::after{
+    display:none !important;
+}
+
 </style>
 </head>
 
@@ -1836,11 +2105,26 @@ FINAL: BMA Straight Logo Header
 
             </a>
 
-            <div class="hotline-time">
-                เปิดให้บริการทุกวัน<br>
-                ตั้งแต่เวลา 08.00 – 16.00 น.<br>
-                (ยกเว้นวันหยุดราชการ)
-            </div>
+            
+<div class="hotline-time">
+
+    <div class="hotline-time-head">
+
+        <svg class="hotline-clock-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+        </svg>
+
+        <span>เวลาทำการ</span>
+
+    </div>
+
+    เปิดทุกวัน<br>
+    08.00 – 16.00 น.<br>
+    (ยกเว้นวันหยุดราชการ)
+
+</div>
+
 
             <div class="contact-extra">
 
@@ -1858,6 +2142,16 @@ FINAL: BMA Straight Logo Header
                     >
                         🗺 เปิดแผนที่
                     </a>
+
+                    <a
+                        class="contact-btn"
+                        href="https://www.facebook.com/share/1b2TreDec4/?mibextid=wwXIfr"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        📘 Facebook Page
+                    </a>
+
 </div>
 
             </div>
@@ -2006,6 +2300,68 @@ FINAL: BMA Straight Logo Header
             
 
         </section>
+
+        
+        <!-- DOCUMENTS -->
+
+        <div class="section-title">
+            <span class="section-line"></span>
+            เอกสารประกอบการสมัคร
+        </div>
+
+        <section class="cards docs-cards">
+
+            <div class="card docs-card docs-general-card">
+
+                <div class="docs-badge">
+                    ก่อนสมัคร
+                </div>
+
+                <div class="card-icon">
+                    📄
+                </div>
+
+                <h3>
+                    วิชาทั่วไป
+                </h3>
+
+                <ul class="docs-list">
+                    <li>รูปถ่ายหน้าตรง ไม่สวมหมวก/แว่นดำ ขนาด 1–2 นิ้ว จำนวน 2 รูป</li>
+                    <li>สำเนาบัตรประชาชน จำนวน 1 ชุด</li>
+                </ul>
+
+            </div>
+
+            <div class="card docs-card docs-massage-card">
+
+                <div class="docs-badge">
+                    เฉพาะทาง
+                </div>
+
+                <div class="card-icon">
+                    💆
+                </div>
+
+                <h3>
+                    วิชานวด
+                </h3>
+
+                <ul class="docs-list">
+                    <li>รูปถ่ายหน้าตรง ไม่สวมหมวก/แว่นดำ ขนาด 1–2 นิ้ว จำนวน 2 รูป</li>
+                    <li>สำเนาบัตรประชาชน จำนวน 1 ชุด</li>
+                    <li>สำเนาทะเบียนบ้าน จำนวน 1 ชุด</li>
+                    <li>สำเนาวุฒิการศึกษา ภาคบังคับขึ้นไป จำนวน 1 ชุด</li>
+                </ul>
+
+                <div class="docs-note">
+                    🩺 ใบรับรองแพทย์ สามารถนำมาส่งวันเปิดเรียนวันแรกได้
+                </div>
+
+            </div>
+
+        </section>
+
+
 
         <!-- NEWS -->
 
