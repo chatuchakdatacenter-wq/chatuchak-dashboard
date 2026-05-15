@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Digital Training Center Portal</title>
-<!-- DTCP Portal: FINAL_COMPLETE v18 | gallery layout restored | duplicate activity button removed | article width fixed | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
+<!-- DTCP Portal: FINAL_COMPLETE v18 | hero buttons removed | hero title single-line resized | gallery layout restored | duplicate activity button removed | article width fixed | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
 
 <style>
 
@@ -443,6 +443,17 @@ HERO
 
     letter-spacing:-1.4px;
 }
+
+.hero-title{
+    font-size:clamp(38px,4vw,58px);
+    line-height:1.05;
+    white-space:nowrap;
+    color:#065f46;
+    margin-bottom:18px;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
 
 .hero-left h3{
     font-size:clamp(24px, 2.2vw, 32px);
@@ -1076,6 +1087,13 @@ RESPONSIVE
         font-size:40px;
     }
 
+    .hero-title{
+        font-size:clamp(32px,3.4vw,48px);
+        letter-spacing:-0.6px;
+        white-space:nowrap;
+    }
+
+
     .hero-left h3{
         font-size:22px;
     }
@@ -1090,6 +1108,16 @@ RESPONSIVE
         font-size:22px;
     }
 }
+
+
+/* FINAL FORCE: Hero title Windows/Desktop */
+.hero-left .hero-title{
+    font-size:22px !important;
+    line-height:1.08 !important;
+    white-space:nowrap !important;
+    max-width:none !important;
+}
+
 
 </style>
 </head>
@@ -1202,7 +1230,7 @@ RESPONSIVE
             </div>
 
             <div class="hotline-time">
-                อาทิตย์ - เสาร์ 08:00 - 16:00 น.
+                จันทร์ - อาทิตย์ 08:00 - 16:00 น. ยกเว้นวันหยุดนักขัตฤกษ์
             </div>
 
         </div>
@@ -1249,9 +1277,8 @@ RESPONSIVE
 
             <div class="hero-left">
 
-                <h1>
-                    Digital Training<br>
-                    Center Portal
+                <h1 class="hero-title">
+                    Digital Training Center Portal
                 </h1>
 
                 <h3>
@@ -1262,24 +1289,6 @@ RESPONSIVE
                     สำหรับระบบการเรียน การสมัครอบรม การติดตามผู้เรียน
                     และศูนย์รวมองค์ความรู้ของศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
                 </p>
-
-                <div class="hero-buttons">
-
-                    <a
-                        href="https://chatuchakdatacenter-wq.github.io/training-register/"
-                        class="btn btn-primary"
-                    >
-                        📝 สมัครเรียนออนไลน์
-                    </a>
-
-                    <a
-                        href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/"
-                        class="btn btn-outline"
-                    >
-                        🧠 KM SMART HUB
-                    </a>
-
-                </div>
 
             </div>
 
