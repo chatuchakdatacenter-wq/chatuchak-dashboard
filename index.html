@@ -99,11 +99,13 @@ LOGO AREA
 .logo-area{
     background:#ffffff;
 
-    border-radius:0 0 38px 38px;
-
     margin:-22px -18px 28px;
 
-    padding:18px 14px 22px;
+    padding:18px 14px 34px;
+
+    position:relative;
+
+    overflow:hidden;
 
     box-shadow:
         0 8px 24px rgba(0,0,0,0.06);
@@ -117,14 +119,14 @@ LOGO AREA
 }
 
 .logo-top img:nth-child(1){
-    width:90px;
-    height:90px;
+    width:78px;
+    height:78px;
     object-fit:contain;
 }
 
 .logo-top img:nth-child(2){
-    width:100px;
-    height:100px;
+    width:88px;
+    height:88px;
     object-fit:contain;
 }
 
@@ -1472,6 +1474,30 @@ MOBILE UX REFINEMENT FINAL
 }
 
 
+
+/* FINAL: Desktop logo white area shape
+   ซ้ายสูง / กลางปกติ / ขวาต่ำ */
+@media(min-width:961px){
+    .sidebar .logo-area{
+        border-radius:0 !important;
+
+        /*
+          bottom shape points:
+          ซ้ายสูง = 78%
+          กลางปกติ = 90%
+          ขวาต่ำ = 100%
+        */
+        clip-path:polygon(
+            0 0,
+            100% 0,
+            100% 100%,
+            50% 90%,
+            0 78%
+        ) !important;
+    }
+}
+
+
 </style>
 </head>
 
@@ -1642,7 +1668,7 @@ MOBILE UX REFINEMENT FINAL
                 </h3>
 
                 <p>
-                    สำหรับระบบการเรียน การสมัครอบรม การติดตามผู้เรียน <br>
+                    สำหรับระบบการเรียน การสมัครอบรม การติดตามผู้เรียน
                     และศูนย์รวมองค์ความรู้ของศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
                 </p>
 
@@ -1751,9 +1777,9 @@ MOBILE UX REFINEMENT FINAL
 
             <div class="section-title">
                 <span class="section-line"></span>
-                ข่าวประชาสัมพันธ์
-            </div>
+                ข่าวประชาสัมพันธ์</div>
 
+            
             <div id="prNewsContainer">
 
                 <div class="news-item">
@@ -1778,6 +1804,153 @@ MOBILE UX REFINEMENT FINAL
 
                     </div>
 
+                </div>
+
+            </div>
+
+            <div class="news-item news-activity">
+
+                <div class="news-left">
+
+                    <div class="activity-highlight">
+
+                        <div class="activity-head">
+
+                            <div class="activity-badge">
+                                📷 กิจกรรมประชาชน
+                            </div>
+
+                            <h4>
+                                ภาพกิจกรรมออกหน่วยและให้บริการประชาชน
+                            </h4>
+
+                        </div>
+
+                        <div class="activity-gallery">
+
+                            <a
+                                href="assets/images/activities/activity01.jpg"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <img
+                                    src="assets/images/activities/activity01.jpg"
+                                    class="news-thumb"
+                                    alt="กิจกรรมออกหน่วย 1"
+                                    loading="lazy"
+                                >
+                            </a>
+
+                            <a
+                                href="assets/images/activities/activity02.jpg"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <img
+                                    src="assets/images/activities/activity02.jpg"
+                                    class="news-thumb"
+                                    alt="กิจกรรมออกหน่วย 2"
+                                    loading="lazy"
+                                >
+                            </a>
+
+                            <a
+                                href="assets/images/activities/activity03.jpg"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <img
+                                    src="assets/images/activities/activity03.jpg"
+                                    class="news-thumb"
+                                    alt="กิจกรรมออกหน่วย 3"
+                                    loading="lazy"
+                                >
+                            </a>
+
+                            <a
+                                href="assets/images/activities/activity04.jpg"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <img
+                                    src="assets/images/activities/activity04.jpg"
+                                    class="news-thumb"
+                                    alt="กิจกรรมออกหน่วย 4"
+                                    loading="lazy"
+                                >
+                            </a>
+
+                            <a
+                                href="assets/images/activities/activity05.jpg"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <img
+                                    src="assets/images/activities/activity05.jpg"
+                                    class="news-thumb"
+                                    alt="กิจกรรมออกหน่วย 5"
+                                    loading="lazy"
+                                >
+                            </a>
+
+                            <a
+                                href="assets/images/activities/activity06.jpg"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <img
+                                    src="assets/images/activities/activity06.jpg"
+                                    class="news-thumb"
+                                    alt="กิจกรรมออกหน่วย 6"
+                                    loading="lazy"
+                                >
+                            </a>
+
+                        </div>
+
+                        <div class="activity-content">
+
+                            <p>
+                                ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร ลงพื้นที่ออกหน่วยให้บริการประชาชน ณ Box Space และ ห้างโลตัส ลาดพร้าว ประจำวันที่ 14 พ.ค. 2569
+                                เพื่อส่งเสริมทักษะอาชีพ และประชาสัมพันธ์หลักสูตรฝึกอบรม 
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="news-date">
+                    18 พ.ค. 2567
+                </div>
+
+            </div>
+
+            <div class="news-item">
+
+                <div class="news-left">
+
+                    <div class="news-icon">
+                        📅
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            ประกาศตารางการอบรม ประจำเดือนมิถุนายน
+                        </h4>
+
+                        <p>
+                            ตรวจสอบตารางการอบรม และสถานที่จัดอบรมได้ที่เมนู “ตารางการอบรม”
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="news-date">
+                    15 พ.ค. 2567
                 </div>
 
             </div>
