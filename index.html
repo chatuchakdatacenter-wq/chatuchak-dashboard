@@ -1529,6 +1529,65 @@ MOBILE UX REFINEMENT FINAL
     }
 }
 
+
+/* FINAL FIX: PR News category + read more
+   ใช้เฉพาะข่าวประชาสัมพันธ์ที่ดึงจาก Google Sheet */
+#prNewsContainer .pr-category{
+    width:max-content;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:8px;
+    padding:5px 10px;
+    border-radius:999px;
+    background:#e8f5f0;
+    color:#047857;
+    font-size:13px;
+    font-weight:800;
+}
+
+#prNewsContainer .pr-detail{
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    transition:all .22s ease;
+}
+
+#prNewsContainer .pr-detail.is-expanded{
+    display:block;
+    -webkit-line-clamp:unset;
+    overflow:visible;
+}
+
+#prNewsContainer .pr-readmore{
+    display:inline-flex;
+    align-items:center;
+    margin-top:8px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:#047857;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+#prNewsContainer .pr-readmore:hover{
+    text-decoration:underline;
+}
+
+@media(max-width:960px){
+    #prNewsContainer .pr-detail{
+        -webkit-line-clamp:2;
+    }
+
+    #prNewsContainer .pr-readmore{
+        font-size:14px;
+    }
+}
+
 </style>
 </head>
 
@@ -2044,6 +2103,9 @@ function renderPRNews(data) {
             const detail =
                 escapeHTML(item.detail || '-');
 
+            const category =
+                escapeHTML(item.category || '');
+
             const date =
                 escapeHTML(item.date || '');
 
@@ -2077,8 +2139,12 @@ function renderPRNews(data) {
                         ${imageBlock}
 
                         <div>
+                            ${category ? `<div class="pr-category">${category}</div>` : ''}
                             <h4>${title}</h4>
-                            <p>${detail}</p>
+                            <p class="pr-detail">${detail}</p>
+                            <button class="pr-readmore" type="button" onclick="togglePRDetail(this)">
+                                อ่านต่อ...
+                            </button>
                         </div>
 
                     </div>
@@ -2089,6 +2155,8 @@ function renderPRNews(data) {
                 </div>
             `;
         }).join('');
+
+    updatePRReadMoreButtons();
 }
 
 function handlePRNewsError() {
@@ -2109,6 +2177,40 @@ function handlePRNewsError() {
             </div>
         </div>
     `;
+}
+
+
+
+function updatePRReadMoreButtons() {
+
+    document
+        .querySelectorAll('#prNewsContainer .pr-readmore')
+        .forEach(button => {
+
+            const detail =
+                button.previousElementSibling;
+
+            if (!detail) return;
+
+            if (detail.scrollHeight <= detail.clientHeight + 2) {
+                button.style.display = 'none';
+            }
+        });
+}
+
+
+function togglePRDetail(button) {
+
+    const detail =
+        button?.previousElementSibling;
+
+    if (!detail) return;
+
+    const expanded =
+        detail.classList.toggle('is-expanded');
+
+    button.textContent =
+        expanded ? 'ย่อข้อความ' : 'อ่านต่อ...';
 }
 
 function loadPRNewsJSONP() {
