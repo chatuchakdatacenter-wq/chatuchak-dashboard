@@ -303,7 +303,7 @@ HOTLINE
     color:rgba(255,255,255,0.90);
     font-size:14px;
     font-weight:600;
-    line-height:1.8;
+    line-height:1.55;
 }
 
 @keyframes hotlinePulse{
@@ -424,13 +424,11 @@ HERO
 
     width:min(58%, 720px);
 
-    padding:10px 30px 40px 10px;
+    padding:clamp(44px, 5vw, 70px);
 
     display:flex;
     flex-direction:column;
-    justify-content:flex-start;
-
-    margin-top:-40px;
+    justify-content:center;
 }
 
 .hero-left h1{
@@ -1114,19 +1112,358 @@ RESPONSIVE
 
 /* FINAL FORCE: Hero title Windows/Desktop */
 .hero-left .hero-title{
-    font-size:42px !important;
-
-    line-height:1.05 !important;
-
+    font-size:22px !important;
+    line-height:1.08 !important;
     white-space:nowrap !important;
+    max-width:none !important;
+}
 
-    font-weight:900 !important;
 
-    letter-spacing:-1.2px !important;
 
-    width:100% !important;
+/* =========================================================
+MOBILE UX REFINEMENT FINAL
+- Clean mobile-first layout
+- Reduce duplicate/overlong elements on small screens
+- Keep desktop layout unchanged
+========================================================= */
 
-    max-width:100% !important;
+@media(max-width:960px){
+
+    body{
+        background:#eef3f1;
+    }
+
+    .wrapper{
+        display:block;
+        min-height:auto;
+    }
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+        min-height:0;
+        padding:14px 14px 16px;
+        border-radius:0 0 26px 26px;
+        overflow:visible;
+        box-shadow:0 10px 26px rgba(0,0,0,0.10);
+    }
+
+    .logo-area{
+        margin:0;
+        padding:12px 12px 14px;
+        border-radius:22px;
+    }
+
+    .logo-top{
+        gap:16px;
+    }
+
+    .logo-top img:nth-child(1){
+        width:56px;
+        height:56px;
+    }
+
+    .logo-top img:nth-child(2){
+        width:64px;
+        height:64px;
+    }
+
+    .menu-title{
+        display:none;
+    }
+
+    .menu{
+        margin-top:14px;
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .menu a{
+        min-height:48px;
+        padding:12px 12px;
+        border-radius:16px;
+        font-size:15px;
+        gap:8px;
+        justify-content:center;
+        text-align:center;
+        background:rgba(255,255,255,0.10);
+    }
+
+    .menu-icon{
+        width:auto;
+        font-size:16px;
+    }
+
+    .hotline{
+        margin-top:14px;
+        padding:16px 16px;
+        border-radius:20px;
+    }
+
+    .hotline-call{
+        justify-content:center;
+    }
+
+    .hotline-icon{
+        width:46px;
+        height:46px;
+        border-radius:16px;
+    }
+
+    .hotline-icon svg{
+        width:24px;
+        height:24px;
+    }
+
+    .hotline-number strong{
+        font-size:17px;
+    }
+
+    .hotline-time{
+        text-align:center;
+        font-size:13px;
+        line-height:1.75;
+        margin-top:12px;
+        padding-top:12px;
+    }
+
+    .main{
+        margin-left:0;
+        max-width:100%;
+        padding:14px;
+    }
+
+    .top-alert{
+        display:none;
+    }
+
+    .hero{
+        min-height:auto;
+        border-radius:26px;
+        align-items:flex-start;
+        margin-bottom:18px;
+    }
+
+    .hero-left{
+        width:100%;
+        padding:28px 18px 160px 18px;
+        justify-content:flex-start;
+        margin-top:0;
+    }
+
+    .hero-left .hero-title{
+        font-size:clamp(24px,7vw,34px) !important;
+        line-height:1.08 !important;
+        letter-spacing:-0.6px !important;
+        white-space:nowrap !important;
+        font-weight:900 !important;
+        max-width:100% !important;
+    }
+
+    .hero-left h3{
+        font-size:17px;
+        line-height:1.45;
+        margin-bottom:8px;
+    }
+
+    .hero-left p{
+        display:none;
+    }
+
+    .hero-image img{
+        width:100%;
+        height:100%;
+        min-width:0;
+        margin-right:0;
+        object-fit:cover;
+        object-position:center bottom;
+    }
+
+    .hero-image::after{
+        background:
+            linear-gradient(
+                180deg,
+                rgba(255,255,255,0.99) 0%,
+                rgba(255,255,255,0.94) 36%,
+                rgba(255,255,255,0.54) 62%,
+                rgba(255,255,255,0.05) 100%
+            );
+    }
+
+    .section-title{
+        font-size:16px;
+        margin:16px 0 12px;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:12px;
+    }
+
+    .card{
+        padding:16px 14px;
+        border-radius:20px;
+        min-height:152px;
+    }
+
+    .card-icon{
+        width:48px;
+        height:48px;
+        border-radius:16px;
+        margin-bottom:10px;
+    }
+
+    .card h3{
+        font-size:16px;
+        margin-bottom:6px;
+        line-height:1.35;
+    }
+
+    .card p{
+        display:none;
+    }
+
+    .card a{
+        display:inline-flex;
+        margin-top:6px;
+        font-size:14px;
+    }
+
+    .news{
+        margin-top:18px;
+        border-radius:22px;
+        padding:16px;
+    }
+
+    .news-item{
+        display:block;
+        padding:16px 0;
+    }
+
+    .news-left{
+        display:block;
+    }
+
+    .news-icon{
+        width:42px;
+        height:42px;
+        border-radius:14px;
+        margin-bottom:10px;
+    }
+
+    .news-item h4{
+        font-size:18px;
+        line-height:1.45;
+        margin-bottom:6px;
+    }
+
+    .news-item p{
+        font-size:14px;
+        line-height:1.65;
+    }
+
+    .news-date{
+        margin-top:8px;
+        font-size:13px;
+        white-space:normal;
+    }
+
+    .activity-highlight{
+        display:block;
+        padding:14px;
+        border-radius:20px;
+    }
+
+    .activity-badge{
+        font-size:13px;
+        padding:6px 10px;
+    }
+
+    .activity-head h4{
+        font-size:18px;
+        margin-top:8px;
+    }
+
+    .activity-gallery{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+        margin-top:12px;
+    }
+
+    .activity-gallery .news-thumb{
+        height:112px;
+        border-radius:16px;
+    }
+
+    .activity-content{
+        margin-top:12px;
+    }
+
+    .activity-content p{
+        font-size:14px;
+        line-height:1.7;
+    }
+}
+
+@media(max-width:520px){
+
+    .main{
+        padding:12px;
+    }
+
+    .sidebar{
+        padding:12px;
+        border-radius:0 0 22px 22px;
+    }
+
+    .menu{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .menu a{
+        min-height:44px;
+        padding:10px 8px;
+        border-radius:14px;
+        font-size:14px;
+    }
+
+    .hero{
+        border-radius:22px;
+    }
+
+    .hero-left{
+        padding:24px 16px 145px 16px;
+    }
+
+    .hero-left .hero-title{
+        font-size:clamp(20px,6.2vw,28px) !important;
+        letter-spacing:-0.4px !important;
+    }
+
+    .hero-left h3{
+        font-size:15px;
+    }
+
+    .cards{
+        gap:10px;
+    }
+
+    .card{
+        padding:14px 12px;
+        min-height:136px;
+    }
+
+    .card h3{
+        font-size:15px;
+    }
+
+    .activity-gallery .news-thumb{
+        height:104px;
+    }
 }
 
 
@@ -1240,11 +1577,11 @@ RESPONSIVE
 
             </div>
 
-                <div class="hotline-time">
-                    เปิดให้บริการทุกวัน<br>
-                    ตั้งแต่เวลา 08.00 – 16.00 น.<br>
-                    ยกเว้นวันหยุดนักขัตฤกษ์
-                </div>
+            <div class="hotline-time">
+                เปิดให้บริการทุกวัน<br>
+                ตั้งแต่เวลา 08.00 – 16.00 น.<br>
+                ยกเว้นวันหยุดนักขัตฤกษ์
+            </div>
 
         </div>
 
@@ -1295,8 +1632,7 @@ RESPONSIVE
                 </h1>
 
                 <h3>
-                    ศูนย์ฝึกอาชีพกรุงเทพมหานคร <br>
-                    เขตจตุจักร
+                    ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร
                 </h3>
 
                 <p>
