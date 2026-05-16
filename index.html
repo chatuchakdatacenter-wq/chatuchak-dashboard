@@ -2600,6 +2600,1054 @@ line-height:1.4;
 }
 </style>
 
+<style>
+
+/* =========================================================
+FINAL PATCH: AI Donut Ranking Design
+- Replace only Course Ranking visual
+- Donut chart + ranked details 1-5
+========================================================= */
+.ai-ranking-card{
+    position:relative !important;
+    max-width:1120px !important;
+    margin:36px auto 0 !important;
+    padding:28px !important;
+    border-radius:34px !important;
+    overflow:hidden !important;
+    background:
+        radial-gradient(circle at 6% 12%, rgba(16,185,129,.18), transparent 24%),
+        radial-gradient(circle at 92% 8%, rgba(59,130,246,.13), transparent 24%),
+        linear-gradient(135deg, rgba(255,255,255,.95), rgba(248,250,252,.88)) !important;
+    border:1px solid rgba(20,184,166,.26) !important;
+    box-shadow:
+        0 22px 55px rgba(2,44,34,.10),
+        inset 0 1px 0 rgba(255,255,255,.85) !important;
+}
+
+.ai-ranking-card::before{
+    content:'';
+    position:absolute;
+    inset:14px;
+    border-radius:28px;
+    pointer-events:none;
+    border:1px solid rgba(20,184,166,.12);
+}
+
+.ai-ranking-card::after{
+    content:'';
+    position:absolute;
+    right:28px;
+    top:18px;
+    width:220px;
+    height:120px;
+    opacity:.18;
+    pointer-events:none;
+    background:
+        linear-gradient(90deg, transparent 0 24px, rgba(20,184,166,.75) 25px 26px, transparent 27px),
+        linear-gradient(0deg, transparent 0 24px, rgba(20,184,166,.75) 25px 26px, transparent 27px);
+    background-size:28px 28px;
+    mask-image:linear-gradient(90deg, transparent, #000 35%, #000);
+}
+
+.ai-ranking-title{
+    position:relative !important;
+    z-index:2 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:16px !important;
+    text-align:left !important;
+    margin-bottom:22px !important;
+    font-size:28px !important;
+    line-height:1.28 !important;
+    color:#064e3b !important;
+}
+
+.ai-ranking-title::before{
+    content:'AI';
+    flex:0 0 auto;
+    width:58px;
+    height:58px;
+    border-radius:20px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:2px;
+    font-size:20px;
+    font-weight:900;
+    color:#ffffff;
+    background:linear-gradient(135deg,#047857,#10b981);
+    box-shadow:0 14px 28px rgba(16,185,129,.26);
+}
+
+.ai-ranking-title::after{
+    content:'✦ AI INSIGHT';
+    flex:0 0 auto;
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:.3px;
+    color:#047857;
+    background:rgba(236,253,245,.92);
+    border:1px solid rgba(16,185,129,.18);
+    box-shadow:0 8px 20px rgba(4,120,87,.08);
+}
+
+#courseRanking.ai-donut-layout{
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:minmax(320px, 43%) minmax(360px, 1fr);
+    gap:30px;
+    align-items:center;
+}
+
+.ai-donut-panel{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+    min-height:430px;
+}
+
+.ai-donut-chart{
+    --donut-bg: conic-gradient(#10b981 0deg 94deg,#3b82f6 94deg 166deg,#8b5cf6 166deg 234deg,#f59e0b 234deg 296deg,#ec4899 296deg 360deg);
+    width:min(360px, 100%);
+    aspect-ratio:1;
+    border-radius:50%;
+    position:relative;
+    background:var(--donut-bg);
+    box-shadow:
+        0 0 0 14px rgba(255,255,255,.66),
+        0 0 0 28px rgba(20,184,166,.08),
+        0 24px 50px rgba(2,44,34,.14);
+    animation:aiDonutFloat 5s ease-in-out infinite;
+}
+
+.ai-donut-chart::before{
+    content:'';
+    position:absolute;
+    inset:22%;
+    border-radius:50%;
+    background:linear-gradient(180deg,#ffffff,#f8fafc);
+    box-shadow:
+        inset 0 6px 20px rgba(15,23,42,.08),
+        0 10px 30px rgba(255,255,255,.8);
+}
+
+.ai-donut-chart::after{
+    content:'';
+    position:absolute;
+    inset:-10px;
+    border-radius:50%;
+    background:conic-gradient(from 30deg, transparent, rgba(20,184,166,.34), transparent 32%, transparent);
+    filter:blur(8px);
+    z-index:-1;
+}
+
+.ai-donut-center{
+    position:absolute;
+    inset:30%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    z-index:2;
+    color:#0f3f36;
+}
+
+.ai-donut-center .center-icon{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:8px;
+    background:rgba(20,184,166,.10);
+    color:#14b8a6;
+    font-size:24px;
+}
+
+.ai-donut-center strong{
+    font-size:46px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-1px;
+    color:#064e3b;
+}
+
+.ai-donut-center span{
+    margin-top:6px;
+    font-size:14px;
+    font-weight:800;
+    color:#64748b;
+}
+
+.ai-donut-note{
+    width:min(390px, 100%);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:16px 18px;
+    border-radius:22px;
+    background:rgba(255,255,255,.78);
+    border:1px solid rgba(226,232,240,.9);
+    box-shadow:0 12px 28px rgba(15,23,42,.06);
+}
+
+.ai-donut-note strong{
+    display:block;
+    color:#064e3b;
+    font-size:16px;
+    margin-bottom:2px;
+}
+
+.ai-donut-note span{
+    color:#64748b;
+    font-size:13px;
+    font-weight:700;
+}
+
+.ai-donut-note em{
+    font-style:normal;
+    color:#047857;
+    font-size:20px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.ai-rank-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.ai-rank-item{
+    display:grid;
+    grid-template-columns:48px 58px minmax(0,1fr) 92px;
+    gap:14px;
+    align-items:center;
+    padding:14px 16px;
+    border-radius:22px;
+    background:rgba(255,255,255,.86);
+    border:1px solid rgba(226,232,240,.86);
+    box-shadow:0 10px 24px rgba(15,23,42,.06);
+    position:relative;
+    overflow:hidden;
+}
+
+.ai-rank-item::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:6px;
+    background:var(--rank-color,#10b981);
+}
+
+.ai-rank-no{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ffffff;
+    font-size:18px;
+    font-weight:900;
+    background:var(--rank-color,#10b981);
+    box-shadow:0 10px 22px color-mix(in srgb, var(--rank-color,#10b981) 35%, transparent);
+}
+
+.ai-rank-icon{
+    width:58px;
+    height:58px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    color:var(--rank-color,#10b981);
+    background:color-mix(in srgb, var(--rank-color,#10b981) 12%, #ffffff);
+}
+
+.ai-rank-main{
+    min-width:0;
+}
+
+.ai-rank-name{
+    color:#0f172a;
+    font-size:18px;
+    font-weight:900;
+    line-height:1.25;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    margin-bottom:10px;
+}
+
+.ai-rank-track{
+    width:100%;
+    height:8px;
+    border-radius:999px;
+    background:#e2e8f0;
+    overflow:hidden;
+}
+
+.ai-rank-fill{
+    height:100%;
+    border-radius:999px;
+    background:var(--rank-color,#10b981);
+    box-shadow:0 5px 14px color-mix(in srgb, var(--rank-color,#10b981) 28%, transparent);
+}
+
+.ai-rank-value{
+    text-align:right;
+    border-left:2px dotted #cbd5e1;
+    padding-left:14px;
+}
+
+.ai-rank-value strong{
+    display:block;
+    color:var(--rank-color,#10b981);
+    font-size:24px;
+    line-height:1;
+    font-weight:900;
+}
+
+.ai-rank-value span{
+    display:block;
+    margin-top:6px;
+    color:#64748b;
+    font-size:14px;
+    font-weight:800;
+}
+
+@keyframes aiDonutFloat{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-6px) rotate(.8deg);}
+}
+
+@media(max-width:1023px){
+    #courseRanking.ai-donut-layout{
+        grid-template-columns:1fr;
+        gap:24px;
+    }
+
+    .ai-donut-panel{
+        min-height:auto;
+    }
+
+    .ai-donut-chart{
+        width:min(320px, 82vw);
+    }
+}
+
+@media(max-width:640px){
+    .ai-ranking-card{
+        padding:22px 16px !important;
+        border-radius:26px !important;
+    }
+
+    .ai-ranking-title{
+        align-items:flex-start !important;
+        flex-wrap:wrap !important;
+        font-size:22px !important;
+    }
+
+    .ai-ranking-title::before{
+        width:48px;
+        height:48px;
+        border-radius:16px;
+        font-size:17px;
+    }
+
+    .ai-ranking-title::after{
+        font-size:11px;
+        padding:7px 10px;
+    }
+
+    .ai-rank-item{
+        grid-template-columns:38px 46px minmax(0,1fr);
+        gap:10px;
+        padding:12px 12px;
+    }
+
+    .ai-rank-icon{
+        width:46px;
+        height:46px;
+        border-radius:16px;
+        font-size:23px;
+    }
+
+    .ai-rank-no{
+        width:32px;
+        height:32px;
+        font-size:15px;
+    }
+
+    .ai-rank-name{
+        white-space:normal;
+        font-size:16px;
+        margin-bottom:8px;
+    }
+
+    .ai-rank-value{
+        grid-column:3;
+        border-left:none;
+        padding-left:0;
+        text-align:left;
+        display:flex;
+        align-items:baseline;
+        gap:6px;
+        margin-top:-4px;
+    }
+
+    .ai-rank-value strong{
+        font-size:20px;
+    }
+
+    .ai-rank-value span{
+        margin-top:0;
+        font-size:13px;
+    }
+
+    .ai-donut-center strong{
+        font-size:38px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .ai-donut-chart{
+        animation:none;
+    }
+}
+</style>
+
+<style>
+
+/* =========================================================
+FINAL MOBILE HERO CLEAN MODE
+- Mobile only
+- Keep logo / top details / menu / hotline unchanged
+- Hide only hero text
+- Use building image as soft green background
+========================================================= */
+@media(max-width:960px){
+
+    .hero{
+        min-height:220px !important;
+        background:
+            linear-gradient(
+                135deg,
+                rgba(0,92,70,.96),
+                rgba(4,120,87,.92)
+            ) !important;
+        border-radius:26px !important;
+        overflow:hidden !important;
+        position:relative !important;
+        isolation:isolate !important;
+        margin-bottom:18px !important;
+    }
+
+    .hero-left h1,
+    .hero-left h3,
+    .hero-left p{
+        display:none !important;
+    }
+
+    .hero-left{
+        display:block !important;
+        width:100% !important;
+        min-height:220px !important;
+        padding:0 !important;
+        margin:0 !important;
+        position:relative !important;
+        z-index:3 !important;
+        pointer-events:none !important;
+    }
+
+    .hero-image{
+        position:absolute !important;
+        inset:0 !important;
+        display:block !important;
+        background:transparent !important;
+        opacity:1 !important;
+        z-index:1 !important;
+        overflow:hidden !important;
+    }
+
+    .hero-image img{
+        width:100% !important;
+        height:100% !important;
+        min-width:0 !important;
+        max-width:none !important;
+        object-fit:cover !important;
+        object-position:center center !important;
+        margin:0 !important;
+        display:block !important;
+        opacity:.22 !important;
+        filter:
+            grayscale(.05)
+            contrast(1.05)
+            saturate(.92) !important;
+    }
+
+    .hero-image::after{
+        content:'' !important;
+        position:absolute !important;
+        inset:0 !important;
+        background:
+            linear-gradient(
+                135deg,
+                rgba(0,92,70,.76),
+                rgba(6,95,70,.56)
+            ) !important;
+        z-index:2 !important;
+        pointer-events:none !important;
+    }
+
+    .hero::before{
+        z-index:2 !important;
+        background:
+            radial-gradient(
+                circle at 18% 20%,
+                rgba(255,255,255,.16),
+                transparent 34%
+            ) !important;
+    }
+}
+
+@media(max-width:520px){
+    .hero{
+        min-height:190px !important;
+        border-radius:22px !important;
+    }
+
+    .hero-left{
+        min-height:190px !important;
+    }
+}
+
+</style>
+
+
+
+<style>
+/* =========================================================
+FINAL QA PATCH: Mobile Hero asset-safe visibility
+- Desktop/Windows untouched
+- Keep top logo/menu/hotline intact
+- Show building softly when assets/images/building.jpg exists
+- Add subtle premium green texture even while image is loading
+========================================================= */
+@media(max-width:960px){
+
+    .hero{
+        min-height:220px !important;
+        background:
+            radial-gradient(circle at 18% 22%, rgba(255,255,255,.18), transparent 30%),
+            radial-gradient(circle at 82% 18%, rgba(16,185,129,.18), transparent 34%),
+            linear-gradient(135deg,#005c46 0%,#047857 58%,#065f46 100%) !important;
+        border:1px solid rgba(255,255,255,.10) !important;
+        box-shadow:0 12px 28px rgba(0,92,70,.16) !important;
+    }
+
+    .hero-left h1,
+    .hero-left h3,
+    .hero-left p{
+        display:none !important;
+    }
+
+    .hero-left{
+        display:block !important;
+        width:100% !important;
+        min-height:220px !important;
+        padding:0 !important;
+        margin:0 !important;
+        position:relative !important;
+        z-index:3 !important;
+        pointer-events:none !important;
+    }
+
+    .hero-image{
+        position:absolute !important;
+        inset:0 !important;
+        display:block !important;
+        z-index:1 !important;
+        overflow:hidden !important;
+        opacity:1 !important;
+        background:
+            linear-gradient(135deg, rgba(0,92,70,.20), rgba(4,120,87,.10)),
+            url('assets/images/building.jpg') center center / cover no-repeat !important;
+    }
+
+    .hero-image img{
+        width:100% !important;
+        height:100% !important;
+        min-width:0 !important;
+        max-width:none !important;
+        object-fit:cover !important;
+        object-position:center center !important;
+        margin:0 !important;
+        display:block !important;
+        opacity:.42 !important;
+        mix-blend-mode:soft-light !important;
+        filter:brightness(1.15) contrast(1.08) saturate(.95) !important;
+    }
+
+    .hero-image::after{
+        content:'' !important;
+        position:absolute !important;
+        inset:0 !important;
+        z-index:2 !important;
+        pointer-events:none !important;
+        background:
+            linear-gradient(135deg, rgba(0,92,70,.48), rgba(6,95,70,.34)),
+            repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 22px) !important;
+    }
+}
+</style>
+
+
+
+<style>
+/* =========================================================
+FINAL MOBILE PATCH: Quick Access title inside green Hero
+- Mobile only
+- Desktop/Windows untouched
+- Original Quick Access title remains on desktop
+========================================================= */
+.mobile-hero-quick-title{
+    display:none;
+}
+
+@media(max-width:960px){
+
+    .hero{
+        display:flex !important;
+        align-items:flex-end !important;
+        justify-content:flex-start !important;
+        padding:0 !important;
+        margin-bottom:14px !important;
+    }
+
+    .mobile-hero-quick-title{
+        position:relative;
+        z-index:5;
+        display:block;
+        width:100%;
+        padding:0 22px 22px;
+        color:#ffffff;
+        pointer-events:none;
+    }
+
+    .mobile-hero-kicker{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        margin-bottom:8px;
+        padding:5px 10px;
+        border-radius:999px;
+        background:rgba(255,255,255,.16);
+        border:1px solid rgba(255,255,255,.18);
+        color:rgba(255,255,255,.92);
+        font-size:12px;
+        font-weight:900;
+        letter-spacing:.2px;
+        backdrop-filter:blur(10px);
+    }
+
+    .mobile-hero-kicker::before{
+        content:'';
+        width:7px;
+        height:7px;
+        border-radius:999px;
+        background:#10b981;
+        box-shadow:0 0 0 5px rgba(16,185,129,.18);
+    }
+
+    .mobile-hero-heading{
+        font-size:30px;
+        line-height:1;
+        font-weight:900;
+        letter-spacing:-.8px;
+        text-shadow:0 6px 18px rgba(0,0,0,.20);
+    }
+
+    .mobile-hero-subtitle{
+        margin-top:8px;
+        font-size:14px;
+        line-height:1.45;
+        font-weight:700;
+        color:rgba(255,255,255,.86);
+        text-shadow:0 4px 14px rgba(0,0,0,.16);
+    }
+
+    /* Hide the duplicated Quick Access title below Hero on mobile only */
+    .hero + .section-title{
+        display:none !important;
+    }
+
+    .hero + .section-title + .cards{
+        margin-top:0 !important;
+    }
+}
+
+@media(max-width:520px){
+    .mobile-hero-quick-title{
+        padding:0 18px 20px;
+    }
+
+    .mobile-hero-heading{
+        font-size:28px;
+    }
+
+    .mobile-hero-subtitle{
+        font-size:13px;
+    }
+}
+</style>
+
+
+<style>
+/* =========================================================
+FINAL MOBILE PATCH: Green Quick Access Panel
+- Mobile View only
+- Desktop/Windows untouched
+- Covers Quick Access title + 3 cards in one green dashboard panel
+========================================================= */
+@media(max-width:960px){
+
+    /* ไม่ให้หัวข้อ Quick Access ไปซ้อนอยู่ใน hero แล้ว */
+    .mobile-hero-quick-title{
+        display:none !important;
+    }
+
+    /* Hero ด้านบนคงเป็นพื้นเขียว + อาคารจาง ๆ ตามเดิม แต่ลดความสูงลงให้ไม่โล่ง */
+    .hero{
+        min-height:150px !important;
+        margin-bottom:0 !important;
+        border-radius:24px 24px 0 0 !important;
+        box-shadow:none !important;
+    }
+
+    /* สร้างหัวข้อ Quick Access เป็นส่วนบนของ panel สีเขียว */
+    .quick-access-title{
+        display:flex !important;
+        align-items:center !important;
+        gap:12px !important;
+
+        margin:0 !important;
+        padding:20px 20px 12px !important;
+
+        color:#ffffff !important;
+
+        background:
+            radial-gradient(circle at 18% 12%, rgba(255,255,255,.18), transparent 28%),
+            linear-gradient(135deg,#005c46 0%,#047857 58%,#065f46 100%) !important;
+
+        border-radius:0 !important;
+
+        font-size:22px !important;
+        line-height:1.15 !important;
+        font-weight:900 !important;
+        letter-spacing:-.3px !important;
+    }
+
+    .quick-access-title::after{
+        content:'บริการหลักของศูนย์ฝึกอาชีพ';
+        display:block;
+        margin-left:auto;
+        padding:5px 10px;
+        border-radius:999px;
+        background:rgba(255,255,255,.16);
+        border:1px solid rgba(255,255,255,.18);
+        color:rgba(255,255,255,.86);
+        font-size:11px;
+        font-weight:800;
+        white-space:nowrap;
+    }
+
+    .quick-access-title .section-line{
+        width:5px !important;
+        height:28px !important;
+        background:#34d399 !important;
+        box-shadow:0 0 18px rgba(52,211,153,.55) !important;
+    }
+
+    /* รวมการ์ดทั้ง 3 ใบไว้ในพื้นหลังสีเขียวเดียวกัน */
+    .quick-access-cards{
+        display:grid !important;
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        gap:12px !important;
+
+        margin:0 0 18px !important;
+        padding:10px 14px 20px !important;
+
+        background:
+            radial-gradient(circle at 85% 0%, rgba(16,185,129,.22), transparent 30%),
+            linear-gradient(135deg,#005c46 0%,#047857 56%,#064e3b 100%) !important;
+
+        border-radius:0 0 24px 24px !important;
+        box-shadow:0 14px 28px rgba(0,92,70,.18) !important;
+    }
+
+    .quick-access-cards .card{
+        min-height:136px !important;
+        padding:14px 12px !important;
+
+        background:rgba(255,255,255,.94) !important;
+        border:1px solid rgba(255,255,255,.62) !important;
+        border-radius:20px !important;
+
+        box-shadow:
+            0 12px 24px rgba(0,0,0,.12),
+            inset 0 1px 0 rgba(255,255,255,.7) !important;
+
+        backdrop-filter:blur(14px);
+    }
+
+    .quick-access-cards .card-icon{
+        width:48px !important;
+        height:48px !important;
+        margin-bottom:10px !important;
+        border-radius:16px !important;
+
+        background:#e8f5f0 !important;
+        box-shadow:none !important;
+    }
+
+    .quick-access-cards .card h3{
+        font-size:15.5px !important;
+        line-height:1.35 !important;
+        color:#0f172a !important;
+        margin-bottom:8px !important;
+    }
+
+    .quick-access-cards .card p{
+        display:none !important;
+    }
+
+    .quick-access-cards .card a{
+        margin-top:0 !important;
+        font-size:14px !important;
+        color:#047857 !important;
+        font-weight:900 !important;
+    }
+
+    .quick-access-cards .card-soon-badge{
+        top:14px !important;
+        right:14px !important;
+        background:#fef3c7 !important;
+        color:#92400e !important;
+        box-shadow:0 8px 16px rgba(146,64,14,.10) !important;
+    }
+
+    .quick-access-cards .is-soon-card a{
+        color:#9ca3af !important;
+    }
+}
+
+@media(max-width:520px){
+
+    .quick-access-title{
+        padding:18px 16px 10px !important;
+        font-size:20px !important;
+    }
+
+    .quick-access-title::after{
+        content:'บริการหลัก';
+        font-size:10.5px;
+        padding:4px 8px;
+    }
+
+    .quick-access-cards{
+        gap:12px !important;
+        padding:10px 12px 18px !important;
+    }
+
+    .quick-access-cards .card{
+        min-height:132px !important;
+        padding:14px 12px !important;
+    }
+}
+</style>
+
+
+
+<style>
+/* =========================================================
+FINAL FIX 02: Mobile Quick Access Green Panel Header Restore
+- Mobile only
+- Restore visible Quick Access title inside green panel
+- Hide leftover hero text completely
+- Desktop/Windows untouched
+========================================================= */
+@media(max-width:960px){
+
+    /* ลบข้อความ Hero ที่ค้างเป็นเงามุมบน เช่น Training Center */
+    .hero-left,
+    .hero-left *,
+    .hero-left .hero-title,
+    .hero-left h1,
+    .hero-left h3,
+    .hero-left p{
+        display:none !important;
+        visibility:hidden !important;
+        opacity:0 !important;
+        pointer-events:none !important;
+    }
+
+    /* Hero เป็นพื้นหลังอาคารจาง ๆ ด้านบนของ panel */
+    .hero{
+        min-height:118px !important;
+        margin:0 !important;
+        padding:0 !important;
+        border-radius:24px 24px 0 0 !important;
+        overflow:hidden !important;
+        background:
+            radial-gradient(circle at 18% 18%, rgba(255,255,255,.18), transparent 28%),
+            radial-gradient(circle at 82% 10%, rgba(16,185,129,.22), transparent 34%),
+            linear-gradient(135deg,#005c46 0%,#047857 58%,#064e3b 100%) !important;
+        box-shadow:none !important;
+    }
+
+    .hero-image{
+        position:absolute !important;
+        inset:0 !important;
+        display:block !important;
+        z-index:1 !important;
+        opacity:1 !important;
+        overflow:hidden !important;
+        background:
+            linear-gradient(135deg,rgba(0,92,70,.18),rgba(4,120,87,.12)),
+            url('assets/images/building.jpg') center center / cover no-repeat !important;
+    }
+
+    .hero-image img{
+        display:block !important;
+        width:100% !important;
+        height:100% !important;
+        object-fit:cover !important;
+        object-position:center center !important;
+        margin:0 !important;
+        opacity:.32 !important;
+        mix-blend-mode:soft-light !important;
+        filter:brightness(1.12) contrast(1.08) saturate(.92) !important;
+    }
+
+    .hero-image::after{
+        content:'' !important;
+        position:absolute !important;
+        inset:0 !important;
+        z-index:2 !important;
+        pointer-events:none !important;
+        background:
+            linear-gradient(135deg,rgba(0,92,70,.58),rgba(6,95,70,.42)),
+            repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 22px) !important;
+    }
+
+    /* คืนหัวข้อ Quick Access ให้แสดงชัดเจนในกรอบเขียว */
+    .section-title.quick-access-title{
+        display:flex !important;
+        visibility:visible !important;
+        opacity:1 !important;
+        position:relative !important;
+        z-index:6 !important;
+        align-items:center !important;
+        gap:12px !important;
+        width:100% !important;
+        margin:0 !important;
+        padding:18px 18px 10px !important;
+        color:#ffffff !important;
+        background:
+            radial-gradient(circle at 18% 0%,rgba(255,255,255,.16),transparent 30%),
+            linear-gradient(135deg,#005c46 0%,#047857 58%,#064e3b 100%) !important;
+        border-radius:0 !important;
+        box-shadow:none !important;
+        font-size:22px !important;
+        line-height:1.2 !important;
+        font-weight:900 !important;
+        letter-spacing:-.3px !important;
+    }
+
+    .section-title.quick-access-title .section-line{
+        display:block !important;
+        width:5px !important;
+        height:30px !important;
+        min-width:5px !important;
+        border-radius:999px !important;
+        background:#34d399 !important;
+        box-shadow:0 0 18px rgba(52,211,153,.62) !important;
+    }
+
+    .section-title.quick-access-title::after{
+        content:'บริการหลัก' !important;
+        display:inline-flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+        margin-left:auto !important;
+        padding:5px 10px !important;
+        border-radius:999px !important;
+        background:rgba(255,255,255,.16) !important;
+        border:1px solid rgba(255,255,255,.18) !important;
+        color:rgba(255,255,255,.88) !important;
+        font-size:11px !important;
+        line-height:1 !important;
+        font-weight:900 !important;
+        white-space:nowrap !important;
+    }
+
+    /* การ์ด 3 ใบอยู่ในพื้นหลังเขียวเดียวกันกับหัวข้อ */
+    .cards.quick-access-cards{
+        display:grid !important;
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        gap:12px !important;
+        margin:0 0 18px !important;
+        padding:10px 14px 20px !important;
+        background:
+            radial-gradient(circle at 88% 0%,rgba(16,185,129,.22),transparent 30%),
+            linear-gradient(135deg,#005c46 0%,#047857 56%,#064e3b 100%) !important;
+        border-radius:0 0 24px 24px !important;
+        box-shadow:0 14px 28px rgba(0,92,70,.18) !important;
+    }
+
+    .cards.quick-access-cards .card{
+        min-height:136px !important;
+        padding:14px 12px !important;
+        background:rgba(255,255,255,.94) !important;
+        border:1px solid rgba(255,255,255,.62) !important;
+        border-radius:20px !important;
+        box-shadow:0 12px 24px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.7) !important;
+        backdrop-filter:blur(14px) !important;
+    }
+}
+
+@media(max-width:520px){
+    .section-title.quick-access-title{
+        padding:16px 16px 10px !important;
+        font-size:20px !important;
+    }
+
+    .section-title.quick-access-title::after{
+        font-size:10.5px !important;
+        padding:4px 8px !important;
+    }
+
+    .cards.quick-access-cards{
+        gap:12px !important;
+        padding:10px 12px 18px !important;
+    }
+}
+</style>
+
 </head>
 
 <body>
@@ -2807,6 +3855,13 @@ line-height:1.4;
 
             </div>
 
+            <!-- MOBILE ONLY: QUICK ACCESS TITLE INSIDE HERO -->
+            <div class="mobile-hero-quick-title" aria-hidden="true">
+                <div class="mobile-hero-kicker">บริการหลัก</div>
+                <div class="mobile-hero-heading">Quick Access</div>
+                <div class="mobile-hero-subtitle">เข้าถึงระบบสำคัญของศูนย์ฝึกอาชีพ</div>
+            </div>
+
         </section>
 
 <!-- STATISTICS & SUCCESS -->
@@ -2815,12 +3870,12 @@ line-height:1.4;
 
         <!-- QUICK ACCESS -->
 
-        <div class="section-title">
+        <div class="section-title quick-access-title">
             <span class="section-line"></span>
             Quick Access
         </div>
 
-        <section class="cards">
+        <section class="cards quick-access-cards">
 
             <div class="card">
 
@@ -3518,25 +4573,70 @@ document.getElementById('employedAI').textContent =
 Number(stats.employed || 0).toLocaleString('th-TH');
 
 const ranking = document.getElementById('courseRanking');
+ranking.classList.add('ai-donut-layout');
 
-const max = Math.max(...courseData.map(i=>Number(i.employed_count || 0)));
+const colors = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ec4899'];
+const icons = ['✂️','🌸','🃏','🎨','💈'];
+const topCourses = courseData
+.map(item => ({
+course: item.course || '-',
+employed_count: Number(item.employed_count || 0)
+}))
+.sort((a,b) => b.employed_count - a.employed_count)
+.slice(0,5);
 
-ranking.innerHTML = courseData.map(item=>{
-const width = Math.round((Number(item.employed_count || 0)/max)*100);
+const totalTop = topCourses.reduce((sum,item)=>sum + item.employed_count, 0);
+const max = Math.max(...topCourses.map(i=>i.employed_count), 1);
 
+let startDeg = 0;
+const segments = topCourses.map((item,index)=>{
+const percent = totalTop ? item.employed_count / totalTop : 0;
+const endDeg = index === topCourses.length - 1 ? 360 : startDeg + (percent * 360);
+const segment = `${colors[index]} ${startDeg.toFixed(2)}deg ${endDeg.toFixed(2)}deg`;
+startDeg = endDeg;
+return segment;
+}).join(',');
+
+const listHTML = topCourses.map((item,index)=>{
+const percent = totalTop ? Math.round((item.employed_count / totalTop) * 100) : 0;
+const width = Math.round((item.employed_count / max) * 100);
 return `
-<div class="course-row">
-<div class="course-header">
-<span>${item.course}</span>
-<span>${item.employed_count} คน</span>
+<div class="ai-rank-item" style="--rank-color:${colors[index]};">
+<div class="ai-rank-no">${index + 1}</div>
+<div class="ai-rank-icon">${icons[index]}</div>
+<div class="ai-rank-main">
+<div class="ai-rank-name" title="${item.course}">${item.course}</div>
+<div class="ai-rank-track"><div class="ai-rank-fill" style="width:${width}%"></div></div>
 </div>
-
-<div class="course-track">
-<div class="course-fill" style="width:${width}%"></div>
+<div class="ai-rank-value">
+<strong>${item.employed_count.toLocaleString('th-TH')}</strong>
+<span>${percent}%</span>
 </div>
 </div>
 `;
 }).join('');
+
+ranking.innerHTML = `
+<div class="ai-donut-panel">
+<div class="ai-donut-chart" style="--donut-bg:conic-gradient(${segments || '#e5e7eb 0deg 360deg'});">
+<div class="ai-donut-center">
+<div class="center-icon">👥</div>
+<strong>${totalTop.toLocaleString('th-TH')}</strong>
+<span>คน / 5 อันดับ</span>
+</div>
+</div>
+<div class="ai-donut-note">
+<div>
+<strong>ข้อมูลการนำไปประกอบอาชีพ</strong>
+<span>จัดอันดับจากจำนวนผู้เรียนที่นำทักษะไปใช้จริง</span>
+</div>
+<em>TOP 5</em>
+</div>
+</div>
+<div class="ai-rank-list">
+${listHTML}
+</div>
+`;
 
 }catch(error){
 console.error(error);
