@@ -136,7 +136,7 @@ MENU
 
 .menu-title{
     margin:26px 0 14px;
-    opacity:0.74;
+    opacity:0.06;
     font-size:15px;
     padding-left:10px;
 }
@@ -198,7 +198,7 @@ HOTLINE
         linear-gradient(
             145deg,
             rgba(255,255,255,0.16) 0%,
-            rgba(255,255,255,0.08) 46%,
+            rgba(255,255,255,0.025) 46%,
             rgba(0,0,0,0.10) 100%
         );
 
@@ -210,7 +210,7 @@ HOTLINE
         1px solid rgba(255,255,255,0.14);
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.035),
         0 18px 30px rgba(0,0,0,0.16);
 }
 
@@ -300,7 +300,7 @@ HOTLINE
     padding-top:14px;
 
     border-top:
-        1px solid rgba(255,255,255,0.12);
+        1px solid rgba(255,255,255,0.035);
 
     color:rgba(255,255,255,0.90);
     font-size:14px;
@@ -1625,7 +1625,7 @@ PORTAL STRUCTURE CLEANUP - SAFE
     min-height:40px;
     padding:10px 14px;
     border-radius:14px;
-    background:rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.035);
     color:#ffffff !important;
     text-decoration:none;
     font-size:13px;
@@ -2295,6 +2295,50 @@ flex-wrap:wrap;
 font-size:14px;
 }
 }
+
+.card-banner-image{
+    position:relative;
+    width:100%;
+    height:170px;
+    overflow:hidden;
+    border-radius:24px;
+    margin-bottom:22px;
+    border:1px solid rgba(255,255,255,.035);
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.28),
+        0 0 25px rgba(16,185,129,.18);
+}
+
+.card-banner-image::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.05),
+            rgba(0,0,0,.45)
+        );
+}
+
+.card-banner-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transform:scale(1.03);
+}
+
+@media (max-width:768px){
+
+    .card-banner-image{
+        height:140px;
+        border-radius:20px;
+        margin-bottom:18px;
+    }
+
+}
+
 </style>
 
 </style>
@@ -3222,7 +3266,7 @@ FINAL QA PATCH: Mobile Hero asset-safe visibility
         object-position:center center !important;
         margin:0 !important;
         display:block !important;
-        opacity:.42 !important;
+        opacity:.16 !important;
         mix-blend-mode:soft-light !important;
         filter:brightness(1.15) contrast(1.08) saturate(.95) !important;
     }
@@ -3750,6 +3794,364 @@ FINAL OVERRIDE: Mobile building background enhanced
 }
 </style>
 
+
+
+<style>
+/* =========================================================
+FINAL PATCH: Neon Glass KPI Card / AI Cyber Card
+- Applies to Quick Access Cards + Docs Cards only
+- Desktop + Mobile supported
+- BMA Green / Cyan AI glow style
+========================================================= */
+
+.quick-access-cards,
+.docs-cards{
+    position:relative !important;
+}
+
+.quick-access-cards .card,
+.docs-cards .card{
+    position:relative !important;
+    isolation:isolate !important;
+    overflow:hidden !important;
+    border-radius:28px !important;
+    border:1px solid rgba(45,212,191,.34) !important;
+    background:
+        radial-gradient(circle at 12% 10%, rgba(45,212,191,.20), transparent 34%),
+        radial-gradient(circle at 88% 0%, rgba(59,130,246,.15), transparent 30%),
+        linear-gradient(145deg, rgba(2,44,34,.96) 0%, rgba(6,78,59,.94) 52%, rgba(3,105,82,.90) 100%) !important;
+    box-shadow:
+        0 22px 46px rgba(2,44,34,.22),
+        0 0 0 1px rgba(255,255,255,.05) inset,
+        0 0 34px rgba(20,184,166,.10) !important;
+    backdrop-filter:blur(18px) !important;
+    transform:translateZ(0) !important;
+    transition:
+        transform .28s ease,
+        box-shadow .28s ease,
+        border-color .28s ease !important;
+}
+
+.quick-access-cards .card:hover,
+.docs-cards .card:hover{
+    transform:translateY(-6px) !important;
+    border-color:rgba(94,234,212,.58) !important;
+    box-shadow:
+        0 28px 62px rgba(2,44,34,.30),
+        0 0 0 1px rgba(255,255,255,.025) inset,
+        0 0 42px rgba(45,212,191,.18) !important;
+}
+
+.quick-access-cards .card::before,
+.docs-cards .card::before{
+    content:'' !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:-2 !important;
+    pointer-events:none !important;
+    background:
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.035) 18%, transparent 34%),
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.018) 18%, transparent 34%) !important;
+    opacity:.16 !important;
+}
+
+.quick-access-cards .card::after,
+.docs-cards .card::after{
+    content:'' !important;
+    position:absolute !important;
+    left:18px !important;
+    right:18px !important;
+    bottom:-22px !important;
+    height:58px !important;
+    z-index:-1 !important;
+    pointer-events:none !important;
+    border-radius:999px !important;
+    background:radial-gradient(ellipse at center, rgba(45,212,191,.38), transparent 68%) !important;
+    filter:blur(18px) !important;
+    opacity:.78 !important;
+}
+
+.quick-access-cards .card-icon,
+.docs-cards .card-icon{
+    width:68px !important;
+    height:68px !important;
+    border-radius:24px !important;
+    margin-bottom:18px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    font-size:30px !important;
+    color:#ccfbf1 !important;
+    background:
+        radial-gradient(circle at 28% 22%, rgba(255,255,255,.28), transparent 30%),
+        linear-gradient(135deg, rgba(45,212,191,.24), rgba(59,130,246,.12)) !important;
+    border:1px solid rgba(153,246,228,.30) !important;
+    box-shadow:
+        0 14px 28px rgba(0,0,0,.20),
+        0 0 28px rgba(45,212,191,.18),
+        inset 0 1px 0 rgba(255,255,255,.18) !important;
+    text-shadow:0 0 16px rgba(153,246,228,.55) !important;
+    animation:neonIconFloat 4.8s ease-in-out infinite !important;
+}
+
+.quick-access-cards .card h3,
+.docs-cards .card h3{
+    color:#ffffff !important;
+    font-weight:900 !important;
+    letter-spacing:.1px !important;
+    text-shadow:0 2px 18px rgba(0,0,0,.24) !important;
+}
+
+.quick-access-cards .card p,
+.docs-cards .card p,
+.docs-cards .docs-list li{
+    color:rgba(236,253,245,.88) !important;
+    font-weight:650 !important;
+}
+
+.docs-cards .docs-list li::before{
+    color:#5eead4 !important;
+    text-shadow:0 0 14px rgba(94,234,212,.55) !important;
+}
+
+.quick-access-cards .card a,
+.docs-cards .card a{
+    position:relative !important;
+    z-index:3 !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:max-content !important;
+    min-height:38px !important;
+    padding:9px 14px !important;
+    border-radius:999px !important;
+    color:#052e2b !important;
+    background:linear-gradient(135deg,#99f6e4,#2dd4bf) !important;
+    box-shadow:0 12px 24px rgba(45,212,191,.20) !important;
+    font-weight:900 !important;
+    text-decoration:none !important;
+}
+
+.quick-access-cards .is-soon-card{
+    opacity:1 !important;
+}
+
+.quick-access-cards .card.is-soon-card::before{
+    opacity:.16 !important;
+}
+
+.quick-access-cards .card.is-soon-card a,
+.quick-access-cards .card.is-soon-card .is-disabled-link{
+    color:rgba(236,253,245,.72) !important;
+    background:rgba(255,255,255,.10) !important;
+    border:1px solid rgba(255,255,255,.16) !important;
+    box-shadow:none !important;
+}
+
+.quick-access-cards .card-soon-badge,
+.docs-cards .docs-badge{
+    color:#042f2e !important;
+    background:linear-gradient(135deg,#fef3c7,#5eead4) !important;
+    border:1px solid rgba(255,255,255,.52) !important;
+    box-shadow:0 10px 22px rgba(45,212,191,.20) !important;
+    font-weight:900 !important;
+}
+
+.docs-cards .docs-note{
+    background:rgba(236,253,245,.10) !important;
+    border:1px solid rgba(94,234,212,.24) !important;
+    color:#ecfdf5 !important;
+}
+
+@keyframes neonIconFloat{
+    0%,100%{transform:translateY(0); filter:drop-shadow(0 0 0 rgba(45,212,191,0));}
+    50%{transform:translateY(-5px); filter:drop-shadow(0 0 12px rgba(45,212,191,.26));}
+}
+
+@media(max-width:960px){
+    .quick-access-cards .card,
+    .docs-cards .card{
+        border-radius:22px !important;
+        box-shadow:
+            0 16px 34px rgba(2,44,34,.24),
+            0 0 0 1px rgba(255,255,255,.06) inset,
+            0 0 26px rgba(20,184,166,.10) !important;
+    }
+
+    .quick-access-cards .card-icon,
+    .docs-cards .card-icon{
+        width:54px !important;
+        height:54px !important;
+        border-radius:18px !important;
+        font-size:25px !important;
+        margin-bottom:10px !important;
+    }
+
+    .quick-access-cards .card h3,
+    .docs-cards .card h3{
+        font-size:16px !important;
+        line-height:1.34 !important;
+    }
+
+    .quick-access-cards .card p{
+        display:none !important;
+    }
+
+    .docs-cards .card p,
+    .docs-cards .docs-list li{
+        font-size:14px !important;
+        line-height:1.68 !important;
+    }
+
+    .quick-access-cards .card a,
+    .docs-cards .card a{
+        min-height:34px !important;
+        padding:7px 12px !important;
+        font-size:13px !important;
+    }
+}
+
+@media(max-width:520px){
+    .quick-access-cards .card,
+    .docs-cards .card{
+        border-radius:20px !important;
+    }
+
+    .quick-access-cards .card-icon,
+    .docs-cards .card-icon{
+        width:50px !important;
+        height:50px !important;
+        font-size:23px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .quick-access-cards .card-icon,
+    .docs-cards .card-icon{
+        animation:none !important;
+    }
+}
+</style>
+
+
+
+<style>
+/* =========================================================
+FINAL PATCH: Docs Card Banner Badge Layout Fix
+- Move docs badge below banner image visually
+- Prevent overlap with banner image on Desktop/Mobile
+- Keep Neon Glass / AI Cyber style
+========================================================= */
+.docs-cards .docs-card{
+    display:flex !important;
+    flex-direction:column !important;
+    padding-top:24px !important;
+}
+
+.docs-cards .card-banner-image{
+    position:relative !important;
+    z-index:2 !important;
+    width:100% !important;
+    height:170px !important;
+    margin:0 0 14px 0 !important;
+    border-radius:24px !important;
+    overflow:hidden !important;
+}
+
+.docs-cards .docs-badge{
+    position:static !important;
+    inset:auto !important;
+    top:auto !important;
+    right:auto !important;
+    left:auto !important;
+    bottom:auto !important;
+
+    align-self:flex-start !important;
+    width:max-content !important;
+    max-width:100% !important;
+
+    margin:0 0 14px 0 !important;
+    padding:6px 12px !important;
+    line-height:1.15 !important;
+
+    z-index:4 !important;
+}
+
+.docs-cards .docs-card h3{
+    margin-top:0 !important;
+}
+
+@media(max-width:960px){
+    .docs-cards .docs-card{
+        padding-top:18px !important;
+    }
+
+    .docs-cards .card-banner-image{
+        height:138px !important;
+        border-radius:20px !important;
+        margin-bottom:12px !important;
+    }
+
+    .docs-cards .docs-badge{
+        margin-bottom:12px !important;
+        padding:5px 10px !important;
+        font-size:11px !important;
+    }
+}
+
+@media(max-width:520px){
+    .docs-cards .card-banner-image{
+        height:128px !important;
+        border-radius:18px !important;
+    }
+}
+</style>
+
+
+
+<style>
+/* =========================================================
+FINAL QA PATCH: Neon Glass Grid Ultra Soft
+- ลดรอย Grid ค้างบน Quick Access / Docs Cards
+- คง Neon Glass / AI Cyber Card style
+- ไม่แตะ layout / content / links
+========================================================= */
+.quick-access-cards .card::before,
+.docs-cards .card::before{
+    background:
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.018) 18%, transparent 34%) !important;
+    opacity:.16 !important;
+}
+
+.quick-access-cards .card:hover::before,
+.docs-cards .card:hover::before{
+    opacity:.20 !important;
+}
+
+.quick-access-cards .card::after,
+.docs-cards .card::after{
+    opacity:.46 !important;
+}
+
+@media(min-width:961px){
+    .quick-access-cards .card::before,
+    .docs-cards .card::before{
+        background:
+            linear-gradient(120deg, transparent 0%, rgba(255,255,255,.014) 18%, transparent 34%) !important;
+        opacity:.12 !important;
+    }
+}
+
+@media(max-width:960px){
+    .quick-access-cards .card::before,
+    .docs-cards .card::before{
+        background:
+            linear-gradient(120deg, transparent 0%, rgba(255,255,255,.016) 18%, transparent 34%) !important;
+        opacity:.14 !important;
+    }
+}
+</style>
+
 </head>
 
 <body>
@@ -4064,12 +4466,12 @@ FINAL OVERRIDE: Mobile building background enhanced
 
             <div class="card docs-card docs-general-card">
 
-                <div class="docs-badge">
-                    ก่อนสมัคร
+                <div class="card-banner-image">
+                    <img src="assets/images/cards/docs-general.jpg" alt="วิชาทั่วไป">
                 </div>
 
-                <div class="card-icon">
-                    📄
+                <div class="docs-badge">
+                    ก่อนสมัคร
                 </div>
 
                 <h3>
@@ -4085,12 +4487,12 @@ FINAL OVERRIDE: Mobile building background enhanced
 
             <div class="card docs-card docs-massage-card">
 
-                <div class="docs-badge">
-                    เฉพาะทาง
+                <div class="card-banner-image">
+                    <img src="assets/images/cards/docs-massage.jpg" alt="วิชานวด">
                 </div>
 
-                <div class="card-icon">
-                    💆
+                <div class="docs-badge">
+                    เฉพาะทาง
                 </div>
 
                 <h3>
