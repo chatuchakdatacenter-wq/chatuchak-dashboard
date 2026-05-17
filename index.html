@@ -3266,7 +3266,7 @@ FINAL QA PATCH: Mobile Hero asset-safe visibility
         object-position:center center !important;
         margin:0 !important;
         display:block !important;
-        opacity:.16 !important;
+        opacity:.42 !important;
         mix-blend-mode:soft-light !important;
         filter:brightness(1.15) contrast(1.08) saturate(.95) !important;
     }
@@ -3851,8 +3851,9 @@ FINAL PATCH: Neon Glass KPI Card / AI Cyber Card
     pointer-events:none !important;
     background:
         linear-gradient(120deg, transparent 0%, rgba(255,255,255,.035) 18%, transparent 34%),
-        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.018) 18%, transparent 34%) !important;
-    opacity:.16 !important;
+        repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 26px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.026) 0 1px, transparent 1px 26px) !important;
+    opacity:.55 !important;
 }
 
 .quick-access-cards .card::after,
@@ -3937,7 +3938,7 @@ FINAL PATCH: Neon Glass KPI Card / AI Cyber Card
 }
 
 .quick-access-cards .card.is-soon-card::before{
-    opacity:.16 !important;
+    opacity:.42 !important;
 }
 
 .quick-access-cards .card.is-soon-card a,
@@ -4108,46 +4109,86 @@ FINAL PATCH: Docs Card Banner Badge Layout Fix
 </style>
 
 
-
 <style>
 /* =========================================================
-FINAL QA PATCH: Neon Glass Grid Ultra Soft
-- ลดรอย Grid ค้างบน Quick Access / Docs Cards
-- คง Neon Glass / AI Cyber Card style
-- ไม่แตะ layout / content / links
+FINAL QC READABILITY PATCH
+- Fix Desktop sidebar menu-title visibility
+- Fix Mobile Quick Access card text contrast
+- Keep Desktop Neon Glass / AI Cyber Card style unchanged
 ========================================================= */
-.quick-access-cards .card::before,
-.docs-cards .card::before{
-    background:
-        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.018) 18%, transparent 34%) !important;
-    opacity:.16 !important;
+
+/* Desktop / Sidebar section labels */
+.menu-title{
+    opacity:1 !important;
+    color:rgba(255,255,255,.90) !important;
+    font-weight:900 !important;
+    letter-spacing:.25px !important;
+    text-shadow:0 2px 10px rgba(0,0,0,.18) !important;
 }
 
-.quick-access-cards .card:hover::before,
-.docs-cards .card:hover::before{
-    opacity:.20 !important;
-}
-
-.quick-access-cards .card::after,
-.docs-cards .card::after{
-    opacity:.46 !important;
-}
-
-@media(min-width:961px){
-    .quick-access-cards .card::before,
-    .docs-cards .card::before{
-        background:
-            linear-gradient(120deg, transparent 0%, rgba(255,255,255,.014) 18%, transparent 34%) !important;
-        opacity:.12 !important;
-    }
-}
-
+/* Mobile only: Quick Access cards are light glass, so text must be dark */
 @media(max-width:960px){
-    .quick-access-cards .card::before,
-    .docs-cards .card::before{
+
+    .quick-access-cards .card{
         background:
-            linear-gradient(120deg, transparent 0%, rgba(255,255,255,.016) 18%, transparent 34%) !important;
-        opacity:.14 !important;
+            radial-gradient(circle at 16% 14%, rgba(20,184,166,.10), transparent 34%),
+            linear-gradient(180deg, rgba(255,255,255,.96), rgba(236,253,245,.92)) !important;
+        border:1px solid rgba(255,255,255,.68) !important;
+        color:#0f172a !important;
+    }
+
+    .quick-access-cards .card h3{
+        color:#0f172a !important;
+        text-shadow:none !important;
+        font-weight:900 !important;
+    }
+
+    .quick-access-cards .card p{
+        color:#334155 !important;
+        text-shadow:none !important;
+        font-weight:700 !important;
+    }
+
+    .quick-access-cards .card-icon{
+        color:#064e3b !important;
+        text-shadow:none !important;
+    }
+
+    .quick-access-cards .card a{
+        color:#052e2b !important;
+        background:linear-gradient(135deg,#99f6e4,#2dd4bf) !important;
+        border:1px solid rgba(15,118,110,.08) !important;
+        box-shadow:0 10px 22px rgba(20,184,166,.20) !important;
+    }
+
+    .quick-access-cards .card.is-soon-card h3{
+        color:#1f2937 !important;
+        text-shadow:none !important;
+    }
+
+    .quick-access-cards .card.is-soon-card .is-disabled-link{
+        color:rgba(15,23,42,.55) !important;
+        background:rgba(15,23,42,.06) !important;
+        border:1px solid rgba(15,23,42,.08) !important;
+        box-shadow:none !important;
+    }
+
+    .quick-access-cards .card-soon-badge{
+        color:#854d0e !important;
+        background:linear-gradient(135deg,#fef3c7,#fef9c3) !important;
+        border:1px solid rgba(251,191,36,.28) !important;
+        box-shadow:0 8px 18px rgba(251,191,36,.16) !important;
+    }
+
+    /* keep docs cards readable on dark neon cards */
+    .docs-cards .docs-card h3{
+        color:#ffffff !important;
+        text-shadow:0 2px 14px rgba(0,0,0,.28) !important;
+    }
+
+    .docs-cards .docs-list li{
+        color:rgba(236,253,245,.92) !important;
+        text-shadow:none !important;
     }
 }
 </style>
