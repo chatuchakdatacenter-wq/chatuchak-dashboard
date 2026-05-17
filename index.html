@@ -4193,6 +4193,298 @@ FINAL QC READABILITY PATCH
 }
 </style>
 
+
+<style>
+/* =========================================================
+FINAL QC: Docs Cards Compact Balanced Layout
+- Desktop/Windows: 2 equal cards side by side, each card horizontal
+- Mobile: 1 column compact, avoids skinny/tall cards
+- Scoped to docs-cards only
+========================================================= */
+
+.docs-cards{
+    margin-top:12px !important;
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:28px !important;
+    align-items:stretch !important;
+}
+
+.docs-card{
+    position:relative !important;
+    display:grid !important;
+    grid-template-columns:minmax(230px,42%) minmax(0,58%) !important;
+    gap:24px !important;
+    align-items:start !important;
+    min-height:0 !important;
+    height:auto !important;
+    padding:22px !important;
+    border-radius:30px !important;
+    overflow:hidden !important;
+}
+
+.docs-card .card-banner-image{
+    position:relative !important;
+    width:100% !important;
+    height:230px !important;
+    min-height:230px !important;
+    max-height:230px !important;
+    margin:0 !important;
+    border-radius:24px !important;
+    overflow:hidden !important;
+    align-self:start !important;
+    border:1px solid rgba(45,212,191,.20) !important;
+    box-shadow:0 14px 32px rgba(0,0,0,.22), 0 0 20px rgba(16,185,129,.12) !important;
+}
+
+.docs-card .card-banner-image img{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+    display:block !important;
+    transform:none !important;
+}
+
+.docs-card .card-banner-image::after{
+    content:'' !important;
+    position:absolute !important;
+    inset:0 !important;
+    background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.18)) !important;
+    pointer-events:none !important;
+}
+
+.docs-card-body{
+    position:relative !important;
+    z-index:2 !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+    align-self:start !important;
+    padding-top:0 !important;
+    min-width:0 !important;
+}
+
+.docs-card-headline{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:12px !important;
+    margin:0 0 16px 0 !important;
+}
+
+.docs-card .docs-badge{
+    position:static !important;
+    margin:0 !important;
+    width:max-content !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    padding:7px 16px !important;
+    border-radius:999px !important;
+    background:linear-gradient(135deg,#dcfce7,#5eead4) !important;
+    color:#064e3b !important;
+    font-size:13px !important;
+    font-weight:900 !important;
+    line-height:1.1 !important;
+    box-shadow:0 8px 18px rgba(16,185,129,.18) !important;
+}
+
+.docs-card h3{
+    margin:0 !important;
+    color:#ffffff !important;
+    font-size:clamp(24px,2.2vw,34px) !important;
+    line-height:1.12 !important;
+    font-weight:900 !important;
+    text-shadow:0 2px 12px rgba(0,0,0,.25) !important;
+}
+
+.docs-card .docs-list{
+    margin:0 !important;
+    padding:0 !important;
+    list-style:none !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:10px !important;
+}
+
+.docs-card .docs-list + .docs-list{
+    margin-top:10px !important;
+}
+
+.docs-card .docs-list li{
+    position:relative !important;
+    padding-left:28px !important;
+    color:rgba(255,255,255,.94) !important;
+    font-size:clamp(15px,1.05vw,17px) !important;
+    line-height:1.62 !important;
+    font-weight:800 !important;
+    text-shadow:0 2px 10px rgba(0,0,0,.18) !important;
+}
+
+.docs-card .docs-list li::before{
+    content:'✓' !important;
+    position:absolute !important;
+    left:0 !important;
+    top:0 !important;
+    color:#5eead4 !important;
+    font-weight:900 !important;
+    font-size:18px !important;
+}
+
+.docs-card .docs-medical-note li{
+    color:#ff6b5f !important;
+    font-weight:900 !important;
+}
+
+.docs-card .docs-medical-note li::before{
+    color:#ff6b5f !important;
+}
+
+@media(max-width:1320px) and (min-width:961px){
+    .docs-card{
+        grid-template-columns:40% 60% !important;
+        gap:20px !important;
+        padding:20px !important;
+    }
+
+    .docs-card .card-banner-image{
+        height:210px !important;
+        min-height:210px !important;
+        max-height:210px !important;
+    }
+
+    .docs-card .docs-list li{
+        font-size:15px !important;
+        line-height:1.55 !important;
+    }
+}
+
+@media(max-width:960px){
+    .docs-cards{
+        grid-template-columns:1fr !important;
+        gap:18px !important;
+    }
+
+    .docs-card{
+        grid-template-columns:1fr !important;
+        gap:16px !important;
+        padding:18px !important;
+        border-radius:24px !important;
+    }
+
+    .docs-card .card-banner-image{
+        height:150px !important;
+        min-height:150px !important;
+        max-height:150px !important;
+        border-radius:20px !important;
+    }
+
+    .docs-card-headline{
+        gap:8px !important;
+        margin-bottom:12px !important;
+    }
+
+    .docs-card .docs-badge{
+        font-size:11px !important;
+        padding:6px 12px !important;
+    }
+
+    .docs-card h3{
+        font-size:22px !important;
+    }
+
+    .docs-card .docs-list{
+        gap:8px !important;
+    }
+
+    .docs-card .docs-list li{
+        font-size:14px !important;
+        line-height:1.58 !important;
+        padding-left:24px !important;
+    }
+}
+
+@media(max-width:420px){
+    .docs-card .card-banner-image{
+        height:132px !important;
+        min-height:132px !important;
+        max-height:132px !important;
+    }
+
+    .docs-card .docs-list li{
+        font-size:13.5px !important;
+    }
+}
+
+/* =========================================================
+FINAL REQUIREMENT PATCH
+1) Remove Top Alert / ประกาศล่าสุด
+2) Move Desktop Hero title block upward
+3) Remove heavy grid texture from Quick Access cards
+========================================================= */
+
+/* 1. Top Alert off */
+.top-alert{
+    display:none !important;
+}
+
+/* 2. Desktop Hero title block move up only */
+@media (min-width:961px){
+    .hero-left{
+        margin-top:-88px !important;
+        padding-top:0 !important;
+        justify-content:flex-start !important;
+    }
+
+    .hero-left .hero-title,
+    .hero-left h1{
+        margin-top:0 !important;
+    }
+}
+
+/* 3. Quick Access grid texture soften/remove */
+.quick-access-cards .card,
+.cards.quick-access-cards .card{
+    background:
+        radial-gradient(circle at 18% 10%, rgba(255,255,255,.10), transparent 28%),
+        linear-gradient(145deg, rgba(6,95,70,.98), rgba(4,120,87,.92)) !important;
+}
+
+.quick-access-cards .card::before,
+.quick-access-cards .card::after,
+.cards.quick-access-cards .card::before,
+.cards.quick-access-cards .card::after{
+    background-image:none !important;
+    opacity:0 !important;
+}
+
+/* Keep text/icon readable on both desktop and mobile */
+.quick-access-cards .card h3,
+.cards.quick-access-cards .card h3{
+    color:#ffffff !important;
+    text-shadow:0 2px 10px rgba(0,0,0,.22);
+}
+
+.quick-access-cards .card p,
+.cards.quick-access-cards .card p{
+    color:rgba(255,255,255,.88) !important;
+    text-shadow:0 2px 8px rgba(0,0,0,.16);
+}
+
+.quick-access-cards .card a,
+.cards.quick-access-cards .card a{
+    color:#053b32 !important;
+}
+
+/* For disabled card button */
+.quick-access-cards .card .is-disabled-link,
+.cards.quick-access-cards .card .is-disabled-link{
+    color:rgba(255,255,255,.75) !important;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -4511,18 +4803,24 @@ FINAL QC READABILITY PATCH
                     <img src="assets/images/cards/docs-general.jpg" alt="วิชาทั่วไป">
                 </div>
 
-                <div class="docs-badge">
-                    ก่อนสมัคร
+                <div class="docs-card-body">
+
+                    <div class="docs-card-headline">
+                        <div class="docs-badge">
+                            ก่อนสมัคร
+                        </div>
+
+                        <h3>
+                            วิชาทั่วไป
+                        </h3>
+                    </div>
+
+                    <ul class="docs-list">
+                        <li>รูปถ่ายหน้าตรง ไม่สวมหมวก/แว่นดำ ขนาด 1–2 นิ้ว จำนวน 2 รูป</li>
+                        <li>สำเนาบัตรประชาชน จำนวน 1 ชุด</li>
+                    </ul>
+
                 </div>
-
-                <h3>
-                    วิชาทั่วไป
-                </h3>
-
-                <ul class="docs-list">
-                    <li>รูปถ่ายหน้าตรง ไม่สวมหมวก/แว่นดำ ขนาด 1–2 นิ้ว จำนวน 2 รูป</li>
-                    <li>สำเนาบัตรประชาชน จำนวน 1 ชุด</li>
-                </ul>
 
             </div>
 
@@ -4532,25 +4830,31 @@ FINAL QC READABILITY PATCH
                     <img src="assets/images/cards/docs-massage.jpg" alt="วิชานวด">
                 </div>
 
-                <div class="docs-badge">
-                    เฉพาะทาง
+                <div class="docs-card-body">
+
+                    <div class="docs-card-headline">
+                        <div class="docs-badge">
+                            เฉพาะทาง
+                        </div>
+
+                        <h3>
+                            วิชานวด
+                        </h3>
+                    </div>
+
+                    <ul class="docs-list">
+                        <li>รูปถ่ายหน้าตรง ไม่สวมหมวก/แว่นดำ ขนาด 1–2 นิ้ว จำนวน 2 รูป</li>
+                        <li>สำเนาบัตรประชาชน จำนวน 1 ชุด</li>
+                        <li>สำเนาทะเบียนบ้าน จำนวน 1 ชุด</li>
+                        <li>สำเนาวุฒิการศึกษา ภาคบังคับขึ้นไป จำนวน 1 ชุด</li>
+                    </ul>
+                    <ul class="docs-list docs-medical-note">
+                        <li>
+                            ใบรับรองแพทย์ สามารถนำมาส่งวันเปิดเรียนวันแรกได้ 🩺
+                        </li>
+                    </ul>
+
                 </div>
-
-                <h3>
-                    วิชานวด
-                </h3>
-
-                <ul class="docs-list">
-                    <li>รูปถ่ายหน้าตรง ไม่สวมหมวก/แว่นดำ ขนาด 1–2 นิ้ว จำนวน 2 รูป</li>
-                    <li>สำเนาบัตรประชาชน จำนวน 1 ชุด</li>
-                    <li>สำเนาทะเบียนบ้าน จำนวน 1 ชุด</li>
-                    <li>สำเนาวุฒิการศึกษา ภาคบังคับขึ้นไป จำนวน 1 ชุด</li>
-                </ul>
-                <ul class="docs-list">
-                    <li style="color:#dc2626;font-weight:800;">
-                        ใบรับรองแพทย์ สามารถนำมาส่งวันเปิดเรียนวันแรกได้ 🩺
-                    </li>
-                </ul>
 
             </div>
 
