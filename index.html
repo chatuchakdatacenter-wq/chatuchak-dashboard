@@ -2339,7 +2339,101 @@ font-size:14px;
 
 }
 
-</style>
+
+
+/* =========================================================
+   3D MENU ICONS - WINDOWS / MOBILE SAFE SIZE
+   Replaces emoji icons with uploaded 3D PNG icons
+   ========================================================= */
+
+.menu-icon-3d{
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    object-fit: contain !important;
+    display: inline-flex !important;
+    vertical-align: middle !important;
+    flex-shrink: 0 !important;
+    margin-right: 10px !important;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,.22));
+}
+
+/* Keep menu text and icon aligned */
+a .menu-icon-3d,
+.menu-card .menu-icon-3d,
+.quick-card .menu-icon-3d,
+.nav-card .menu-icon-3d{
+    align-self: center !important;
+}
+
+/* Slightly smaller on mobile so cards do not feel oversized */
+@media (max-width: 768px){
+    .menu-icon-3d{
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
+        margin-right: 8px !important;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 420px){
+    .menu-icon-3d{
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
+        margin-right: 7px !important;
+    }
+}
+
+
+/* =========================================================
+   SAFE 3D MENU ICONS PATCH ONLY
+   ========================================================= */
+
+.menu-icon-3d{
+    width:32px !important;
+    height:32px !important;
+    min-width:32px !important;
+    object-fit:contain !important;
+    display:inline-flex !important;
+    vertical-align:middle !important;
+    flex-shrink:0 !important;
+    margin-right:10px !important;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.18));
+}
+
+@media (max-width:768px){
+
+    .menu-icon-3d{
+        width:28px !important;
+        height:28px !important;
+        min-width:28px !important;
+        margin-right:8px !important;
+    }
+
+}
+
+
+/* REAL QUICK ACCESS CARD ICONS */
+.card-icon-3d{
+    width:52px !important;
+    height:52px !important;
+    object-fit:contain !important;
+    display:block !important;
+    margin:auto !important;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.20));
+}
+
+@media(max-width:768px){
+    .card-icon-3d{
+        width:46px !important;
+        height:46px !important;
+    }
+}
 
 </style>
 
@@ -4196,228 +4290,6 @@ FINAL QC READABILITY PATCH
 
 <style>
 /* =========================================================
-FINAL QC: Docs Cards Compact Balanced Layout
-- Desktop/Windows: 2 equal cards side by side, each card horizontal
-- Mobile: 1 column compact, avoids skinny/tall cards
-- Scoped to docs-cards only
-========================================================= */
-
-.docs-cards{
-    margin-top:12px !important;
-    display:grid !important;
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-    gap:28px !important;
-    align-items:stretch !important;
-}
-
-.docs-card{
-    position:relative !important;
-    display:grid !important;
-    grid-template-columns:minmax(230px,42%) minmax(0,58%) !important;
-    gap:24px !important;
-    align-items:start !important;
-    min-height:0 !important;
-    height:auto !important;
-    padding:22px !important;
-    border-radius:30px !important;
-    overflow:hidden !important;
-}
-
-.docs-card .card-banner-image{
-    position:relative !important;
-    width:100% !important;
-    height:230px !important;
-    min-height:230px !important;
-    max-height:230px !important;
-    margin:0 !important;
-    border-radius:24px !important;
-    overflow:hidden !important;
-    align-self:start !important;
-    border:1px solid rgba(45,212,191,.20) !important;
-    box-shadow:0 14px 32px rgba(0,0,0,.22), 0 0 20px rgba(16,185,129,.12) !important;
-}
-
-.docs-card .card-banner-image img{
-    width:100% !important;
-    height:100% !important;
-    object-fit:cover !important;
-    object-position:center center !important;
-    display:block !important;
-    transform:none !important;
-}
-
-.docs-card .card-banner-image::after{
-    content:'' !important;
-    position:absolute !important;
-    inset:0 !important;
-    background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.18)) !important;
-    pointer-events:none !important;
-}
-
-.docs-card-body{
-    position:relative !important;
-    z-index:2 !important;
-    display:flex !important;
-    flex-direction:column !important;
-    justify-content:flex-start !important;
-    align-self:start !important;
-    padding-top:0 !important;
-    min-width:0 !important;
-}
-
-.docs-card-headline{
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:flex-start !important;
-    gap:12px !important;
-    margin:0 0 16px 0 !important;
-}
-
-.docs-card .docs-badge{
-    position:static !important;
-    margin:0 !important;
-    width:max-content !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    padding:7px 16px !important;
-    border-radius:999px !important;
-    background:linear-gradient(135deg,#dcfce7,#5eead4) !important;
-    color:#064e3b !important;
-    font-size:13px !important;
-    font-weight:900 !important;
-    line-height:1.1 !important;
-    box-shadow:0 8px 18px rgba(16,185,129,.18) !important;
-}
-
-.docs-card h3{
-    margin:0 !important;
-    color:#ffffff !important;
-    font-size:clamp(24px,2.2vw,34px) !important;
-    line-height:1.12 !important;
-    font-weight:900 !important;
-    text-shadow:0 2px 12px rgba(0,0,0,.25) !important;
-}
-
-.docs-card .docs-list{
-    margin:0 !important;
-    padding:0 !important;
-    list-style:none !important;
-    display:flex !important;
-    flex-direction:column !important;
-    gap:10px !important;
-}
-
-.docs-card .docs-list + .docs-list{
-    margin-top:10px !important;
-}
-
-.docs-card .docs-list li{
-    position:relative !important;
-    padding-left:28px !important;
-    color:rgba(255,255,255,.94) !important;
-    font-size:clamp(15px,1.05vw,17px) !important;
-    line-height:1.62 !important;
-    font-weight:800 !important;
-    text-shadow:0 2px 10px rgba(0,0,0,.18) !important;
-}
-
-.docs-card .docs-list li::before{
-    content:'✓' !important;
-    position:absolute !important;
-    left:0 !important;
-    top:0 !important;
-    color:#5eead4 !important;
-    font-weight:900 !important;
-    font-size:18px !important;
-}
-
-.docs-card .docs-medical-note li{
-    color:#ff6b5f !important;
-    font-weight:900 !important;
-}
-
-.docs-card .docs-medical-note li::before{
-    color:#ff6b5f !important;
-}
-
-@media(max-width:1320px) and (min-width:961px){
-    .docs-card{
-        grid-template-columns:40% 60% !important;
-        gap:20px !important;
-        padding:20px !important;
-    }
-
-    .docs-card .card-banner-image{
-        height:210px !important;
-        min-height:210px !important;
-        max-height:210px !important;
-    }
-
-    .docs-card .docs-list li{
-        font-size:15px !important;
-        line-height:1.55 !important;
-    }
-}
-
-@media(max-width:960px){
-    .docs-cards{
-        grid-template-columns:1fr !important;
-        gap:18px !important;
-    }
-
-    .docs-card{
-        grid-template-columns:1fr !important;
-        gap:16px !important;
-        padding:18px !important;
-        border-radius:24px !important;
-    }
-
-    .docs-card .card-banner-image{
-        height:150px !important;
-        min-height:150px !important;
-        max-height:150px !important;
-        border-radius:20px !important;
-    }
-
-    .docs-card-headline{
-        gap:8px !important;
-        margin-bottom:12px !important;
-    }
-
-    .docs-card .docs-badge{
-        font-size:11px !important;
-        padding:6px 12px !important;
-    }
-
-    .docs-card h3{
-        font-size:22px !important;
-    }
-
-    .docs-card .docs-list{
-        gap:8px !important;
-    }
-
-    .docs-card .docs-list li{
-        font-size:14px !important;
-        line-height:1.58 !important;
-        padding-left:24px !important;
-    }
-}
-
-@media(max-width:420px){
-    .docs-card .card-banner-image{
-        height:132px !important;
-        min-height:132px !important;
-        max-height:132px !important;
-    }
-
-    .docs-card .docs-list li{
-        font-size:13.5px !important;
-    }
-}
-
-/* =========================================================
 FINAL REQUIREMENT PATCH
 1) Remove Top Alert / ประกาศล่าสุด
 2) Move Desktop Hero title block upward
@@ -4485,6 +4357,404 @@ FINAL REQUIREMENT PATCH
 
 </style>
 
+
+<style id="dtcp-final-locked-windows-view">
+/* =========================================================
+   DTCP FINAL LOCKED WINDOWS VIEW
+   Base file: index_statistics_card_FIXED_DESKTOP_SCALE(2).zip
+   Scope:
+   1) Remove hotline white circle / glow overlay.
+   2) Restore stable Windows layout without transform scale hacks.
+   3) Keep approved premium green + gold docs cards with visible images.
+   ========================================================= */
+
+/* Prevent accidental horizontal scroll from old scale/negative margin rules */
+html,
+body{
+    overflow-x:hidden !important;
+}
+
+/* ---------------------------------------------------------
+   1) Hotline: remove the white circle / blob that covers number
+--------------------------------------------------------- */
+.hotline::before,
+.hotline::after{
+    content:none !important;
+    display:none !important;
+    opacity:0 !important;
+    visibility:hidden !important;
+}
+
+.hotline{
+    isolation:isolate !important;
+}
+
+.hotline-call,
+.hotline-time,
+.hotline-map,
+.hotline-facebook,
+.hotline-location{
+    position:relative !important;
+    z-index:2 !important;
+}
+
+/* ---------------------------------------------------------
+   2) Windows/Desktop layout: no transform scaling, no negative width
+--------------------------------------------------------- */
+@media (min-width:961px){
+
+    .main{
+        margin-left:300px !important;
+        width:calc(100vw - 300px) !important;
+        max-width:calc(100vw - 300px) !important;
+        padding:20px 28px 34px !important;
+        overflow-x:hidden !important;
+        box-sizing:border-box !important;
+    }
+
+    .section-title + .cards.docs-cards{
+        margin-top:14px !important;
+    }
+
+    .cards.docs-cards{
+        display:grid !important;
+        grid-template-columns:repeat(2, minmax(300px, 430px)) !important;
+        justify-content:center !important;
+        align-items:stretch !important;
+        gap:28px !important;
+
+        width:100% !important;
+        max-width:930px !important;
+
+        margin:16px auto 42px !important;
+        padding:0 !important;
+
+        transform:none !important;
+        transform-origin:center center !important;
+
+        overflow:visible !important;
+        box-sizing:border-box !important;
+    }
+}
+
+/* ---------------------------------------------------------
+   3) Approved docs card design
+--------------------------------------------------------- */
+.cards.docs-cards .docs-card{
+    position:relative !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    min-height:430px !important;
+    height:auto !important;
+
+    padding:0 !important;
+
+    overflow:hidden !important;
+    border-radius:28px !important;
+
+    background:
+        radial-gradient(circle at 16% 10%, rgba(94,234,212,.13), transparent 32%),
+        linear-gradient(145deg, rgba(0,92,70,.98) 0%, rgba(2,70,56,.98) 55%, rgba(0,45,36,.98) 100%) !important;
+
+    border:1.5px solid rgba(212,175,55,.72) !important;
+
+    box-shadow:
+        0 18px 36px rgba(0,0,0,.26),
+        0 0 0 1px rgba(255,255,255,.045) inset,
+        0 0 26px rgba(212,175,55,.12) !important;
+
+    backdrop-filter:blur(10px) !important;
+    transition:transform .24s ease, box-shadow .24s ease, border-color .24s ease !important;
+}
+
+.cards.docs-cards .docs-card:hover{
+    transform:translateY(-4px) !important;
+    border-color:rgba(212,175,55,.92) !important;
+    box-shadow:
+        0 24px 48px rgba(0,0,0,.32),
+        0 0 0 1px rgba(255,255,255,.055) inset,
+        0 0 34px rgba(212,175,55,.18) !important;
+}
+
+/* Keep the two approved background/banner images visible */
+.cards.docs-cards .docs-card .card-banner-image{
+    position:relative !important;
+    z-index:1 !important;
+
+    width:100% !important;
+    height:158px !important;
+    min-height:158px !important;
+    max-height:158px !important;
+
+    margin:0 !important;
+    padding:0 !important;
+
+    border:0 !important;
+    border-radius:0 !important;
+    overflow:hidden !important;
+
+    box-shadow:none !important;
+    background:transparent !important;
+}
+
+.cards.docs-cards .docs-card .card-banner-image img{
+    display:block !important;
+    width:100% !important;
+    height:100% !important;
+
+    object-fit:cover !important;
+    object-position:center center !important;
+
+    transform:none !important;
+    filter:saturate(1.06) contrast(1.03) !important;
+}
+
+.cards.docs-cards .docs-card .card-banner-image::after{
+    content:'' !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:2 !important;
+    pointer-events:none !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.06) 0%,
+            rgba(0,92,70,.22) 48%,
+            rgba(0,55,44,.70) 100%
+        ) !important;
+}
+
+/* Body and typography */
+.cards.docs-cards .docs-card .docs-card-body{
+    position:relative !important;
+    z-index:2 !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    flex:1 1 auto !important;
+
+    padding:20px 24px 24px !important;
+    margin:0 !important;
+
+    background:
+        radial-gradient(circle at 84% 16%, rgba(94,234,212,.10), transparent 34%),
+        linear-gradient(180deg, rgba(0,92,70,.08), rgba(0,43,35,.16)) !important;
+
+    box-sizing:border-box !important;
+}
+
+.cards.docs-cards .docs-card .docs-card-headline{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    justify-content:flex-start !important;
+    gap:10px !important;
+
+    margin:0 0 14px 0 !important;
+    padding:0 !important;
+}
+
+.cards.docs-cards .docs-card .docs-badge{
+    position:static !important;
+    inset:auto !important;
+
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    width:max-content !important;
+    max-width:100% !important;
+
+    margin:0 !important;
+    padding:6px 14px !important;
+
+    border:0 !important;
+    border-radius:999px !important;
+
+    background:linear-gradient(135deg,#dcfce7,#5eead4) !important;
+    color:#064e3b !important;
+
+    font-size:12px !important;
+    line-height:1.15 !important;
+    font-weight:900 !important;
+    letter-spacing:.15px !important;
+
+    box-shadow:0 8px 18px rgba(16,185,129,.18) !important;
+}
+
+.cards.docs-cards .docs-massage-card .docs-badge{
+    background:linear-gradient(135deg,#fde68a,#d4af37) !important;
+    color:#064e3b !important;
+}
+
+.cards.docs-cards .docs-card h3{
+    margin:0 !important;
+    padding:0 !important;
+
+    color:#ffffff !important;
+    font-size:30px !important;
+    line-height:1.12 !important;
+    font-weight:900 !important;
+    letter-spacing:-.25px !important;
+
+    text-shadow:0 3px 14px rgba(0,0,0,.28) !important;
+}
+
+.cards.docs-cards .docs-card .docs-list{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:9px !important;
+
+    list-style:none !important;
+
+    margin:0 !important;
+    padding:0 !important;
+}
+
+.cards.docs-cards .docs-card .docs-list + .docs-list{
+    margin-top:13px !important;
+}
+
+.cards.docs-cards .docs-card .docs-list li{
+    position:relative !important;
+
+    margin:0 !important;
+    padding-left:27px !important;
+
+    color:rgba(255,255,255,.94) !important;
+    font-size:15.5px !important;
+    line-height:1.62 !important;
+    font-weight:800 !important;
+
+    text-shadow:0 2px 10px rgba(0,0,0,.18) !important;
+}
+
+.cards.docs-cards .docs-card .docs-list li::before{
+    content:'✓' !important;
+    position:absolute !important;
+    left:0 !important;
+    top:0 !important;
+
+    color:#5eead4 !important;
+    font-size:18px !important;
+    font-weight:900 !important;
+
+    text-shadow:0 0 12px rgba(94,234,212,.38) !important;
+}
+
+/* Medical note */
+.cards.docs-cards .docs-card .docs-medical-note{
+    margin-top:14px !important;
+    padding:10px 13px !important;
+
+    border-radius:15px !important;
+    border:1px solid rgba(212,175,55,.42) !important;
+
+    background:rgba(255,248,220,.10) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.cards.docs-cards .docs-card .docs-medical-note li{
+    color:#f6c453 !important;
+    font-weight:900 !important;
+}
+
+.cards.docs-cards .docs-card .docs-medical-note li::before{
+    color:#f6c453 !important;
+}
+
+/* Medium Windows: keep same approved design, just slightly more compact */
+@media (min-width:961px) and (max-width:1320px){
+
+    .cards.docs-cards{
+        grid-template-columns:repeat(2, minmax(270px, 1fr)) !important;
+        max-width:850px !important;
+        gap:24px !important;
+    }
+
+    .cards.docs-cards .docs-card{
+        min-height:410px !important;
+        border-radius:26px !important;
+    }
+
+    .cards.docs-cards .docs-card .card-banner-image{
+        height:145px !important;
+        min-height:145px !important;
+        max-height:145px !important;
+    }
+
+    .cards.docs-cards .docs-card .docs-card-body{
+        padding:18px 20px 22px !important;
+    }
+
+    .cards.docs-cards .docs-card h3{
+        font-size:27px !important;
+    }
+
+    .cards.docs-cards .docs-card .docs-list li{
+        font-size:14.5px !important;
+        line-height:1.56 !important;
+    }
+}
+
+/* Tablet / Mobile: stack cleanly; no overlap with menu/sidebar */
+@media (max-width:960px){
+
+    .main{
+        margin-left:0 !important;
+        width:100% !important;
+        max-width:100% !important;
+        overflow-x:hidden !important;
+    }
+
+    .cards.docs-cards{
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        gap:20px !important;
+
+        width:100% !important;
+        max-width:560px !important;
+
+        margin:14px auto 30px !important;
+        padding:0 !important;
+
+        transform:none !important;
+        overflow:visible !important;
+    }
+
+    .cards.docs-cards .docs-card{
+        min-height:0 !important;
+        border-radius:24px !important;
+    }
+
+    .cards.docs-cards .docs-card .card-banner-image{
+        height:140px !important;
+        min-height:140px !important;
+        max-height:140px !important;
+    }
+
+    .cards.docs-cards .docs-card .docs-card-body{
+        padding:18px 18px 20px !important;
+    }
+
+    .cards.docs-cards .docs-card h3{
+        font-size:24px !important;
+    }
+
+    .cards.docs-cards .docs-card .docs-list li{
+        font-size:14px !important;
+        line-height:1.58 !important;
+        padding-left:25px !important;
+    }
+}
+</style>
+
 </head>
 
 <body>
@@ -4526,7 +4796,7 @@ FINAL REQUIREMENT PATCH
         <div class="menu">
 
             <a href="https://chatuchakdatacenter-wq.github.io/training-register/">
-                <span class="menu-icon">📝</span>
+                <img src="assets/images/icons/register-3d.png" alt="สมัครเรียนออนไลน์" class="menu-icon menu-icon-3d" loading="lazy">
                 สมัครเรียนออนไลน์
             </a>
 
@@ -4545,12 +4815,12 @@ FINAL REQUIREMENT PATCH
         <div class="menu">
 
             <a href="#public-relations">
-                <span class="menu-icon">📢</span>
+                <img src="assets/images/icons/news-3d.png" alt="ข่าวประชาสัมพันธ์" class="menu-icon menu-icon-3d" loading="lazy">
                 ข่าวประชาสัมพันธ์
             </a>
 
             <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/">
-                <span class="menu-icon">🧠</span>
+                <img src="assets/images/icons/km-3d.png" alt="KM Smart Hub" class="menu-icon menu-icon-3d" loading="lazy">
                 KM SMART HUB
             </a>
 
@@ -4717,7 +4987,7 @@ FINAL REQUIREMENT PATCH
             <div class="card">
 
                 <div class="card-icon">
-                    📝
+                    <img src="assets/images/icons/register-3d.png" alt="สมัครเรียนออนไลน์" class="card-icon-3d" loading="lazy">
                 </div>
 
                 <h3>
@@ -4738,7 +5008,7 @@ FINAL REQUIREMENT PATCH
             <div class="card">
 
                 <div class="card-icon">
-                    🧠
+                    <img src="assets/images/icons/km-3d.png" alt="KM SMART HUB" class="card-icon-3d" loading="lazy">
                 </div>
 
                 <h3>
@@ -4778,6 +5048,28 @@ FINAL REQUIREMENT PATCH
 
                 <a href="#" class="is-disabled-link" aria-disabled="true">
                     ยังไม่เปิดใช้งาน
+                </a>
+
+            </div>
+
+
+            <div class="card stats-card">
+
+                <div class="card-icon">
+                    📈
+                </div>
+
+                <h3>
+                    สถิติผู้เรียน
+                </h3>
+
+                <p>
+                    แสดงข้อมูลสถิติผู้เรียน หลักสูตรยอดนิยม
+                    และผลลัพธ์การจ้างงานของผู้ผ่านการอบรม
+                </p>
+
+                <a href="#statistics">
+                    ดูข้อมูลสถิติ →
                 </a>
 
             </div>
@@ -5352,7 +5644,7 @@ loadStatistics();
 </script>
 
 
-<section class="ai-dashboard-section">
+<section id="statistics" class="ai-dashboard-section">
 
 
 <div class="ai-kpi-grid">
