@@ -2541,6 +2541,88 @@ a .menu-icon-3d,
 
 }
 
+
+/* =========================================================
+   QUIET PREMIUM GLASS
+   ========================================================= */
+
+.quick-access-card,
+.quick-card,
+.card.quick-card{
+
+    background:
+    linear-gradient(
+    135deg,
+    rgba(5,78,59,.96) 0%,
+    rgba(6,95,70,.95) 45%,
+    rgba(4,120,87,.93) 100%) !important;
+
+    border:
+    1px solid rgba(255,255,255,.06) !important;
+
+    box-shadow:
+    0 10px 24px rgba(0,0,0,.16) !important;
+
+    backdrop-filter:
+    blur(8px);
+
+    overflow:hidden;
+}
+
+/* remove flashy glow */
+.quick-access-card::before,
+.quick-card::before,
+.card.quick-card::before{
+
+    background:
+    linear-gradient(
+    to bottom,
+    rgba(255,255,255,.05),
+    rgba(255,255,255,0)) !important;
+
+    opacity:.7;
+}
+
+/* subtle edge */
+.quick-access-card::after,
+.quick-card::after,
+.card.quick-card::after{
+
+    box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+/* subtle hover */
+.quick-access-card:hover,
+.quick-card:hover,
+.card.quick-card:hover{
+
+    transform:translateY(-2px) !important;
+
+    box-shadow:
+    0 14px 28px rgba(0,0,0,.20) !important;
+}
+
+/* better icon balance */
+.card-icon-3d{
+
+    width:58px !important;
+    height:58px !important;
+
+    filter:
+    drop-shadow(0 4px 10px rgba(0,0,0,.18)) !important;
+}
+
+@media(max-width:768px){
+
+    .card-icon-3d{
+
+        width:48px !important;
+        height:48px !important;
+    }
+
+}
+
 </style>
 
 <style>
