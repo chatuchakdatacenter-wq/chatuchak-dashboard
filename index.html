@@ -4916,6 +4916,127 @@ FINAL ICON ASSET SYSTEM
 
 }
 
+
+/* =========================================================
+FINAL QUICK ACCESS VISUAL FRAME BALANCE
+- รูปอยู่กึ่งกลางกรอบด้านบน
+- visual frame สูงเท่ากัน
+- ไม่บีบ/ยืดรูปมั่ว
+- รูปใหญ่ขึ้นแต่ไม่ทับหัวข้อ
+========================================================= */
+
+.card{
+    min-height:475px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:flex-start !important;
+}
+
+.quick-icon-wrap{
+    width:100% !important;
+    height:210px !important;
+    min-height:210px !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    margin:0 0 12px 0 !important;
+    padding:0 !important;
+
+    overflow:visible !important;
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+}
+
+.quick-icon-img{
+    display:block !important;
+
+    width:185px !important;
+    height:185px !important;
+
+    max-width:92% !important;
+    max-height:190px !important;
+
+    object-fit:contain !important;
+    object-position:center center !important;
+
+    transform:none !important;
+
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+}
+
+/* KM รูปแนวนอนกว้างกว่า ให้ใช้กรอบเดียวกันแต่ scale พอดี */
+.quick-icon-img[src*="km-brain"]{
+    width:225px !important;
+    height:180px !important;
+    max-width:96% !important;
+    max-height:190px !important;
+}
+
+/* สมัครเรียนเป็นวงกลม ให้คงสัดส่วน ไม่บีบเป็นแนวนอน */
+.quick-icon-img[src*="register-hero"]{
+    width:185px !important;
+    height:185px !important;
+    max-width:92% !important;
+    max-height:190px !important;
+}
+
+.card h3{
+    margin:0 0 18px 0 !important;
+    min-height:54px !important;
+    line-height:1.18 !important;
+    display:flex !important;
+    align-items:flex-start !important;
+}
+
+.card p{
+    flex:1 1 auto !important;
+    margin-bottom:18px !important;
+}
+
+.card a{
+    margin-top:auto !important;
+}
+
+@media(max-width:960px){
+
+    .card{
+        min-height:unset !important;
+    }
+
+    .quick-icon-wrap{
+        height:126px !important;
+        min-height:126px !important;
+        margin-bottom:10px !important;
+    }
+
+    .quick-icon-img{
+        width:108px !important;
+        height:108px !important;
+        max-height:116px !important;
+    }
+
+    .quick-icon-img[src*="km-brain"]{
+        width:138px !important;
+        height:108px !important;
+        max-width:96% !important;
+    }
+
+    .quick-icon-img[src*="register-hero"]{
+        width:108px !important;
+        height:108px !important;
+    }
+
+    .card h3{
+        min-height:auto !important;
+        margin-bottom:8px !important;
+    }
+}
+
 </style>
 
 
