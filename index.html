@@ -5428,6 +5428,156 @@ function safeSetDisplay(id, value){
 }
 </script>
 
+<style>
+
+/* =========================================================
+FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
+- บังคับรูปใน Quick Access ให้เป็นกรอบแนวนอนจริง
+- แก้ปัญหารูป KM แสดงเป็นแท่งแนวตั้ง
+- ใช้กับไฟล์ assets/images/icons/km-brain-hero.png
+========================================================= */
+
+.cards{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(360px,1fr)) !important;
+    gap:28px !important;
+    align-items:stretch !important;
+}
+
+/* Quick Access cards */
+.cards > .card{
+    min-height:500px !important;
+    padding:24px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    border-radius:28px !important;
+}
+
+/* Hero frame เฉพาะ card ที่ใช้รูป 3D */
+.cards > .card .quick-icon-wrap{
+    width:100% !important;
+    height:230px !important;
+    min-height:230px !important;
+    max-height:230px !important;
+
+    display:block !important;
+    position:relative !important;
+
+    margin:0 0 22px 0 !important;
+    padding:0 !important;
+
+    overflow:hidden !important;
+
+    border-radius:24px !important;
+    background:rgba(255,255,255,.055) !important;
+    border:1px solid rgba(255,255,255,.10) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        0 14px 30px rgba(0,0,0,.10) !important;
+}
+
+/* บังคับรูปให้กินกรอบแนวนอนเต็ม */
+.cards > .card .quick-icon-wrap > img.quick-icon-img{
+    position:absolute !important;
+    inset:0 !important;
+
+    width:100% !important;
+    height:100% !important;
+
+    max-width:none !important;
+    max-height:none !important;
+
+    display:block !important;
+
+    object-fit:cover !important;
+    object-position:center center !important;
+
+    transform:none !important;
+
+    border:none !important;
+    box-shadow:none !important;
+    background:transparent !important;
+}
+
+/* KM เป็นภาพแนวนอนจริง: ให้ fill banner เต็ม */
+.cards > .card .quick-icon-wrap > img.quick-icon-img[src*="km-brain-hero"]{
+    object-fit:cover !important;
+    object-position:center center !important;
+}
+
+/* สมัครเรียน: ถ้ารูปยังเป็นแนวตั้ง ให้ cover เพื่อให้เป็น banner */
+.cards > .card .quick-icon-wrap > img.quick-icon-img[src*="register-hero"]{
+    object-fit:cover !important;
+    object-position:center center !important;
+}
+
+/* ข่าวประชาสัมพันธ์ ถ้ามีใช้ news-hero */
+.cards > .card .quick-icon-wrap > img.quick-icon-img[src*="news-hero"]{
+    object-fit:cover !important;
+    object-position:center center !important;
+}
+
+.cards > .card h3{
+    margin:0 0 16px 0 !important;
+    min-height:54px !important;
+    line-height:1.14 !important;
+}
+
+.cards > .card p{
+    flex:1 1 auto !important;
+    margin-bottom:22px !important;
+}
+
+.cards > .card a{
+    margin-top:auto !important;
+}
+
+/* Tablet */
+@media(max-width:1200px){
+    .cards{
+        grid-template-columns:repeat(2,minmax(300px,1fr)) !important;
+        gap:22px !important;
+    }
+
+    .cards > .card .quick-icon-wrap{
+        height:205px !important;
+        min-height:205px !important;
+        max-height:205px !important;
+    }
+
+    .cards > .card{
+        min-height:470px !important;
+    }
+}
+
+/* Mobile */
+@media(max-width:960px){
+    .cards{
+        grid-template-columns:1fr !important;
+        gap:18px !important;
+    }
+
+    .cards > .card{
+        min-height:unset !important;
+        padding:18px !important;
+    }
+
+    .cards > .card .quick-icon-wrap{
+        height:165px !important;
+        min-height:165px !important;
+        max-height:165px !important;
+        margin-bottom:14px !important;
+        border-radius:18px !important;
+    }
+
+    .cards > .card h3{
+        min-height:auto !important;
+        margin-bottom:10px !important;
+    }
+}
+
+</style>
 </head>
 
 <body>
