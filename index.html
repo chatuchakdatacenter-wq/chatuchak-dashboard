@@ -5037,6 +5037,291 @@ FINAL QUICK ACCESS VISUAL FRAME BALANCE
     }
 }
 
+
+/* =========================================================
+WINDOWS DESKTOP HERO LAYOUT 2x2
+========================================================= */
+
+.cards{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(320px,1fr)) !important;
+    gap:26px !important;
+    align-items:stretch !important;
+}
+
+.card{
+    min-height:430px !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+
+    padding:28px 28px 24px 28px !important;
+}
+
+.quick-icon-wrap{
+    width:100% !important;
+    height:220px !important;
+    min-height:220px !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    margin:0 auto 14px auto !important;
+
+    overflow:visible !important;
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+}
+
+/* ทุก icon เป็นแนวนอน */
+.quick-icon-img{
+    width:240px !important;
+    height:170px !important;
+
+    object-fit:contain !important;
+    object-position:center center !important;
+
+    display:block !important;
+
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+
+    transform:none !important;
+}
+
+/* KM ใช้พื้นที่กว้างกว่า */
+.quick-icon-img[src*="km-brain"]{
+    width:270px !important;
+    height:185px !important;
+}
+
+/* Register hero */
+.quick-icon-img[src*="register-hero"]{
+    width:235px !important;
+    height:180px !important;
+}
+
+.card h3{
+    margin:0 0 18px 0 !important;
+    min-height:58px !important;
+
+    line-height:1.12 !important;
+    text-align:left !important;
+}
+
+.card p{
+    flex:1 1 auto !important;
+    margin-bottom:20px !important;
+}
+
+.card a{
+    margin-top:auto !important;
+}
+
+/* Tablet */
+@media(max-width:1200px){
+
+    .cards{
+        grid-template-columns:repeat(2,minmax(280px,1fr)) !important;
+    }
+
+    .quick-icon-img{
+        width:210px !important;
+        height:150px !important;
+    }
+
+    .quick-icon-img[src*="km-brain"]{
+        width:235px !important;
+        height:165px !important;
+    }
+
+}
+
+/* Mobile */
+@media(max-width:960px){
+
+    .cards{
+        grid-template-columns:1fr !important;
+        gap:18px !important;
+    }
+
+    .card{
+        min-height:unset !important;
+        padding:22px 22px 20px 22px !important;
+    }
+
+    .quick-icon-wrap{
+        height:120px !important;
+        min-height:120px !important;
+        margin-bottom:10px !important;
+    }
+
+    .quick-icon-img{
+        width:132px !important;
+        height:96px !important;
+    }
+
+    .quick-icon-img[src*="km-brain"]{
+        width:150px !important;
+        height:108px !important;
+    }
+
+    .quick-icon-img[src*="register-hero"]{
+        width:136px !important;
+        height:102px !important;
+    }
+
+    .card h3{
+        min-height:auto !important;
+        margin-bottom:10px !important;
+    }
+
+}
+
+
+/* =========================================================
+FINAL WINDOWS HORIZONTAL HERO BANNER CARDS
+- เปลี่ยน Quick Access จาก icon เป็น hero banner แนวนอนเต็มการ์ด
+========================================================= */
+
+.cards{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(360px,1fr)) !important;
+    gap:28px !important;
+    align-items:stretch !important;
+}
+
+.card{
+    min-height:500px !important;
+    padding:24px !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+
+    border-radius:28px !important;
+    overflow:hidden !important;
+}
+
+/* HERO BANNER FRAME */
+.quick-icon-wrap{
+    width:100% !important;
+    height:210px !important;
+    min-height:210px !important;
+
+    display:block !important;
+    position:relative !important;
+
+    margin:0 0 22px 0 !important;
+    padding:0 !important;
+
+    overflow:hidden !important;
+
+    border-radius:22px !important;
+    background:rgba(255,255,255,.08) !important;
+    border:1px solid rgba(255,255,255,.12) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 14px 30px rgba(0,0,0,.10) !important;
+}
+
+/* IMAGE FILL */
+.quick-icon-img{
+    width:100% !important;
+    height:100% !important;
+
+    display:block !important;
+
+    object-fit:cover !important;
+    object-position:center center !important;
+
+    transform:none !important;
+
+    border:none !important;
+    box-shadow:none !important;
+    background:transparent !important;
+}
+
+/* สมัครเรียน: crop กลางให้เห็นหนังสือกับดินสอ */
+.quick-icon-img[src*="register-hero"]{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+}
+
+/* KM: crop กลาง เน้นสมองและองค์ความรู้ */
+.quick-icon-img[src*="km-brain"]{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+}
+
+.card h3{
+    margin:0 0 16px 0 !important;
+    min-height:54px !important;
+
+    line-height:1.14 !important;
+    text-align:left !important;
+}
+
+.card p{
+    flex:1 1 auto !important;
+    margin-bottom:22px !important;
+}
+
+.card a{
+    margin-top:auto !important;
+}
+
+/* Tablet */
+@media(max-width:1200px){
+
+    .cards{
+        grid-template-columns:repeat(2,minmax(300px,1fr)) !important;
+        gap:22px !important;
+    }
+
+    .quick-icon-wrap{
+        height:185px !important;
+        min-height:185px !important;
+    }
+
+    .card{
+        min-height:470px !important;
+    }
+}
+
+/* Mobile */
+@media(max-width:960px){
+
+    .cards{
+        grid-template-columns:1fr !important;
+        gap:18px !important;
+    }
+
+    .card{
+        min-height:unset !important;
+        padding:18px !important;
+    }
+
+    .quick-icon-wrap{
+        height:160px !important;
+        min-height:160px !important;
+        margin-bottom:14px !important;
+        border-radius:18px !important;
+    }
+
+    .card h3{
+        min-height:auto !important;
+        margin-bottom:10px !important;
+    }
+}
+
 </style>
 
 
