@@ -5705,6 +5705,48 @@ MOBILE RESPONSIVE HERO BANNER FINAL
 }
 
 </style>
+<style>
+
+/* =========================================================
+MOBILE HERO COVER BALANCE
+- Mobile ไม่ใช้ 16:9 แล้ว เพราะแนวนอนเกินไป
+- ใช้สัดส่วนสูงขึ้น เพื่อให้ภาพดู cover และเต็ม card มากขึ้น
+========================================================= */
+
+@media(max-width:960px){
+
+    .cards > .card .quick-icon-wrap{
+        aspect-ratio:4 / 3 !important;
+        height:auto !important;
+        min-height:0 !important;
+        max-height:none !important;
+
+        overflow:hidden !important;
+        border-radius:18px !important;
+    }
+
+    .cards > .card .quick-icon-wrap > img.quick-icon-img{
+        position:absolute !important;
+        inset:0 !important;
+
+        width:100% !important;
+        height:100% !important;
+
+        object-fit:cover !important;
+        object-position:center center !important;
+    }
+}
+
+@media(max-width:520px){
+
+    .cards > .card .quick-icon-wrap{
+        aspect-ratio:5 / 4 !important;
+        border-radius:16px !important;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
