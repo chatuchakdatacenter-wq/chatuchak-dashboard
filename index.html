@@ -6221,8 +6221,35 @@ function renderPRNews(data) {
         return;
     }
 
+    const sortedData =
+        [...data].sort((a, b) => {
+            const sortA = Number(a.sortOrder);
+            const sortB = Number(b.sortOrder);
+
+            const safeA =
+                Number.isFinite(sortA) ? sortA : 999999;
+
+            const safeB =
+                Number.isFinite(sortB) ? sortB : 999999;
+
+            if (safeA !== safeB) {
+                return safeA - safeB;
+            }
+
+            const idA = Number(a.id);
+            const idB = Number(b.id);
+
+            const safeIdA =
+                Number.isFinite(idA) ? idA : 999999;
+
+            const safeIdB =
+                Number.isFinite(idB) ? idB : 999999;
+
+            return safeIdA - safeIdB;
+        });
+
     container.innerHTML =
-        data.map(item => {
+        sortedData.map(item => {
 
             const title =
                 escapeHTML(item.title || '-');
