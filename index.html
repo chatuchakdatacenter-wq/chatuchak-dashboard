@@ -5409,25 +5409,6 @@ function dtcpDisplay(id, value){
 </script>
 
 
-<script>
-/* DEV01 RUNTIME ERROR FIX: Strong safe DOM helpers */
-function safeEl(id){
-    return document.getElementById(id);
-}
-function safeSetText(id, value){
-    const el = safeEl(id);
-    if(el){ el.textContent = value; }
-}
-function safeSetHTML(id, value){
-    const el = safeEl(id);
-    if(el){ el.innerHTML = value; }
-}
-function safeSetDisplay(id, value){
-    const el = safeEl(id);
-    if(el){ el.style.display = value; }
-}
-</script>
-
 <style>
 
 /* =========================================================
@@ -5581,18 +5562,6 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
 </head>
 
 <body>
-<!-- DEV01 SAFE HIDDEN TARGETS -->
-<div id="dev01SafeHiddenTargets" style="display:none!important;">
-  <div id="employedStudentsAI"></div>
-  <div id="successRateAI"></div>
-  <div id="statisticsLoading"></div>
-  <div id="statisticsError"></div>
-  <div id="totalStudents"></div>
-  <div id="employedStudents"></div>
-  <div id="successRate"></div>
-  <div id="topCoursesContainer"></div>
-</div>
-
 
 <div class="wrapper">
 
@@ -6405,76 +6374,7 @@ loadPRNewsJSONP();
 </nav>
 
 
-<script>
-const STATS_API='https://opensheet.elk.sh/1gNd959wTQc2MfT6c6qKEGN5E9PYN7YOiu5NIq59ph18/stats';
-const TOP_COURSES_API='https://opensheet.elk.sh/1gNd959wTQc2MfT6c6qKEGN5E9PYN7YOiu5NIq59ph18/top_courses';
-
-function formatNumber(value){
-    return Number(value).toLocaleString('th-TH');
-}
-
-function animateValue(element,target,duration=1800){
-    let start=0;
-    const increment=target/(duration/16);
-    const counter=setInterval(()=>{
-        start+=increment;
-        if(start>=target){
-            element.textContent=formatNumber(target);
-            clearInterval(counter);
-        }else{
-            element.textContent=formatNumber(Math.floor(start));
-        }
-    },16);
-}
-
-async function loadStatistics(){
-    try{
-        const [statsRes,coursesRes]=await Promise.all([
-            fetch(STATS_API),
-            fetch(TOP_COURSES_API)
-        ]);
-
-        const statsData=await statsRes.json();
-        const coursesData=await coursesRes.json();
-        const stats=statsData[0];
-
-        dtcpDisplay('statisticsLoading', 'none');
-        dtcpDisplay('statisticsContent', 'block');
-
-        animateValue(document.getElementById('totalStudents'),Number(stats.total_students));
-        animateValue(document.getElementById('graduatesCount'),Number(stats.graduates));
-        animateValue(document.getElementById('employedCount'),Number(stats.employed));
-
-        dtcpText('statsUpdatedAt', `อัปเดตล่าสุด: ${stats.updated_at}`);
-
-        const topCoursesGrid=document.getElementById('topCoursesGrid');
-
-        topCoursesGrid.innerHTML=coursesData.map(course=>`
-            <div class="top-course-card">
-                <div class="top-course-head">
-                    <div class="top-course-title">${course.course}</div>
-                    <div class="top-course-badge">${course.badge}</div>
-                </div>
-
-                <div class="top-course-employed">
-                    มีผู้ประกอบอาชีพแล้วกว่า
-                    <strong>${formatNumber(course.employed_count)}</strong>
-                    คน
-                </div>
-
-                <div class="top-course-desc">${course.description}</div>
-            </div>
-        `).join('');
-
-    }catch(error){
-        console.error(error);
-        dtcpDisplay('statisticsLoading', 'none');
-        dtcpDisplay('statisticsError', 'block');
-    }
-}
-
-try{ loadStatistics(); }catch(e){ console.warn('loadStatistics stopped safely:', e); }
-</script>
+<!-- CLEANUP: Removed obsolete legacy statistics renderer. Current AI dashboard renderer below is the active version. -->
 
 
 <section id="statistics" class="ai-dashboard-section">
@@ -6544,6 +6444,7 @@ dtcpText('graduatesAI', Number(stats.graduates || 0).toLocaleString('th-TH'));
 dtcpText('employedAI', Number(stats.employed || 0).toLocaleString('th-TH'));
 
 const ranking = document.getElementById('courseRanking');
+if (!ranking) return;
 ranking.classList.add('ai-donut-layout');
 
 const colors = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ec4899'];
@@ -6614,7 +6515,7 @@ console.error(error);
 }
 }
 
-loadAIDashboard();
+document.addEventListener('DOMContentLoaded', loadAIDashboard);
 </script>
 
 </body>
