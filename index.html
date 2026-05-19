@@ -5390,16 +5390,16 @@ TRUE HORIZONTAL HERO VISUAL
 }
 
 
-/* ===== UPDATE TEXT BADGE ===== */
+/* =========================================================
+FINAL PATCH: PR NEWS UPDATE TEXT BADGE
+- Show UPDATE from Google Sheet column: isUpdate
+- Pure HTML/CSS only, no layout rewrite
+========================================================= */
 
 .update-text{
-
     display:inline-block;
-
     margin-right:10px;
-
     padding:3px 10px;
-
     border-radius:999px;
 
     background:
@@ -5416,7 +5416,6 @@ TRUE HORIZONTAL HERO VISUAL
     letter-spacing:1px;
 
     vertical-align:middle;
-
     text-transform:uppercase;
 
     box-shadow:
@@ -5428,7 +5427,6 @@ TRUE HORIZONTAL HERO VISUAL
 }
 
 @keyframes updateBlink{
-
     0%,100%{
         opacity:1;
         transform:scale(1);
@@ -5437,6 +5435,12 @@ TRUE HORIZONTAL HERO VISUAL
     50%{
         opacity:.45;
         transform:scale(1.08);
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .update-text{
+        animation:none;
     }
 }
 
@@ -5609,58 +5613,6 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
         margin-bottom:10px !important;
     }
 }
-
-
-/* ===== UPDATE TEXT BADGE ===== */
-
-.update-text{
-
-    display:inline-block;
-
-    margin-right:10px;
-
-    padding:3px 10px;
-
-    border-radius:999px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff6b00,
-            #ff004c
-        );
-
-    color:#ffffff;
-
-    font-size:11px;
-    font-weight:900;
-    letter-spacing:1px;
-
-    vertical-align:middle;
-
-    text-transform:uppercase;
-
-    box-shadow:
-        0 0 8px rgba(255,0,76,.45),
-        0 0 18px rgba(255,107,0,.28);
-
-    animation:
-        updateBlink 1s ease-in-out infinite;
-}
-
-@keyframes updateBlink{
-
-    0%,100%{
-        opacity:1;
-        transform:scale(1);
-    }
-
-    50%{
-        opacity:.45;
-        transform:scale(1.08);
-    }
-}
-
 
 </style>
 </head>
@@ -6275,6 +6227,14 @@ function renderPRNews(data) {
             const title =
                 escapeHTML(item.title || '-');
 
+            const isUpdate =
+                String(item.isUpdate || '').trim().toUpperCase() === 'TRUE';
+
+            const updateBadge =
+                isUpdate
+                ? '<span class="update-text">UPDATE</span>'
+                : '';
+
             const detail =
                 escapeHTML(item.detail || '-');
 
@@ -6315,7 +6275,7 @@ function renderPRNews(data) {
 
                         <div>
                             ${category ? `<div class="pr-category">${category}</div>` : ''}
-                            <h4>${title}</h4>
+                            <h4>${updateBadge}${title}</h4>
                             <p class="pr-detail">${detail}</p>
                             <button class="pr-readmore" type="button" onclick="togglePRDetail(this)">
                                 อ่านต่อ...
