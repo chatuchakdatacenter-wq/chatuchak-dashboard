@@ -5322,6 +5322,73 @@ FINAL WINDOWS HORIZONTAL HERO BANNER CARDS
     }
 }
 
+
+/* =========================================================
+TRUE HORIZONTAL HERO VISUAL
+- ไม่ crop เป็นแท่ง
+- แสดงรูปเต็ม
+- แนวนอนจริง
+========================================================= */
+
+.quick-icon-wrap{
+    width:100% !important;
+    height:230px !important;
+    min-height:230px !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    overflow:hidden !important;
+
+    border-radius:24px !important;
+
+    background:rgba(255,255,255,.05) !important;
+    border:1px solid rgba(255,255,255,.08) !important;
+
+    margin-bottom:18px !important;
+}
+
+.quick-icon-img{
+    width:92% !important;
+    height:92% !important;
+
+    object-fit:contain !important;
+    object-position:center center !important;
+
+    display:block !important;
+
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+}
+
+/* KM */
+.quick-icon-img[src*="km-brain"]{
+    width:95% !important;
+    height:95% !important;
+}
+
+/* Register */
+.quick-icon-img[src*="register-hero"]{
+    width:88% !important;
+    height:88% !important;
+}
+
+@media(max-width:960px){
+
+    .quick-icon-wrap{
+        height:160px !important;
+        min-height:160px !important;
+    }
+
+    .quick-icon-img{
+        width:94% !important;
+        height:94% !important;
+    }
+
+}
+
 </style>
 
 
