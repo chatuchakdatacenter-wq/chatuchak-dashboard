@@ -5829,6 +5829,92 @@ FINAL MOBILE PORTRAIT HERO VIEW
 }
 
 </style>
+<style>
+
+/* =========================================================
+FINAL: MOBILE ORIGINAL PORTRAIT CARD VIEW
+- Desktop/Windows คง wide hero banner เดิม
+- Mobile กลับเป็นแนวตั้งแบบเดิม
+- เน้นเห็นรายละเอียดรูปครบขึ้น ไม่แบนแนวนอน
+========================================================= */
+
+@media(max-width:960px){
+
+    .cards{
+        grid-template-columns:1fr !important;
+        gap:18px !important;
+    }
+
+    .cards > .card{
+        min-height:unset !important;
+        padding:18px !important;
+        border-radius:24px !important;
+    }
+
+    .cards > .card .quick-icon-wrap{
+        width:100% !important;
+
+        aspect-ratio:3 / 4 !important;
+        height:auto !important;
+        min-height:0 !important;
+        max-height:none !important;
+
+        display:block !important;
+        position:relative !important;
+
+        overflow:hidden !important;
+
+        border-radius:22px !important;
+        margin:0 0 16px 0 !important;
+
+        background:rgba(255,255,255,.06) !important;
+        border:1px solid rgba(255,255,255,.10) !important;
+        box-shadow:0 10px 24px rgba(0,0,0,.08) !important;
+    }
+
+    .cards > .card .quick-icon-wrap > img.quick-icon-img{
+        position:absolute !important;
+        inset:0 !important;
+
+        width:100% !important;
+        height:100% !important;
+
+        object-fit:cover !important;
+        object-position:center center !important;
+
+        display:block !important;
+        transform:none !important;
+    }
+
+    .cards > .card h3{
+        min-height:auto !important;
+        margin:0 0 10px 0 !important;
+        line-height:1.18 !important;
+    }
+
+    .cards > .card p{
+        margin-bottom:14px !important;
+    }
+
+    .cards > .card a{
+        margin-top:auto !important;
+    }
+}
+
+@media(max-width:520px){
+
+    .cards > .card{
+        padding:16px !important;
+    }
+
+    .cards > .card .quick-icon-wrap{
+        aspect-ratio:4 / 5 !important;
+        border-radius:18px !important;
+        margin-bottom:14px !important;
+    }
+}
+
+</style>
 </head>
 
 <body>
