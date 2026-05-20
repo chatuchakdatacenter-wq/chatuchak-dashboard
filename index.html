@@ -1492,16 +1492,30 @@ MOBILE UX REFINEMENT FINAL
 }
 
 @media(max-width:960px){
-    #prNewsContainer .news-thumb{
+    /* MOBILE FIX เฉพาะการ์ด PR activity-pr-07 เท่านั้น
+       เปลี่ยนการ์ดใบนี้เป็น layout แนวตั้งและแสดงรูปเต็มรายละเอียด
+       ไม่กระทบ PR News / KPI การ์ดใบอื่น */
+    #prNewsContainer .news-item.pr-news-activity-pr-07 .news-left{
+        display:flex !important;
+        flex-direction:column !important;
+        align-items:stretch !important;
+        gap:12px !important;
+    }
+
+    #prNewsContainer .news-item.pr-news-activity-pr-07 .news-thumb{
         width:100% !important;
-        height:180px !important;
+        height:auto !important;
         max-width:100% !important;
         min-width:0 !important;
         flex:0 0 auto !important;
+        object-fit:contain !important;
+        object-position:center center !important;
+        border-radius:18px !important;
+        display:block !important;
     }
 
-    #prNewsContainer .news-left{
-        display:block !important;
+    #prNewsContainer .news-item.pr-news-activity-pr-07 .news-left > div{
+        width:100% !important;
     }
 }
 
@@ -6294,8 +6308,11 @@ function renderPRNews(data) {
                     <div class="news-icon">${icon}</div>
                 `;
 
+            const isActivityPr07 =
+                imageUrl.includes('activity-pr-07');
+
             return `
-                <div class="news-item">
+                <div class="news-item${isActivityPr07 ? ' pr-news-activity-pr-07' : ''}">
                     <div class="news-left">
 
                         ${imageBlock}
