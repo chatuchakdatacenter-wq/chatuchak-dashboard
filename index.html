@@ -5461,6 +5461,340 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
 }
 
 
+
+/* =========================================================
+   RESULT ANNOUNCEMENT FEATURE - scoped production patch
+   เฉพาะการ์ด "ประกาศรายชื่อผู้มีสิทธิ์" และ modal ตรวจสอบรายชื่อ
+   ========================================================= */
+.result-announcement-card{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(15,23,42,.10);
+    background:
+        radial-gradient(circle at 18% 10%, rgba(255,255,255,.26), transparent 30%),
+        linear-gradient(135deg,#005C46 0%,#047857 55%,#0f766e 100%) !important;
+    color:#ffffff;
+}
+
+.result-announcement-card::after{
+    content:"";
+    position:absolute;
+    inset:-40% -35% auto auto;
+    width:170px;
+    height:170px;
+    border-radius:999px;
+    background:rgba(255,255,255,.13);
+    filter:blur(4px);
+    pointer-events:none;
+}
+
+.result-announcement-card .card-soon-badge,
+.result-announcement-card .is-disabled-link{
+    display:none !important;
+}
+
+.result-announcement-card .card-icon{
+    background:rgba(255,255,255,.16) !important;
+    color:#ffffff !important;
+    border:1px solid rgba(255,255,255,.24);
+    box-shadow:0 12px 28px rgba(0,0,0,.15);
+}
+
+.result-announcement-card h3,
+.result-announcement-card p{
+    color:#ffffff !important;
+}
+
+.result-announcement-card p{
+    opacity:.92;
+}
+
+.result-action-row{
+    position:relative;
+    z-index:2;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+
+.result-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:44px;
+    padding:0 16px;
+    border:none;
+    border-radius:999px;
+    color:#ffffff;
+    font-family:inherit;
+    font-size:.92rem;
+    font-weight:900;
+    line-height:1;
+    text-decoration:none;
+    cursor:pointer;
+    transition:transform .22s ease, filter .22s ease, box-shadow .22s ease;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.result-btn-primary{
+    background:linear-gradient(135deg,#06152f 0%,#0f274f 55%,#1e3a8a 100%);
+    box-shadow:0 12px 28px rgba(15,23,42,.34);
+}
+
+.result-btn-facebook{
+    background:linear-gradient(135deg,#1877f2 0%,#0f5fc7 100%);
+    box-shadow:0 12px 28px rgba(24,119,242,.28);
+}
+
+.result-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+.result-btn:active{
+    transform:translateY(0);
+}
+
+.result-modal-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:rgba(2,6,23,.66);
+    backdrop-filter:blur(10px);
+}
+
+.result-modal-backdrop.is-open{
+    display:flex;
+}
+
+.result-modal{
+    width:min(940px,100%);
+    max-height:min(88vh,820px);
+    overflow:hidden;
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,.20);
+    background:
+        radial-gradient(circle at 20% 0%, rgba(16,185,129,.18), transparent 34%),
+        linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+    box-shadow:0 30px 80px rgba(2,6,23,.34);
+}
+
+.result-modal-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:18px;
+    padding:26px 28px 20px;
+    border-bottom:1px solid rgba(15,23,42,.08);
+}
+
+.result-modal-kicker{
+    display:inline-flex;
+    width:max-content;
+    margin-bottom:8px;
+    padding:6px 12px;
+    border-radius:999px;
+    background:#e8f5f0;
+    color:#005C46;
+    font-size:.78rem;
+    font-weight:900;
+    letter-spacing:.08em;
+}
+
+.result-modal-title{
+    margin:0;
+    color:#0f172a;
+    font-size:1.55rem;
+    font-weight:900;
+}
+
+.result-modal-subtitle{
+    margin:8px 0 0;
+    color:#475569;
+    font-size:.96rem;
+    line-height:1.6;
+}
+
+.result-modal-close{
+    flex:0 0 auto;
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:999px;
+    background:#0f172a;
+    color:#ffffff;
+    font-size:1.45rem;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 12px 26px rgba(15,23,42,.25);
+}
+
+.result-modal-body{
+    max-height:calc(88vh - 132px);
+    overflow:auto;
+    padding:24px 28px 28px;
+}
+
+.result-toolbar{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.result-search{
+    width:100%;
+    min-height:48px;
+    padding:0 16px;
+    border:1px solid rgba(15,23,42,.12);
+    border-radius:16px;
+    outline:none;
+    font-family:inherit;
+    font-size:1rem;
+    background:#ffffff;
+    color:#0f172a;
+    box-shadow:0 8px 24px rgba(15,23,42,.06);
+}
+
+.result-search:focus{
+    border-color:#005C46;
+    box-shadow:0 0 0 4px rgba(0,92,70,.12);
+}
+
+.result-list{
+    display:grid;
+    gap:14px;
+}
+
+.result-item{
+    border:1px solid rgba(15,23,42,.08);
+    border-radius:22px;
+    padding:18px;
+    background:#ffffff;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);
+}
+
+.result-item h3{
+    margin:0 0 10px;
+    color:#0f172a;
+    font-size:1.12rem;
+    font-weight:900;
+}
+
+.result-meta-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin:12px 0;
+}
+
+.result-meta{
+    padding:10px 12px;
+    border-radius:14px;
+    background:#f1f5f9;
+    color:#334155;
+    font-size:.92rem;
+    line-height:1.45;
+}
+
+.result-meta strong{
+    display:block;
+    color:#0f172a;
+    font-size:.82rem;
+    margin-bottom:2px;
+}
+
+.result-names{
+    margin-top:12px;
+    padding:14px;
+    border-radius:16px;
+    background:#f8fafc;
+    color:#0f172a;
+    line-height:1.85;
+    white-space:pre-line;
+}
+
+.result-empty{
+    padding:34px 18px;
+    border:1px dashed rgba(15,23,42,.22);
+    border-radius:22px;
+    background:#ffffff;
+    color:#475569;
+    text-align:center;
+    line-height:1.8;
+}
+
+.result-modal-footer{
+    display:flex;
+    justify-content:center;
+    padding:24px 0 4px;
+}
+
+.result-modal-close-btn{
+    min-width:220px;
+    min-height:52px;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    color:#ffffff;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    box-shadow:0 12px 30px rgba(15,23,42,.28);
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:900;
+    transition:transform .22s ease, filter .22s ease;
+}
+
+.result-modal-close-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+@media (max-width:768px){
+    .result-action-row,
+    .result-toolbar{
+        grid-template-columns:1fr;
+        flex-direction:column;
+    }
+
+    .result-btn{
+        width:100%;
+    }
+
+    .result-modal-backdrop{
+        padding:12px;
+        align-items:flex-start;
+    }
+
+    .result-modal{
+        max-height:94vh;
+        border-radius:22px;
+    }
+
+    .result-modal-head{
+        padding:20px 18px 16px;
+    }
+
+    .result-modal-title{
+        font-size:1.25rem;
+    }
+
+    .result-modal-body{
+        max-height:calc(94vh - 122px);
+        padding:18px;
+    }
+
+    .result-meta-grid{
+        grid-template-columns:1fr;
+    }
+}
+
 </style>
 
 
@@ -5676,10 +6010,9 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                 สมัครเรียนออนไลน์
             </a>
 
-            <a href="#" class="is-soon" aria-disabled="true">
+            <a href="#" onclick="openResultAnnouncementModal(); return false;">
                 <span class="menu-icon">📋</span>
                 ประกาศรายชื่อผู้มีสิทธิ์
-                <span class="soon-badge">เร็ว ๆ นี้</span>
             </a>
 
         </div>
@@ -5903,11 +6236,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
             </div>
 
 
-            <div class="card is-soon-card">
-
-                <div class="card-soon-badge">
-                    เร็ว ๆ นี้
-                </div>
+            <div class="card result-announcement-card">
 
                 <div class="card-icon">
                     📋
@@ -5922,9 +6251,15 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                     สำหรับหลักสูตรที่เปิดรับสมัคร
                 </p>
 
-                <a href="#" class="is-disabled-link" aria-disabled="true">
-                    ยังไม่เปิดใช้งาน
-                </a>
+                <div class="result-action-row">
+                    <button class="result-btn result-btn-primary" type="button" onclick="openResultAnnouncementModal()">
+                        🔎 ตรวจสอบรายชื่อบนเว็บไซต์
+                    </button>
+
+                    <button class="result-btn result-btn-facebook" type="button" onclick="openResultFacebookAnnouncement()">
+                        f ดูประกาศต้นฉบับ Facebook
+                    </button>
+                </div>
 
             </div>
 
@@ -6544,9 +6879,10 @@ const statsRes = await fetch('https://opensheet.elk.sh/1gNd959wTQc2MfT6c6qKEGN5E
 const courseRes = await fetch('https://opensheet.elk.sh/1gNd959wTQc2MfT6c6qKEGN5E9PYN7YOiu5NIq59ph18/top_courses');
 
 const statsData = await statsRes.json();
-const courseData = await courseRes.json();
+const courseDataRaw = await courseRes.json();
+const courseData = Array.isArray(courseDataRaw) ? courseDataRaw : [];
 
-const stats = statsData[0] || {};
+const stats = Array.isArray(statsData) ? (statsData[0] || {}) : {};
 
 dtcpText('totalStudentsAI', Number(stats.total_students || 0).toLocaleString('th-TH'));
 
@@ -6627,6 +6963,175 @@ console.error(error);
 }
 
 document.addEventListener('DOMContentLoaded', loadAIDashboard);
+</script>
+
+<div class="result-modal-backdrop" id="resultAnnouncementModal" aria-hidden="true">
+    <div class="result-modal" role="dialog" aria-modal="true" aria-labelledby="resultModalTitle">
+        <div class="result-modal-head">
+            <div>
+                <div class="result-modal-kicker">RESULT CHECK</div>
+                <h2 class="result-modal-title" id="resultModalTitle">ตรวจสอบรายชื่อผู้มีสิทธิ์</h2>
+                <p class="result-modal-subtitle">ค้นหารายชื่อและตรวจสอบรายละเอียดการรายงานตัวจากข้อมูลของศูนย์ฝึกอาชีพจตุจักร</p>
+            </div>
+            <button class="result-modal-close" type="button" onclick="closeResultAnnouncementModal()" aria-label="ปิดหน้าต่าง">×</button>
+        </div>
+
+        <div class="result-modal-body" id="resultAnnouncementContent">
+            <div class="result-empty">
+                กำลังโหลดข้อมูลประกาศรายชื่อ...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const RESULT_ANNOUNCEMENT_API = 'https://opensheet.elk.sh/1gNd959wTQc2MfT6c6qKEGN5E9PYN7YOiu5NIq59ph18/Result_Announcement';
+let resultAnnouncementCache = null;
+
+function resultEscapeHTML(value){
+    return String(value ?? '').replace(/[&<>"']/g, function(char){
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]);
+    });
+}
+
+function resultNormalize(value){
+    return String(value ?? '').toLowerCase().replace(/\s+/g,' ').trim();
+}
+
+function resultIsPublished(item){
+    const status = resultNormalize(item.status || item.Status);
+    return !status || status === 'publish' || status === 'published' || status === 'เผยแพร่' || status === 'เปิด';
+}
+
+async function fetchResultAnnouncements(){
+    if (Array.isArray(resultAnnouncementCache)) return resultAnnouncementCache;
+
+    const response = await fetch(RESULT_ANNOUNCEMENT_API, { cache:'no-store' });
+    if (!response.ok) throw new Error('Result_Announcement API error: ' + response.status);
+
+    const data = await response.json();
+    resultAnnouncementCache = Array.isArray(data) ? data.filter(resultIsPublished) : [];
+    return resultAnnouncementCache;
+}
+
+function buildResultAnnouncementHTML(items){
+    if (!items.length){
+        return `
+            <div class="result-empty">
+                ยังไม่มีข้อมูลประกาศรายชื่อที่เผยแพร่<br>
+                กรุณาเพิ่มข้อมูลใน Sheet: Result_Announcement และตั้งค่า status เป็น publish
+                <div class="result-modal-footer">
+                    <button class="result-modal-close-btn" type="button" onclick="closeResultAnnouncementModal()">✕ ปิดหน้าต่าง</button>
+                </div>
+            </div>
+        `;
+    }
+
+    const cards = items.map((item,index)=>{
+        const title = item.title || item.Title || 'ประกาศรายชื่อผู้มีสิทธิ์เข้ารับการฝึกอบรม';
+        const course = item.course || item.Course || '-';
+        const batch = item.batch || item.Batch || '-';
+        const round = item.round || item.Round || '-';
+        const reportDate = item.reportDate || item.report_date || item.ReportDate || '-';
+        const location = item.location || item.Location || 'ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร';
+        const phone = item.phone || item.Phone || '02-513-6654';
+        const names = item.names || item.Names || item.nameList || item.name_list || '';
+        const facebookUrl = item.facebookUrl || item.facebook_url || item.FacebookUrl || '';
+
+        return `
+            <article class="result-item" data-result-search="${resultEscapeHTML(resultNormalize([title,course,batch,round,reportDate,location,phone,names].join(' ')))}">
+                <h3>${resultEscapeHTML(title)}</h3>
+                <div class="result-meta-grid">
+                    <div class="result-meta"><strong>หลักสูตร</strong>${resultEscapeHTML(course)}</div>
+                    <div class="result-meta"><strong>รุ่น / รอบเรียน</strong>${resultEscapeHTML(batch)} ${round && round !== '-' ? ' | ' + resultEscapeHTML(round) : ''}</div>
+                    <div class="result-meta"><strong>วันรายงานตัว</strong>${resultEscapeHTML(reportDate)}</div>
+                    <div class="result-meta"><strong>สถานที่ / โทร.</strong>${resultEscapeHTML(location)} | ${resultEscapeHTML(phone)}</div>
+                </div>
+                <div class="result-names">${resultEscapeHTML(names || 'ยังไม่ได้ระบุรายชื่อในระบบ')}</div>
+                ${facebookUrl ? `<div class="result-action-row"><a class="result-btn result-btn-facebook" href="${resultEscapeHTML(facebookUrl)}" target="_blank" rel="noopener">f ดูประกาศต้นฉบับ Facebook</a></div>` : ''}
+            </article>
+        `;
+    }).join('');
+
+    return `
+        <div class="result-toolbar">
+            <input class="result-search" id="resultSearchInput" type="search" placeholder="ค้นหาชื่อ-สกุล / หลักสูตร / รุ่นที่ฝึก..." oninput="filterResultAnnouncements(this.value)">
+        </div>
+        <div class="result-list" id="resultAnnouncementList">${cards}</div>
+        <div class="result-modal-footer">
+            <button class="result-modal-close-btn" type="button" onclick="closeResultAnnouncementModal()">✕ ปิดหน้าต่าง</button>
+        </div>
+    `;
+}
+
+function filterResultAnnouncements(keyword){
+    const query = resultNormalize(keyword);
+    document.querySelectorAll('#resultAnnouncementList .result-item').forEach(function(card){
+        const source = card.getAttribute('data-result-search') || '';
+        card.style.display = !query || source.includes(query) ? '' : 'none';
+    });
+}
+
+async function openResultAnnouncementModal(){
+    const modal = document.getElementById('resultAnnouncementModal');
+    const content = document.getElementById('resultAnnouncementContent');
+    if (!modal || !content) return;
+
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+
+    content.innerHTML = '<div class="result-empty">กำลังโหลดข้อมูลประกาศรายชื่อ...</div>';
+
+    try{
+        const items = await fetchResultAnnouncements();
+        content.innerHTML = buildResultAnnouncementHTML(items);
+        const search = document.getElementById('resultSearchInput');
+        if (search) setTimeout(()=>search.focus(), 80);
+    }catch(error){
+        console.error(error);
+        content.innerHTML = `
+            <div class="result-empty">
+                ไม่สามารถโหลดข้อมูลประกาศรายชื่อได้ในขณะนี้<br>
+                กรุณาตรวจสอบ Sheet: Result_Announcement หรือสถานะการเผยแพร่ข้อมูล
+                <div class="result-modal-footer">
+                    <button class="result-modal-close-btn" type="button" onclick="closeResultAnnouncementModal()">✕ ปิดหน้าต่าง</button>
+                </div>
+            </div>
+        `;
+    }
+}
+
+function closeResultAnnouncementModal(){
+    const modal = document.getElementById('resultAnnouncementModal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+}
+
+async function openResultFacebookAnnouncement(){
+    try{
+        const items = await fetchResultAnnouncements();
+        const fb = items.map(item => item.facebookUrl || item.facebook_url || item.FacebookUrl || '').find(Boolean);
+        if (fb){
+            window.open(fb, '_blank', 'noopener');
+            return;
+        }
+    }catch(error){
+        console.warn(error);
+    }
+    openResultAnnouncementModal();
+}
+
+document.addEventListener('keydown', function(event){
+    if (event.key === 'Escape') closeResultAnnouncementModal();
+});
+
+document.addEventListener('click', function(event){
+    const modal = document.getElementById('resultAnnouncementModal');
+    if (modal && event.target === modal) closeResultAnnouncementModal();
+});
 </script>
 
 </body>
