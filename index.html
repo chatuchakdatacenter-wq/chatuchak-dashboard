@@ -1541,6 +1541,8 @@ MOBILE UX REFINEMENT FINAL
     -webkit-line-clamp:3;
     -webkit-box-orient:vertical;
     overflow:hidden;
+    white-space:pre-line;
+    line-height:1.85;
     transition:all .22s ease;
 }
 
@@ -5718,7 +5720,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
 
             </a>
 
-            
+
 <div class="hotline-time">
 
     <div class="hotline-time-head">
@@ -5900,7 +5902,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
 
             </div>
 
-            
+
             <div class="card is-soon-card">
 
                 <div class="card-soon-badge">
@@ -5949,11 +5951,11 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
             </div>
 
 
-            
+
 
         </section>
 
-        
+
         <!-- DOCUMENTS -->
 
         <div class="section-title">
@@ -6037,7 +6039,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                 ข่าวประชาสัมพันธ์
             </div>
 
-            
+
             <div id="prNewsContainer">
 
                 <div class="news-item">
@@ -6170,7 +6172,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
 
                             <p>
                                 ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร ลงพื้นที่ออกหน่วยให้บริการประชาชน ณ Box Space และ ห้างโลตัส ลาดพร้าว ประจำวันที่ 14 พ.ค. 2569
-                                เพื่อส่งเสริมทักษะอาชีพ และประชาสัมพันธ์หลักสูตรฝึกอบรม 
+                                เพื่อส่งเสริมทักษะอาชีพ และประชาสัมพันธ์หลักสูตรฝึกอบรม
                             </p>
 
                         </div>
@@ -6185,7 +6187,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
 
             </div>
 
-       
+
 
         </section>
 
@@ -6302,6 +6304,7 @@ function renderPRNews(data) {
                         class="news-thumb"
                         alt="${title}"
                         loading="lazy"
+                        decoding="async"
                     >
                 `
                 : `
