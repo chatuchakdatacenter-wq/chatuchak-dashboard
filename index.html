@@ -3294,7 +3294,7 @@ FINAL MOBILE HERO CLEAN MODE
 FINAL QA PATCH: Mobile Hero asset-safe visibility
 - Desktop/Windows untouched
 - Keep top logo/menu/hotline intact
-- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=11 exists
+- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13 exists
 - Add subtle premium green texture even while image is loading
 ========================================================= */
 @media(max-width:960px){
@@ -3335,7 +3335,7 @@ FINAL QA PATCH: Mobile Hero asset-safe visibility
         opacity:1 !important;
         background:
             linear-gradient(135deg, rgba(0,92,70,.20), rgba(4,120,87,.10)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=11') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3678,7 +3678,7 @@ FINAL FIX 02: Mobile Quick Access Green Panel Header Restore
         overflow:hidden !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.18),rgba(4,120,87,.12)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=11') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3828,7 +3828,7 @@ FINAL OVERRIDE: Mobile building background enhanced
         opacity:1 !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.22),rgba(4,120,87,.14)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=11') center center / 135% auto no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13') center center / 135% auto no-repeat !important;
         transform:scale(1.08) !important;
         transform-origin:center center !important;
     }
@@ -6570,7 +6570,7 @@ FINAL HOTFIX: Hero overlay asset layout
             <div class="hero-image hero-image-asset-overlay">
 
                 <img
-                    src="assets/images/building.jpg?v=11"
+                    src="assets/images/building.jpg?v=13"
                     alt="Chatuchak Training Center building"
                     class="hero-building-img"
                 >
@@ -6578,13 +6578,13 @@ FINAL HOTFIX: Hero overlay asset layout
                 <!-- HERO LOGO OVERLAY: upload these files to assets/images/ -->
                 <div class="hero-logo-stack" aria-hidden="true">
                     <img
-                        src="assets/images/logo-chatuchak-district.png?v=7"
+                        src="assets/images/logo-chatuchak-district.png?v=9"
                         alt="Chatuchak District Office"
                         class="hero-overlay-logo hero-overlay-logo-chatuchak"
                         onerror="this.style.display='none'"
                     >
                     <img
-                        src="assets/images/logo-bma-circle.png?v=7"
+                        src="assets/images/logo-bma-circle.png?v=9"
                         alt="BMA"
                         class="hero-overlay-logo hero-overlay-logo-bma"
                         onerror="this.style.display='none'"
@@ -8392,6 +8392,81 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
     .hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
         width:clamp(32px, 9.5vw, 46px) !important;
         max-width:clamp(32px, 9.5vw, 46px) !important;
+    }
+}
+</style>
+
+
+<style>
+/* =========================================================
+FINAL PATCH: move building closer to logo panel / reduce gap
+========================================================= */
+.hero-image.hero-image-asset-overlay > img.hero-building-img{
+    object-position:88% center !important;
+    transform:scale(.76) translateX(27%) !important;
+    transform-origin:center right !important;
+}
+
+.hero-image.hero-image-asset-overlay::before{
+    width:24% !important;
+    clip-path:polygon(17% 0, 100% 0, 100% 100%, 0 100%) !important;
+}
+
+.hero-image.hero-image-asset-overlay .hero-logo-stack{
+    right:2.9% !important;
+    top:22% !important;
+    width:clamp(84px, 7.4vw, 118px) !important;
+    gap:clamp(24px, 2.6vw, 38px) !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak,
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+    width:clamp(76px, 6.8vw, 106px) !important;
+    max-width:clamp(76px, 6.8vw, 106px) !important;
+}
+
+.hero-image.hero-image-asset-overlay::after{
+    background:linear-gradient(
+        90deg,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,.98) 23%,
+        rgba(255,255,255,.70) 36%,
+        rgba(255,255,255,.20) 49%,
+        rgba(255,255,255,0) 62%
+    ) !important;
+}
+
+@media (max-width:960px){
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:82% center !important;
+        transform:scale(.86) translateX(18%) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay::before{
+        width:25% !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:2.8% !important;
+        width:clamp(46px, 9vw, 68px) !important;
+        gap:clamp(12px, 2.2vw, 18px) !important;
+    }
+}
+
+@media (max-width:520px){
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:76% center !important;
+        transform:scale(.96) translateX(10%) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay::before{
+        width:25% !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:2.5% !important;
+        width:clamp(30px, 9vw, 44px) !important;
+        gap:6px !important;
     }
 }
 </style>
