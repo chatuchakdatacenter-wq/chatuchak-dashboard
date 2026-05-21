@@ -3294,7 +3294,7 @@ FINAL MOBILE HERO CLEAN MODE
 FINAL QA PATCH: Mobile Hero asset-safe visibility
 - Desktop/Windows untouched
 - Keep top logo/menu/hotline intact
-- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3 exists
+- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=7 exists
 - Add subtle premium green texture even while image is loading
 ========================================================= */
 @media(max-width:960px){
@@ -3335,7 +3335,7 @@ FINAL QA PATCH: Mobile Hero asset-safe visibility
         opacity:1 !important;
         background:
             linear-gradient(135deg, rgba(0,92,70,.20), rgba(4,120,87,.10)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=7') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3678,7 +3678,7 @@ FINAL FIX 02: Mobile Quick Access Green Panel Header Restore
         overflow:hidden !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.18),rgba(4,120,87,.12)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=7') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3828,7 +3828,7 @@ FINAL OVERRIDE: Mobile building background enhanced
         opacity:1 !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.22),rgba(4,120,87,.14)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3') center center / 135% auto no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=7') center center / 135% auto no-repeat !important;
         transform:scale(1.08) !important;
         transform-origin:center center !important;
     }
@@ -6570,7 +6570,7 @@ FINAL HOTFIX: Hero overlay asset layout
             <div class="hero-image hero-image-asset-overlay">
 
                 <img
-                    src="assets/images/building.jpg?v=6"
+                    src="assets/images/building.jpg?v=7"
                     alt="Chatuchak Training Center building"
                     class="hero-building-img"
                 >
@@ -6578,13 +6578,13 @@ FINAL HOTFIX: Hero overlay asset layout
                 <!-- HERO LOGO OVERLAY: upload these files to assets/images/ -->
                 <div class="hero-logo-stack" aria-hidden="true">
                     <img
-                        src="assets/images/logo-chatuchak-district.png?v=2"
+                        src="assets/images/logo-chatuchak-district.png?v=3"
                         alt="Chatuchak District Office"
                         class="hero-overlay-logo hero-overlay-logo-chatuchak"
                         onerror="this.style.display='none'"
                     >
                     <img
-                        src="assets/images/logo-bma-circle.png?v=2"
+                        src="assets/images/logo-bma-circle.png?v=3"
                         alt="BMA"
                         class="hero-overlay-logo hero-overlay-logo-bma"
                         onerror="this.style.display='none'"
@@ -7721,6 +7721,174 @@ assets/images/logo-bma-circle.png
         width:clamp(44px, 14vw, 64px) !important;
         gap:6px !important;
         opacity:.88 !important;
+    }
+}
+</style>
+
+
+<style>
+/* =========================================================
+FINAL MASTER ALIGNMENT PATCH
+Goal:
+1) Move building to the right and reduce visual crop so detail is visible.
+2) Place logo labels closer to master reference:
+   top = Chatuchak District Office, bottom = BMA circle.
+3) No generated image, only code overlay from GitHub assets.
+========================================================= */
+
+.hero{
+    position:relative !important;
+    overflow:hidden !important;
+    isolation:isolate !important;
+}
+
+.hero-left{
+    position:relative !important;
+    z-index:10 !important;
+    width:min(45%, 590px) !important;
+    max-width:590px !important;
+}
+
+.hero-image.hero-image-asset-overlay{
+    position:absolute !important;
+    inset:0 !important;
+    z-index:1 !important;
+    overflow:hidden !important;
+    border-radius:inherit !important;
+    background:#ffffff !important;
+}
+
+/* Building image: move right + show more complete building */
+.hero-image.hero-image-asset-overlay > img.hero-building-img{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:none !important;
+    max-height:none !important;
+    display:block !important;
+    object-fit:cover !important;
+    object-position:68% center !important;
+    transform:scale(.92) translateX(7.5%) !important;
+    transform-origin:center right !important;
+    margin:0 !important;
+    padding:0 !important;
+    opacity:1 !important;
+    filter:saturate(1.04) contrast(1.03) !important;
+}
+
+/* Text-safe fade: keep left text readable but do not wash out the building too much */
+.hero-image.hero-image-asset-overlay::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:2 !important;
+    pointer-events:none !important;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,1) 0%,
+            rgba(255,255,255,.98) 24%,
+            rgba(255,255,255,.76) 37%,
+            rgba(255,255,255,.30) 49%,
+            rgba(255,255,255,0) 62%
+        ) !important;
+}
+
+/* Logo stack: match master feel, center-right panel, closer spacing */
+.hero-image.hero-image-asset-overlay .hero-logo-stack{
+    position:absolute !important;
+    z-index:9 !important;
+    right:4.2% !important;
+    top:21.5% !important;
+    width:clamp(118px, 11.4vw, 178px) !important;
+    height:auto !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:clamp(20px, 2.4vw, 34px) !important;
+    margin:0 !important;
+    padding:0 !important;
+    pointer-events:none !important;
+    opacity:1 !important;
+    transform:none !important;
+}
+
+/* Make logos float; do not allow old global img rules to stretch them */
+.hero-image.hero-image-asset-overlay .hero-logo-stack img,
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo{
+    position:static !important;
+    display:block !important;
+    height:auto !important;
+    max-width:100% !important;
+    max-height:none !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    object-fit:contain !important;
+    object-position:center !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    border:0 !important;
+    opacity:1 !important;
+    transform:none !important;
+    mix-blend-mode:normal !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    filter:drop-shadow(0 8px 16px rgba(0,92,70,.12)) !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak{
+    width:100% !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+    width:88% !important;
+}
+
+/* Desktop proportions */
+@media (min-width:961px){
+    .hero{
+        min-height:clamp(500px, 54vh, 640px) !important;
+    }
+}
+
+/* Tablet */
+@media (max-width:960px){
+    .hero-left{
+        width:min(58%, 520px) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:66% center !important;
+        transform:scale(.98) translateX(5%) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:4.2% !important;
+        top:17% !important;
+        width:clamp(70px, 13vw, 110px) !important;
+        gap:10px !important;
+    }
+}
+
+/* Mobile: keep logos small and away from text */
+@media (max-width:520px){
+    .hero-left{
+        width:68% !important;
+    }
+
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:62% center !important;
+        transform:scale(1.08) translateX(3%) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:3.8% !important;
+        top:12% !important;
+        width:clamp(44px, 13vw, 62px) !important;
+        gap:6px !important;
+        opacity:.92 !important;
     }
 }
 </style>
