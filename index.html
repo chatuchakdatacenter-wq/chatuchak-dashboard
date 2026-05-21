@@ -15,7 +15,7 @@ FONT
 
 @font-face{
     font-family:'SaoChingcha';
-    src:url('./fonts/SaoChingcha.otf') format('opentype');
+    src:url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/fonts/SaoChingcha.otf') format('opentype');
     font-display:swap;
 }
 
@@ -3294,7 +3294,7 @@ FINAL MOBILE HERO CLEAN MODE
 FINAL QA PATCH: Mobile Hero asset-safe visibility
 - Desktop/Windows untouched
 - Keep top logo/menu/hotline intact
-- Show building softly when assets/images/building.jpg exists
+- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3 exists
 - Add subtle premium green texture even while image is loading
 ========================================================= */
 @media(max-width:960px){
@@ -3335,7 +3335,7 @@ FINAL QA PATCH: Mobile Hero asset-safe visibility
         opacity:1 !important;
         background:
             linear-gradient(135deg, rgba(0,92,70,.20), rgba(4,120,87,.10)),
-            url('assets/images/building.jpg') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3678,7 +3678,7 @@ FINAL FIX 02: Mobile Quick Access Green Panel Header Restore
         overflow:hidden !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.18),rgba(4,120,87,.12)),
-            url('assets/images/building.jpg') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3828,7 +3828,7 @@ FINAL OVERRIDE: Mobile building background enhanced
         opacity:1 !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.22),rgba(4,120,87,.14)),
-            url('assets/images/building.jpg') center center / 135% auto no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=3') center center / 135% auto no-repeat !important;
         transform:scale(1.08) !important;
         transform-origin:center center !important;
     }
@@ -5463,17 +5463,35 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
 
 
 /* =========================================================
-   RESULT ANNOUNCEMENT FEATURE - scoped production patch
+   RESULT ANNOUNCEMENT FEATURE - final premium card patch
    เฉพาะการ์ด "ประกาศรายชื่อผู้มีสิทธิ์" และ modal ตรวจสอบรายชื่อ
    ========================================================= */
 .result-announcement-card{
     position:relative;
     overflow:hidden;
-    border:1px solid rgba(15,23,42,.10);
+    border:1px solid rgba(110,231,183,.34) !important;
     background:
-        radial-gradient(circle at 18% 10%, rgba(255,255,255,.26), transparent 30%),
-        linear-gradient(135deg,#005C46 0%,#047857 55%,#0f766e 100%) !important;
+        radial-gradient(circle at 50% 8%, rgba(110,231,183,.24), transparent 28%),
+        radial-gradient(circle at 50% 78%, rgba(16,185,129,.20), transparent 34%),
+        linear-gradient(145deg,#006247 0%,#08795a 48%,#005c46 100%) !important;
     color:#ffffff;
+    text-align:center;
+    align-items:center;
+    justify-content:flex-start;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        0 16px 38px rgba(0,92,70,.20);
+}
+
+.result-announcement-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.10) 46%, transparent 62%);
+    transform:translateX(-130%);
+    animation:resultCardSheen 5.5s ease-in-out infinite;
+    pointer-events:none;
 }
 
 .result-announcement-card::after{
@@ -5494,42 +5512,75 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
 }
 
 .result-announcement-card .card-icon{
-    background:rgba(255,255,255,.16) !important;
+    position:relative;
+    z-index:2;
+    margin:0 auto 18px !important;
+    width:74px;
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px !important;
+    background:radial-gradient(circle,rgba(209,250,229,.34),rgba(255,255,255,.12)) !important;
     color:#ffffff !important;
-    border:1px solid rgba(255,255,255,.24);
-    box-shadow:0 12px 28px rgba(0,0,0,.15);
+    border:1px solid rgba(167,243,208,.55) !important;
+    box-shadow:
+        0 0 0 1px rgba(45,212,191,.18),
+        0 0 28px rgba(45,212,191,.46),
+        inset 0 1px 0 rgba(255,255,255,.22) !important;
 }
 
 .result-announcement-card h3,
 .result-announcement-card p{
+    position:relative;
+    z-index:2;
     color:#ffffff !important;
+    text-align:center;
+    text-shadow:0 2px 12px rgba(0,0,0,.22);
+}
+
+.result-announcement-card h3{
+    margin-left:auto;
+    margin-right:auto;
+    font-weight:900;
 }
 
 .result-announcement-card p{
-    opacity:.92;
+    max-width:92%;
+    margin-left:auto;
+    margin-right:auto;
+    opacity:.94;
+    line-height:1.85;
 }
 
 .result-action-row{
     position:relative;
     z-index:2;
     display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:18px;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    width:100%;
+    margin-top:22px;
 }
 
 .result-btn{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    gap:8px;
-    min-height:44px;
-    padding:0 16px;
+    gap:10px;
+    width:min(100%,330px);
+    min-height:52px;
+    padding:0 24px;
     border:none;
     border-radius:999px;
     color:#ffffff;
     font-family:inherit;
-    font-size:.92rem;
+    font-size:.98rem;
     font-weight:900;
     line-height:1;
     text-decoration:none;
@@ -5539,8 +5590,39 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
 }
 
 .result-btn-primary{
-    background:linear-gradient(135deg,#06152f 0%,#0f274f 55%,#1e3a8a 100%);
-    box-shadow:0 12px 28px rgba(15,23,42,.34);
+    background:linear-gradient(135deg,#06152f 0%,#0a2148 58%,#1e3a8a 100%);
+    border:1px solid rgba(125,249,255,.68);
+    box-shadow:
+        0 0 0 1px rgba(45,212,191,.30),
+        0 0 18px rgba(45,212,191,.78),
+        0 0 38px rgba(20,184,166,.45),
+        0 14px 30px rgba(15,23,42,.34);
+    animation:resultPrimaryPulse 2.8s ease-in-out infinite;
+}
+
+.result-btn-primary::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    border-radius:inherit;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+    transform:translateX(-120%);
+    animation:resultBtnSweep 3.4s ease-in-out infinite;
+    z-index:-1;
+}
+
+.result-btn-primary::after{
+    content:"✦";
+    position:absolute;
+    top:-7px;
+    right:20px;
+    color:#a7fff3;
+    font-size:1.2rem;
+    text-shadow:
+        0 0 8px rgba(45,212,191,.95),
+        0 0 18px rgba(45,212,191,.70);
+    animation:resultSpark 1.9s ease-in-out infinite;
+    pointer-events:none;
 }
 
 .result-btn-facebook{
@@ -5555,6 +5637,37 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
 
 .result-btn:active{
     transform:translateY(0);
+}
+
+@keyframes resultPrimaryPulse{
+    0%,100%{ box-shadow:0 0 0 1px rgba(45,212,191,.28),0 0 16px rgba(45,212,191,.62),0 0 30px rgba(20,184,166,.32),0 14px 30px rgba(15,23,42,.34); }
+    50%{ box-shadow:0 0 0 1px rgba(125,249,255,.60),0 0 28px rgba(45,212,191,.96),0 0 58px rgba(20,184,166,.58),0 18px 36px rgba(15,23,42,.40); }
+}
+
+@keyframes resultBtnSweep{
+    0%,42%{ transform:translateX(-130%); opacity:0; }
+    52%{ opacity:.75; }
+    70%,100%{ transform:translateX(130%); opacity:0; }
+}
+
+@keyframes resultSpark{
+    0%,100%{ opacity:.25; transform:scale(.82) rotate(0deg); }
+    45%{ opacity:1; transform:scale(1.35) rotate(18deg); }
+}
+
+@keyframes resultCardSheen{
+    0%,70%{ transform:translateX(-130%); opacity:0; }
+    78%{ opacity:.65; }
+    100%{ transform:translateX(130%); opacity:0; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .result-announcement-card::before,
+    .result-btn-primary,
+    .result-btn-primary::before,
+    .result-btn-primary::after{
+        animation:none !important;
+    }
 }
 
 .result-modal-backdrop{
@@ -5821,7 +5934,7 @@ function dtcpDisplay(id, value){
 FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
 - บังคับรูปใน Quick Access ให้เป็นกรอบแนวนอนจริง
 - แก้ปัญหารูป KM แสดงเป็นแท่งแนวตั้ง
-- ใช้กับไฟล์ assets/images/icons/km-brain-hero.png
+- ใช้กับไฟล์ https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/icons/km-brain-hero.png
 ========================================================= */
 
 .cards{
@@ -5964,6 +6077,193 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
     }
 }
 
+
+
+/* FINAL FIX: Mobile PR News cards vertical layout for every PR card
+   ทำให้ข่าวประชาสัมพันธ์ทุกใบใน mobile แสดงรูปด้านบน + ข้อความด้านล่าง
+   คง Desktop/Windows layout เดิมทั้งหมด */
+@media(max-width:960px){
+    #prNewsContainer .news-item .news-left{
+        display:flex !important;
+        flex-direction:column !important;
+        align-items:stretch !important;
+        gap:12px !important;
+        width:100% !important;
+    }
+
+    #prNewsContainer .news-item .news-thumb{
+        width:100% !important;
+        max-width:100% !important;
+        min-width:0 !important;
+        height:auto !important;
+        aspect-ratio:16/9 !important;
+        flex:0 0 auto !important;
+        object-fit:cover !important;
+        object-position:center center !important;
+        border-radius:18px !important;
+        display:block !important;
+    }
+
+    #prNewsContainer .news-item .news-left > div{
+        width:100% !important;
+        min-width:0 !important;
+    }
+
+    #prNewsContainer .pr-category{
+        width:max-content !important;
+        max-width:100% !important;
+        display:inline-flex !important;
+        white-space:normal !important;
+        line-height:1.25 !important;
+    }
+
+    #prNewsContainer .news-item h4{
+        line-height:1.35 !important;
+        word-break:break-word !important;
+    }
+}
+
+
+
+/* =========================================================
+FINAL PATCH: Desktop hero image full-detail mode
+- Fix right-side logo being clipped after new building.jpg asset
+- Keep desktop text readable
+- Mobile rules remain unchanged
+========================================================= */
+@media (min-width: 961px){
+    .hero-image{
+        justify-content:flex-end !important;
+        align-items:center !important;
+        background:#ffffff !important;
+    }
+
+    .hero-image img{
+        width:auto !important;
+        height:88% !important;
+        max-width:none !important;
+        object-fit:contain !important;
+        object-position:center right !important;
+        margin-right:0 !important;
+        margin-left:auto !important;
+        opacity:1 !important;
+        mix-blend-mode:normal !important;
+        filter:saturate(1.03) contrast(1.03) !important;
+    }
+
+    .hero-image::after{
+        background:
+            linear-gradient(
+                90deg,
+                rgba(255,255,255,1) 0%,
+                rgba(255,255,255,.98) 28%,
+                rgba(255,255,255,.82) 43%,
+                rgba(255,255,255,.20) 58%,
+                rgba(255,255,255,0) 72%
+            ) !important;
+    }
+}
+
+
+
+/* =========================================================
+FINAL HERO PATCH: separate building image + overlay logos from assets
+Required files in GitHub: assets/images/building.jpg,
+assets/images/logo-chatuchak-district.png, assets/images/logo-bma-circle.png
+========================================================= */
+.hero-image-asset-overlay{
+    position:absolute !important;
+    inset:0 !important;
+    overflow:hidden !important;
+}
+
+.hero-image-asset-overlay .hero-building-img{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:none !important;
+    object-fit:cover !important;
+    object-position:center right !important;
+    margin:0 !important;
+    display:block !important;
+    opacity:1 !important;
+    mix-blend-mode:normal !important;
+    filter:saturate(1.03) contrast(1.03) !important;
+}
+
+.hero-image-asset-overlay::after{
+    content:'' !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:2 !important;
+    pointer-events:none !important;
+    background:linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,.98) 28%, rgba(255,255,255,.82) 43%, rgba(255,255,255,.22) 58%, rgba(255,255,255,0) 72%) !important;
+}
+
+.hero-logo-stack{
+    position:absolute !important;
+    right:6.2% !important;
+    top:16% !important;
+    z-index:5 !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:clamp(18px, 2.3vw, 30px) !important;
+    pointer-events:none !important;
+}
+
+.hero-overlay-logo{
+    display:block !important;
+    width:auto !important;
+    height:auto !important;
+    object-fit:contain !important;
+    filter:drop-shadow(0 10px 18px rgba(0,92,70,.12)) !important;
+}
+
+.hero-overlay-logo-chatuchak{
+    max-width:clamp(118px, 11vw, 175px) !important;
+}
+
+.hero-overlay-logo-bma{
+    max-width:clamp(102px, 9.2vw, 150px) !important;
+}
+
+@media(max-width:960px){
+    .hero-logo-stack{
+        right:5% !important;
+        top:14% !important;
+        gap:10px !important;
+        opacity:.88 !important;
+    }
+
+    .hero-overlay-logo-chatuchak{
+        max-width:72px !important;
+    }
+
+    .hero-overlay-logo-bma{
+        max-width:62px !important;
+    }
+}
+
+@media(max-width:520px){
+    .hero-logo-stack{
+        right:5% !important;
+        top:13% !important;
+        gap:8px !important;
+        opacity:.82 !important;
+    }
+
+    .hero-overlay-logo-chatuchak{
+        max-width:56px !important;
+    }
+
+    .hero-overlay-logo-bma{
+        max-width:48px !important;
+    }
+}
+
 </style>
 </head>
 
@@ -5980,12 +6280,12 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
             <div class="logo-top">
 
                 <img
-                    src="assets/images/logo-bma.png"
+                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/logo-bma.png"
                     alt="BMA Logo"
                 >
 
                 <img
-                    src="assets/images/logo-chatuchak.png"
+                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/logo-chatuchak.png"
                     alt="Chatuchak Logo"
                 >
 
@@ -6142,12 +6442,29 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
 
             <!-- IMAGE BACKGROUND -->
 
-            <div class="hero-image">
+            <div class="hero-image hero-image-asset-overlay">
 
                 <img
-                    src="assets/images/building.jpg"
-                    alt="Training Center"
+                    src="assets/images/building.jpg?v=5"
+                    alt="Chatuchak Training Center building"
+                    class="hero-building-img"
                 >
+
+                <!-- HERO LOGO OVERLAY: upload these files to assets/images/ -->
+                <div class="hero-logo-stack" aria-hidden="true">
+                    <img
+                        src="assets/images/logo-chatuchak-district.png?v=1"
+                        alt="Chatuchak District Office"
+                        class="hero-overlay-logo hero-overlay-logo-chatuchak"
+                        onerror="this.style.display='none'"
+                    >
+                    <img
+                        src="assets/images/logo-bma-circle.png?v=1"
+                        alt="BMA"
+                        class="hero-overlay-logo hero-overlay-logo-bma"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
 
             </div>
 
@@ -6196,7 +6513,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
             <div class="card">
 
                 <div class="card-icon quick-icon-wrap">
-                    <img src="assets/images/icons/register-hero.png" alt="register-hero.png" class="quick-icon-img">
+                    <img src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/icons/register-hero.png" alt="register-hero.png" class="quick-icon-img">
                 </div>
 
                 <h3>
@@ -6217,7 +6534,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
             <div class="card">
 
                 <div class="card-icon quick-icon-wrap">
-                    <img src="assets/images/icons/km-brain-hero.png" alt="km-brain-hero.png" class="quick-icon-img">
+                    <img src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/icons/km-brain-hero.png" alt="km-brain-hero.png" class="quick-icon-img">
                 </div>
 
                 <h3>
@@ -6257,7 +6574,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                     </button>
 
                     <button class="result-btn result-btn-facebook" type="button" onclick="openResultFacebookAnnouncement()">
-                        f ดูประกาศต้นฉบับ Facebook
+                        ตรวจสอบผ่าน facebook
                     </button>
                 </div>
 
@@ -6303,7 +6620,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
             <div class="card docs-card docs-general-card">
 
                 <div class="card-banner-image">
-                    <img src="assets/images/cards/docs-general.jpg" alt="วิชาทั่วไป">
+                    <img src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/cards/docs-general.jpg" alt="วิชาทั่วไป">
                 </div>
 
                 <div class="docs-card-body">
@@ -6330,7 +6647,7 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
             <div class="card docs-card docs-massage-card">
 
                 <div class="card-banner-image">
-                    <img src="assets/images/cards/docs-massage.jpg" alt="วิชานวด">
+                    <img src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/cards/docs-massage.jpg" alt="วิชานวด">
                 </div>
 
                 <div class="docs-card-body">
@@ -6424,12 +6741,12 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                         <div class="activity-gallery">
 
                             <a
-                                href="assets/images/activities/activity01.jpg"
+                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity01.jpg"
                                 target="_blank"
                                 rel="noopener"
                             >
                                 <img
-                                    src="assets/images/activities/activity01.jpg"
+                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity01.jpg"
                                     class="news-thumb"
                                     alt="กิจกรรมออกหน่วย 1"
                                     loading="lazy"
@@ -6437,12 +6754,12 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                             </a>
 
                             <a
-                                href="assets/images/activities/activity02.jpg"
+                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity02.jpg"
                                 target="_blank"
                                 rel="noopener"
                             >
                                 <img
-                                    src="assets/images/activities/activity02.jpg"
+                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity02.jpg"
                                     class="news-thumb"
                                     alt="กิจกรรมออกหน่วย 2"
                                     loading="lazy"
@@ -6450,12 +6767,12 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                             </a>
 
                             <a
-                                href="assets/images/activities/activity03.jpg"
+                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity03.jpg"
                                 target="_blank"
                                 rel="noopener"
                             >
                                 <img
-                                    src="assets/images/activities/activity03.jpg"
+                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity03.jpg"
                                     class="news-thumb"
                                     alt="กิจกรรมออกหน่วย 3"
                                     loading="lazy"
@@ -6463,12 +6780,12 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                             </a>
 
                             <a
-                                href="assets/images/activities/activity04.jpg"
+                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity04.jpg"
                                 target="_blank"
                                 rel="noopener"
                             >
                                 <img
-                                    src="assets/images/activities/activity04.jpg"
+                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity04.jpg"
                                     class="news-thumb"
                                     alt="กิจกรรมออกหน่วย 4"
                                     loading="lazy"
@@ -6476,12 +6793,12 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                             </a>
 
                             <a
-                                href="assets/images/activities/activity05.jpg"
+                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity05.jpg"
                                 target="_blank"
                                 rel="noopener"
                             >
                                 <img
-                                    src="assets/images/activities/activity05.jpg"
+                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity05.jpg"
                                     class="news-thumb"
                                     alt="กิจกรรมออกหน่วย 5"
                                     loading="lazy"
@@ -6489,12 +6806,12 @@ FINAL FIX: QUICK ACCESS TRUE WIDE HERO BANNER
                             </a>
 
                             <a
-                                href="assets/images/activities/activity06.jpg"
+                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity06.jpg"
                                 target="_blank"
                                 rel="noopener"
                             >
                                 <img
-                                    src="assets/images/activities/activity06.jpg"
+                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity06.jpg"
                                     class="news-thumb"
                                     alt="กิจกรรมออกหน่วย 6"
                                     loading="lazy"
@@ -7048,7 +7365,7 @@ function buildResultAnnouncementHTML(items){
                     <div class="result-meta"><strong>สถานที่ / โทร.</strong>${resultEscapeHTML(location)} | ${resultEscapeHTML(phone)}</div>
                 </div>
                 <div class="result-names">${resultEscapeHTML(names || 'ยังไม่ได้ระบุรายชื่อในระบบ')}</div>
-                ${facebookUrl ? `<div class="result-action-row"><a class="result-btn result-btn-facebook" href="${resultEscapeHTML(facebookUrl)}" target="_blank" rel="noopener">f ดูประกาศต้นฉบับ Facebook</a></div>` : ''}
+                ${facebookUrl ? `<div class="result-action-row"><a class="result-btn result-btn-facebook" href="${resultEscapeHTML(facebookUrl)}" target="_blank" rel="noopener">ตรวจสอบผ่าน facebook</a></div>` : ''}
             </article>
         `;
     }).join('');
