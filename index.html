@@ -3294,7 +3294,7 @@ FINAL MOBILE HERO CLEAN MODE
 FINAL QA PATCH: Mobile Hero asset-safe visibility
 - Desktop/Windows untouched
 - Keep top logo/menu/hotline intact
-- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13 exists
+- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=14 exists
 - Add subtle premium green texture even while image is loading
 ========================================================= */
 @media(max-width:960px){
@@ -3335,7 +3335,7 @@ FINAL QA PATCH: Mobile Hero asset-safe visibility
         opacity:1 !important;
         background:
             linear-gradient(135deg, rgba(0,92,70,.20), rgba(4,120,87,.10)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=14') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3678,7 +3678,7 @@ FINAL FIX 02: Mobile Quick Access Green Panel Header Restore
         overflow:hidden !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.18),rgba(4,120,87,.12)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=14') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3828,7 +3828,7 @@ FINAL OVERRIDE: Mobile building background enhanced
         opacity:1 !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.22),rgba(4,120,87,.14)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=13') center center / 135% auto no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=14') center center / 135% auto no-repeat !important;
         transform:scale(1.08) !important;
         transform-origin:center center !important;
     }
@@ -6570,7 +6570,7 @@ FINAL HOTFIX: Hero overlay asset layout
             <div class="hero-image hero-image-asset-overlay">
 
                 <img
-                    src="assets/images/building.jpg?v=13"
+                    src="assets/images/building.jpg?v=14"
                     alt="Chatuchak Training Center building"
                     class="hero-building-img"
                 >
@@ -6578,13 +6578,13 @@ FINAL HOTFIX: Hero overlay asset layout
                 <!-- HERO LOGO OVERLAY: upload these files to assets/images/ -->
                 <div class="hero-logo-stack" aria-hidden="true">
                     <img
-                        src="assets/images/logo-chatuchak-district.png?v=9"
+                        src="assets/images/logo-chatuchak-district.png?v=10"
                         alt="Chatuchak District Office"
                         class="hero-overlay-logo hero-overlay-logo-chatuchak"
                         onerror="this.style.display='none'"
                     >
                     <img
-                        src="assets/images/logo-bma-circle.png?v=9"
+                        src="assets/images/logo-bma-circle.png?v=10"
                         alt="BMA"
                         class="hero-overlay-logo hero-overlay-logo-bma"
                         onerror="this.style.display='none'"
@@ -8467,6 +8467,121 @@ FINAL PATCH: move building closer to logo panel / reduce gap
         right:2.5% !important;
         width:clamp(30px, 9vw, 44px) !important;
         gap:6px !important;
+    }
+}
+</style>
+
+
+<style>
+/* =========================================================
+FINAL PATCH: transparent fade blend on both sides of building
+========================================================= */
+
+.hero-image.hero-image-asset-overlay > img.hero-building-img{
+    object-position:82% center !important;
+    transform:scale(.78) translateX(22%) !important;
+    transform-origin:center right !important;
+    opacity:1 !important;
+}
+
+.hero-image.hero-image-asset-overlay::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:2 !important;
+    pointer-events:none !important;
+    background:linear-gradient(
+        90deg,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,.96) 18%,
+        rgba(255,255,255,.70) 31%,
+        rgba(255,255,255,.24) 43%,
+        rgba(255,255,255,0) 53%,
+        rgba(255,255,255,0) 62%,
+        rgba(255,255,255,.28) 72%,
+        rgba(255,255,255,.78) 84%,
+        rgba(255,255,255,.98) 100%
+    ) !important;
+}
+
+.hero-image.hero-image-asset-overlay::before{
+    content:"" !important;
+    position:absolute !important;
+    top:0 !important;
+    right:0 !important;
+    width:23.5% !important;
+    height:100% !important;
+    z-index:4 !important;
+    pointer-events:none !important;
+    background:
+        linear-gradient(90deg, #00805f 0 8px, transparent 8px 100%),
+        rgba(255,255,255,.92) !important;
+    clip-path:polygon(18% 0, 100% 0, 100% 100%, 0 100%) !important;
+    box-shadow:none !important;
+}
+
+.hero-image.hero-image-asset-overlay .hero-logo-stack{
+    z-index:9 !important;
+    right:2.8% !important;
+    top:21.5% !important;
+    width:clamp(78px, 7vw, 112px) !important;
+    gap:clamp(22px, 2.6vw, 38px) !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    padding:0 !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak,
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+    width:clamp(72px, 6.4vw, 102px) !important;
+    max-width:clamp(72px, 6.4vw, 102px) !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    filter:drop-shadow(0 4px 10px rgba(0,92,70,.10)) !important;
+}
+
+.hero-image.hero-image-asset-overlay .hero-logo-stack::after{
+    left:-8% !important;
+    right:-8% !important;
+    top:48% !important;
+    height:1px !important;
+    background:linear-gradient(90deg, transparent, rgba(0,92,70,.55), transparent) !important;
+}
+
+@media (max-width:960px){
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:78% center !important;
+        transform:scale(.88) translateX(15%) !important;
+    }
+    .hero-image.hero-image-asset-overlay::before{ width:25% !important; }
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:2.7% !important;
+        width:clamp(44px, 8.8vw, 66px) !important;
+        gap:clamp(10px, 2.2vw, 18px) !important;
+    }
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak,
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+        width:clamp(40px, 8vw, 58px) !important;
+        max-width:clamp(40px, 8vw, 58px) !important;
+    }
+}
+
+@media (max-width:520px){
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:72% center !important;
+        transform:scale(.98) translateX(8%) !important;
+    }
+    .hero-image.hero-image-asset-overlay::before{ width:25% !important; }
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:2.4% !important;
+        top:14% !important;
+        width:clamp(30px, 8.8vw, 42px) !important;
+        gap:6px !important;
+    }
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak,
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+        width:clamp(28px, 8vw, 38px) !important;
+        max-width:clamp(28px, 8vw, 38px) !important;
     }
 }
 </style>
