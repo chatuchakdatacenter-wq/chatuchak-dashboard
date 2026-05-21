@@ -3294,7 +3294,7 @@ FINAL MOBILE HERO CLEAN MODE
 FINAL QA PATCH: Mobile Hero asset-safe visibility
 - Desktop/Windows untouched
 - Keep top logo/menu/hotline intact
-- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=8 exists
+- Show building softly when https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=9 exists
 - Add subtle premium green texture even while image is loading
 ========================================================= */
 @media(max-width:960px){
@@ -3335,7 +3335,7 @@ FINAL QA PATCH: Mobile Hero asset-safe visibility
         opacity:1 !important;
         background:
             linear-gradient(135deg, rgba(0,92,70,.20), rgba(4,120,87,.10)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=8') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=9') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3678,7 +3678,7 @@ FINAL FIX 02: Mobile Quick Access Green Panel Header Restore
         overflow:hidden !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.18),rgba(4,120,87,.12)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=8') center center / cover no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=9') center center / cover no-repeat !important;
     }
 
     .hero-image img{
@@ -3828,7 +3828,7 @@ FINAL OVERRIDE: Mobile building background enhanced
         opacity:1 !important;
         background:
             linear-gradient(135deg,rgba(0,92,70,.22),rgba(4,120,87,.14)),
-            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=8') center center / 135% auto no-repeat !important;
+            url('https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/building.jpg?v=9') center center / 135% auto no-repeat !important;
         transform:scale(1.08) !important;
         transform-origin:center center !important;
     }
@@ -6570,7 +6570,7 @@ FINAL HOTFIX: Hero overlay asset layout
             <div class="hero-image hero-image-asset-overlay">
 
                 <img
-                    src="assets/images/building.jpg?v=8"
+                    src="assets/images/building.jpg?v=9"
                     alt="Chatuchak Training Center building"
                     class="hero-building-img"
                 >
@@ -6578,13 +6578,13 @@ FINAL HOTFIX: Hero overlay asset layout
                 <!-- HERO LOGO OVERLAY: upload these files to assets/images/ -->
                 <div class="hero-logo-stack" aria-hidden="true">
                     <img
-                        src="assets/images/logo-chatuchak-district.png?v=4"
+                        src="assets/images/logo-chatuchak-district.png?v=5"
                         alt="Chatuchak District Office"
                         class="hero-overlay-logo hero-overlay-logo-chatuchak"
                         onerror="this.style.display='none'"
                     >
                     <img
-                        src="assets/images/logo-bma-circle.png?v=4"
+                        src="assets/images/logo-bma-circle.png?v=5"
                         alt="BMA"
                         class="hero-overlay-logo hero-overlay-logo-bma"
                         onerror="this.style.display='none'"
@@ -8089,6 +8089,223 @@ CODE-ONLY FINAL REFINEMENT PATCH
     .hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
         width:clamp(42px, 12vw, 58px) !important;
         max-width:clamp(42px, 12vw, 58px) !important;
+    }
+}
+</style>
+
+
+<style>
+/* =========================================================
+MASTER MATCH PATCH - CODE ONLY
+Reference: full hero photo + diagonal white right panel + floating logos
+========================================================= */
+
+.hero{
+    position:relative !important;
+    overflow:hidden !important;
+    isolation:isolate !important;
+}
+
+.hero-left{
+    position:relative !important;
+    z-index:12 !important;
+    width:min(43%, 570px) !important;
+    max-width:570px !important;
+}
+
+/* Visual area */
+.hero-image.hero-image-asset-overlay{
+    position:absolute !important;
+    inset:0 !important;
+    z-index:1 !important;
+    overflow:hidden !important;
+    border-radius:inherit !important;
+    background:#fff !important;
+}
+
+/* Building photo: no white margins, shift focus right, show fuller building */
+.hero-image.hero-image-asset-overlay > img.hero-building-img{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:none !important;
+    max-height:none !important;
+    object-fit:cover !important;
+    object-position:63% center !important;
+    transform:none !important;
+    transform-origin:center center !important;
+    display:block !important;
+    margin:0 !important;
+    padding:0 !important;
+    opacity:1 !important;
+    filter:saturate(1.04) contrast(1.03) !important;
+}
+
+/* Left fade for text readability */
+.hero-image.hero-image-asset-overlay::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:2 !important;
+    pointer-events:none !important;
+    background:linear-gradient(
+        90deg,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,.98) 23%,
+        rgba(255,255,255,.78) 35%,
+        rgba(255,255,255,.28) 48%,
+        rgba(255,255,255,0) 62%
+    ) !important;
+}
+
+/* Right diagonal white panel like master image */
+.hero-image.hero-image-asset-overlay::before{
+    content:"" !important;
+    position:absolute !important;
+    top:0 !important;
+    right:0 !important;
+    width:29.5% !important;
+    height:100% !important;
+    z-index:4 !important;
+    pointer-events:none !important;
+    background:
+        linear-gradient(90deg, #00805f 0 10px, transparent 10px 100%),
+        #ffffff !important;
+    clip-path:polygon(15% 0, 100% 0, 100% 100%, 0 100%) !important;
+    box-shadow:-18px 0 32px rgba(0,0,0,.04) !important;
+}
+
+/* Logo stack: directly on right white panel, no separate box */
+.hero-image.hero-image-asset-overlay .hero-logo-stack{
+    position:absolute !important;
+    z-index:9 !important;
+    right:4.8% !important;
+    top:19.5% !important;
+
+    width:clamp(136px, 12.2vw, 188px) !important;
+    min-height:auto !important;
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:clamp(42px, 4vw, 64px) !important;
+
+    margin:0 !important;
+    padding:0 !important;
+    pointer-events:none !important;
+    opacity:1 !important;
+    transform:none !important;
+    background:transparent !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+}
+
+/* separator line between logos */
+.hero-image.hero-image-asset-overlay .hero-logo-stack::after{
+    content:"" !important;
+    position:absolute !important;
+    left:-5% !important;
+    right:-5% !important;
+    top:48% !important;
+    height:1.5px !important;
+    background:linear-gradient(90deg, transparent, rgba(0,92,70,.7), transparent) !important;
+}
+
+.hero-image.hero-image-asset-overlay .hero-logo-stack img,
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo{
+    position:static !important;
+    display:block !important;
+    height:auto !important;
+    object-fit:contain !important;
+    object-position:center !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    border:0 !important;
+    opacity:1 !important;
+    transform:none !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    filter:drop-shadow(0 5px 10px rgba(0,92,70,.10)) !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak{
+    width:clamp(128px, 11.5vw, 178px) !important;
+    max-width:clamp(128px, 11.5vw, 178px) !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+    width:clamp(138px, 12.4vw, 190px) !important;
+    max-width:clamp(138px, 12.4vw, 190px) !important;
+}
+
+/* Desktop */
+@media (min-width:961px){
+    .hero{
+        min-height:clamp(500px, 54vh, 640px) !important;
+    }
+}
+
+/* Tablet */
+@media (max-width:960px){
+    .hero-left{
+        width:min(58%, 520px) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:61% center !important;
+    }
+
+    .hero-image.hero-image-asset-overlay::before{
+        width:28% !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:3.8% !important;
+        top:17% !important;
+        width:clamp(70px, 13vw, 110px) !important;
+        gap:clamp(18px, 3vw, 30px) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak,
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+        width:clamp(62px, 11vw, 92px) !important;
+        max-width:clamp(62px, 11vw, 92px) !important;
+    }
+}
+
+/* Mobile */
+@media (max-width:520px){
+    .hero-left{
+        width:68% !important;
+    }
+
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:58% center !important;
+    }
+
+    .hero-image.hero-image-asset-overlay::before{
+        width:25% !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:3.4% !important;
+        top:13% !important;
+        width:clamp(42px, 13vw, 62px) !important;
+        gap:8px !important;
+        opacity:.92 !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack::after{
+        top:50% !important;
+        height:1px !important;
+    }
+
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak,
+    .hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+        width:clamp(38px, 12vw, 56px) !important;
+        max-width:clamp(38px, 12vw, 56px) !important;
     }
 }
 </style>
