@@ -6201,33 +6201,16 @@ assets/images/logo-chatuchak-district.png, assets/images/logo-bma-circle.png
     background:linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,.98) 28%, rgba(255,255,255,.82) 43%, rgba(255,255,255,.22) 58%, rgba(255,255,255,0) 72%) !important;
 }
 
-
 .hero-logo-stack{
     position:absolute !important;
-    right:4.8% !important;
-    top:50% !important;
-    transform:translateY(-50%) !important;
+    right:6.2% !important;
+    top:16% !important;
     z-index:5 !important;
-
     display:flex !important;
-    flex-direction:row !important;
+    flex-direction:column !important;
     align-items:center !important;
-    justify-content:center !important;
-
-    gap:clamp(14px, 1.8vw, 24px) !important;
-
-    padding:16px 20px !important;
-    border-radius:28px !important;
-
-    background:rgba(255,255,255,.38) !important;
-    backdrop-filter:blur(12px) !important;
-
-    border:1px solid rgba(255,255,255,.45) !important;
-
-    box-shadow:
-        0 16px 36px rgba(0,0,0,.10),
-        inset 0 1px 0 rgba(255,255,255,.55) !important;
-
+    justify-content:flex-start !important;
+    gap:clamp(18px, 2.3vw, 30px) !important;
     pointer-events:none !important;
 }
 
@@ -6236,68 +6219,176 @@ assets/images/logo-chatuchak-district.png, assets/images/logo-bma-circle.png
     width:auto !important;
     height:auto !important;
     object-fit:contain !important;
-
-    filter:
-        drop-shadow(0 10px 18px rgba(0,92,70,.14)) !important;
-
-    transition:transform .25s ease !important;
+    filter:drop-shadow(0 10px 18px rgba(0,92,70,.12)) !important;
 }
 
 .hero-overlay-logo-chatuchak{
-    max-width:clamp(122px, 10vw, 170px) !important;
+    max-width:clamp(118px, 11vw, 175px) !important;
 }
 
 .hero-overlay-logo-bma{
-    max-width:clamp(88px, 7vw, 126px) !important;
+    max-width:clamp(102px, 9.2vw, 150px) !important;
 }
 
 @media(max-width:960px){
     .hero-logo-stack{
-        right:4% !important;
-        top:auto !important;
-        bottom:7% !important;
-        transform:none !important;
-
-        padding:10px 14px !important;
+        right:5% !important;
+        top:14% !important;
         gap:10px !important;
-
-        border-radius:20px !important;
-
-        opacity:.92 !important;
+        opacity:.88 !important;
     }
 
     .hero-overlay-logo-chatuchak{
-        max-width:70px !important;
+        max-width:72px !important;
     }
 
     .hero-overlay-logo-bma{
-        max-width:52px !important;
+        max-width:62px !important;
     }
 }
 
 @media(max-width:520px){
     .hero-logo-stack{
-        right:4% !important;
-        bottom:6% !important;
-
-        padding:8px 12px !important;
+        right:5% !important;
+        top:13% !important;
         gap:8px !important;
-
-        border-radius:18px !important;
-
-        opacity:.88 !important;
+        opacity:.82 !important;
     }
 
     .hero-overlay-logo-chatuchak{
-        max-width:58px !important;
+        max-width:56px !important;
     }
 
     .hero-overlay-logo-bma{
-        max-width:44px !important;
+        max-width:48px !important;
     }
 }
 
-</style>
+
+
+/* =========================================================
+FINAL HOTFIX: Hero overlay asset layout
+- Building image fills hero area
+- Logo overlay uses actual assets and stays centered on right side
+- Prevent generic .hero-image img rules from enlarging overlay logos
+========================================================= */
+@media (min-width: 961px){
+    .hero{
+        min-height:clamp(480px, 54vh, 620px) !important;
+    }
+
+    .hero-left{
+        position:relative !important;
+        z-index:6 !important;
+        width:min(48%, 620px) !important;
+        max-width:620px !important;
+    }
+
+    .hero-image.hero-image-asset-overlay{
+        position:absolute !important;
+        inset:0 !important;
+        z-index:1 !important;
+        background:#ffffff !important;
+        display:block !important;
+        overflow:hidden !important;
+    }
+
+    .hero-image.hero-image-asset-overlay > .hero-building-img{
+        position:absolute !important;
+        inset:0 !important;
+        width:100% !important;
+        height:100% !important;
+        max-width:none !important;
+        object-fit:cover !important;
+        object-position:center right !important;
+        margin:0 !important;
+        display:block !important;
+        opacity:1 !important;
+        filter:saturate(1.03) contrast(1.03) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay::after{
+        content:'' !important;
+        position:absolute !important;
+        inset:0 !important;
+        z-index:2 !important;
+        pointer-events:none !important;
+        background:linear-gradient(90deg,
+            rgba(255,255,255,1) 0%,
+            rgba(255,255,255,.98) 27%,
+            rgba(255,255,255,.78) 43%,
+            rgba(255,255,255,.20) 58%,
+            rgba(255,255,255,0) 72%
+        ) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        position:absolute !important;
+        right:6.5% !important;
+        top:19% !important;
+        z-index:7 !important;
+        width:clamp(120px, 13vw, 190px) !important;
+        display:flex !important;
+        flex-direction:column !important;
+        align-items:center !important;
+        justify-content:flex-start !important;
+        gap:clamp(16px, 2vw, 28px) !important;
+        pointer-events:none !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-overlay-logo{
+        position:static !important;
+        display:block !important;
+        width:100% !important;
+        height:auto !important;
+        max-width:100% !important;
+        max-height:none !important;
+        object-fit:contain !important;
+        margin:0 auto !important;
+        opacity:1 !important;
+        mix-blend-mode:normal !important;
+        filter:drop-shadow(0 8px 16px rgba(0,92,70,.12)) !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-overlay-logo-bma{
+        width:82% !important;
+    }
+}
+
+@media (max-width: 960px){
+    .hero-image.hero-image-asset-overlay .hero-building-img{
+        width:100% !important;
+        height:100% !important;
+        object-fit:cover !important;
+        object-position:center right !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        position:absolute !important;
+        right:5% !important;
+        top:14% !important;
+        z-index:7 !important;
+        width:clamp(48px, 13vw, 76px) !important;
+        display:flex !important;
+        flex-direction:column !important;
+        align-items:center !important;
+        gap:8px !important;
+        opacity:.9 !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-overlay-logo{
+        width:100% !important;
+        max-width:100% !important;
+        height:auto !important;
+        object-fit:contain !important;
+        display:block !important;
+    }
+
+    .hero-image.hero-image-asset-overlay .hero-overlay-logo-bma{
+        width:82% !important;
+    }
+}
+
 </style>
 </head>
 
@@ -6473,29 +6564,13 @@ assets/images/logo-chatuchak-district.png, assets/images/logo-bma-circle.png
         <!-- HERO -->
 
         <section class="hero">
-<div class="hero-logo-stack">
-
-    <img
-        src="assets/images/logo-bma.png"
-        class="hero-overlay-logo hero-overlay-logo-bma"
-        alt="BMA Logo"
-    >
-
-    <img
-        src="assets/images/logo-chatuchak.png"
-        class="hero-overlay-logo hero-overlay-logo-chatuchak"
-        alt="Chatuchak Logo"
-    >
-
-</div>
-
 
             <!-- IMAGE BACKGROUND -->
 
             <div class="hero-image hero-image-asset-overlay">
 
                 <img
-                    src="assets/images/building.jpg?v=5"
+                    src="assets/images/building.jpg?v=6"
                     alt="Chatuchak Training Center building"
                     class="hero-building-img"
                 >
@@ -6503,13 +6578,13 @@ assets/images/logo-chatuchak-district.png, assets/images/logo-bma-circle.png
                 <!-- HERO LOGO OVERLAY: upload these files to assets/images/ -->
                 <div class="hero-logo-stack" aria-hidden="true">
                     <img
-                        src="assets/images/logo-chatuchak-district.png?v=1"
+                        src="assets/images/logo-chatuchak-district.png?v=2"
                         alt="Chatuchak District Office"
                         class="hero-overlay-logo hero-overlay-logo-chatuchak"
                         onerror="this.style.display='none'"
                     >
                     <img
-                        src="assets/images/logo-bma-circle.png?v=1"
+                        src="assets/images/logo-bma-circle.png?v=2"
                         alt="BMA"
                         class="hero-overlay-logo hero-overlay-logo-bma"
                         onerror="this.style.display='none'"
@@ -7501,35 +7576,154 @@ document.addEventListener('click', function(event){
 });
 </script>
 
-</body>
-</html>
 
 <style>
-.hero-banner::before,
-.hero-section::before,
-.hero::before{
-    display:none !important;
-    content:none !important;
-    background:none !important;
-    opacity:0 !important;
+/* =========================================================
+FINAL FIX: HERO = building background + separated overlay logos
+Assets required:
+assets/images/building.jpg
+assets/images/logo-chatuchak-district.png
+assets/images/logo-bma-circle.png
+========================================================= */
+
+.hero{
+    position:relative !important;
+    overflow:hidden !important;
 }
 
-.hero-banner,
-.hero-section,
-.hero{
-    background-image:none !important;
+.hero-image.hero-image-asset-overlay{
+    position:absolute !important;
+    inset:0 !important;
+    z-index:1 !important;
+    overflow:hidden !important;
+    background:#fff !important;
+}
+
+.hero-image.hero-image-asset-overlay > img.hero-building-img{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:none !important;
+    max-height:none !important;
+    object-fit:cover !important;
+    object-position:center right !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:block !important;
+    opacity:1 !important;
+    transform:none !important;
+    filter:saturate(1.03) contrast(1.03) !important;
+}
+
+/* soft white text-safe fade on left only */
+.hero-image.hero-image-asset-overlay::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:2 !important;
+    pointer-events:none !important;
+    background:linear-gradient(
+        90deg,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,.98) 26%,
+        rgba(255,255,255,.84) 42%,
+        rgba(255,255,255,.34) 58%,
+        rgba(255,255,255,0) 72%
+    ) !important;
+}
+
+.hero-left{
+    position:relative !important;
+    z-index:6 !important;
+}
+
+/* logo overlay stack: right panel, top = Chatuchak, bottom = BMA */
+.hero-image.hero-image-asset-overlay .hero-logo-stack{
+    position:absolute !important;
+    z-index:8 !important;
+    right:5.2% !important;
+    top:22% !important;
+    width:clamp(120px, 10.5vw, 168px) !important;
+    height:auto !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:clamp(18px, 2.2vw, 30px) !important;
+    margin:0 !important;
+    padding:0 !important;
+    pointer-events:none !important;
+    opacity:1 !important;
+    transform:none !important;
+}
+
+.hero-image.hero-image-asset-overlay .hero-logo-stack img,
+.hero-image.hero-image-asset-overlay .hero-overlay-logo,
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo{
+    position:static !important;
+    display:block !important;
+    width:100% !important;
+    height:auto !important;
+    max-width:100% !important;
+    max-height:none !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    object-fit:contain !important;
+    object-position:center !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    opacity:1 !important;
+    transform:none !important;
+    mix-blend-mode:normal !important;
+    filter:drop-shadow(0 8px 14px rgba(0,92,70,.13)) !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-chatuchak{
+    width:100% !important;
+}
+
+.hero-image.hero-image-asset-overlay img.hero-overlay-logo-bma{
+    width:82% !important;
+}
+
+/* Desktop balance: keep text area clean */
+@media (min-width:961px){
+    .hero{
+        min-height:clamp(480px, 54vh, 620px) !important;
+    }
+
+    .hero-left{
+        width:min(48%, 620px) !important;
+        max-width:620px !important;
+    }
+}
+
+/* Tablet/mobile: keep logos visible but smaller */
+@media (max-width:960px){
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:4.8% !important;
+        top:15% !important;
+        width:clamp(58px, 12vw, 92px) !important;
+        gap:8px !important;
+        opacity:.92 !important;
+    }
+
+    .hero-image.hero-image-asset-overlay > img.hero-building-img{
+        object-position:center right !important;
+    }
+}
+
+@media (max-width:520px){
+    .hero-image.hero-image-asset-overlay .hero-logo-stack{
+        right:4.5% !important;
+        top:12% !important;
+        width:clamp(44px, 14vw, 64px) !important;
+        gap:6px !important;
+        opacity:.88 !important;
+    }
 }
 </style>
 
-
-/* FORCE REMOVE LARGE BACKGROUND LOGO */
-.hero::before,
-.hero-banner::before,
-.hero-section::before{
-    background-image:none !important;
-    background:none !important;
-    content:none !important;
-    display:none !important;
-    opacity:0 !important;
-}
-
+</body>
+</html>
