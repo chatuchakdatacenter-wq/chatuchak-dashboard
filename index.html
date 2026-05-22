@@ -5983,8 +5983,6 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
 }
 
 
-
-
 .result-btn-disabled{
     background:#6b7280 !important;
     color:#e5e7eb !important;
@@ -6000,6 +5998,57 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
     text-align:center;
 }
 
+
+/* Fix single result button width */
+.result-card-actions{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+}
+
+
+@media (max-width:520px){
+    .result-card-actions{
+        display:flex!important;
+        grid-template-columns:none!important;
+    }
+
+    
+}
+
+
+/* mobile result button fix */
+#resultAnnouncementButton{
+    width:auto!important;
+    max-width:170px!important;
+    min-width:0!important;
+    padding-left:14px!important;
+    padding-right:14px!important;
+    font-size:.84rem!important;
+    line-height:1.15!important;
+    white-space:normal!important;
+    word-break:break-word!important;
+    margin:0 auto!important;
+}
+
+@media (max-width:520px){
+    #resultAnnouncementButton{
+        width:100%!important;
+        max-width:100%!important;
+        min-width:0!important;
+        padding-left:14px!important;
+        padding-right:14px!important;
+        font-size:.86rem!important;
+    }
+}
+
+
+@media (max-width:520px){
+    #resultAnnouncementButton{
+        max-width:165px!important;
+        font-size:.82rem!important;
+    }
+}
 </style>
 
 
@@ -7964,10 +8013,7 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
     }
 }
     /* expand result button */
-#resultAnnouncementButton{
-    min-width:240px;
-    padding-inline:24px;
-}
+
 
 </style>
 
