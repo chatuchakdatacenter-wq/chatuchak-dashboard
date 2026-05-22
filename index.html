@@ -5787,6 +5787,115 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
     white-space:pre-line;
 }
 
+
+.result-course-line{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    margin:8px 0 12px;
+    padding:12px 14px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#ecfdf5,#f8fafc);
+    border:1px solid rgba(0,92,70,.14);
+    color:#005C46;
+    font-size:1.02rem;
+    font-weight:900;
+}
+
+.result-course-line span{
+    display:inline-flex;
+    align-items:center;
+    padding:4px 10px;
+    border-radius:999px;
+    background:#005C46;
+    color:#ffffff;
+    font-size:.78rem;
+    font-weight:900;
+}
+
+.result-warning{
+    margin:8px 0 12px;
+    padding:10px 12px;
+    border-radius:14px;
+    background:#fff7ed;
+    border:1px solid rgba(234,88,12,.20);
+    color:#9a3412;
+    font-size:.9rem;
+    line-height:1.55;
+}
+
+.result-note{
+    margin:10px 0 12px;
+    padding:10px 12px;
+    border-left:4px solid #005C46;
+    border-radius:12px;
+    background:#f8fafc;
+    color:#334155;
+    font-size:.92rem;
+    font-weight:800;
+}
+
+.result-table-block{
+    margin-top:14px;
+    border:1px solid rgba(15,23,42,.10);
+    border-radius:18px;
+    overflow:hidden;
+    background:#ffffff;
+}
+
+.result-table-block.is-reserve{
+    border-color:rgba(217,119,6,.28);
+}
+
+.result-table-title{
+    padding:10px 14px;
+    background:#005C46;
+    color:#ffffff;
+    font-size:.95rem;
+    font-weight:900;
+}
+
+.result-table-block.is-reserve .result-table-title{
+    background:#92400e;
+}
+
+.result-table-wrap{
+    overflow:auto;
+}
+
+.result-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:520px;
+}
+
+.result-table th,
+.result-table td{
+    padding:11px 12px;
+    border-bottom:1px solid rgba(15,23,42,.08);
+    text-align:left;
+    vertical-align:top;
+    color:#0f172a;
+    font-size:.94rem;
+}
+
+.result-table th{
+    background:#f1f5f9;
+    font-weight:900;
+}
+
+.result-table tr:last-child td{
+    border-bottom:none;
+}
+
+.result-no{
+    width:78px;
+    text-align:center !important;
+    font-weight:900;
+    color:#005C46 !important;
+}
+
 .result-empty{
     padding:34px 18px;
     border:1px dashed rgba(15,23,42,.22);
@@ -7370,7 +7479,7 @@ document.addEventListener('DOMContentLoaded', loadAIDashboard);
 </div>
 
 <script>
-const RESULT_ANNOUNCEMENT_API = 'https://opensheet.elk.sh/1gNd959wTQc2MfT6c6qKEGN5E9PYN7YOiu5NIq59ph18/Result_Announcement';
+const RESULT_ANNOUNCEMENT_API = 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=nameCheck';
 let resultAnnouncementCache = null;
 
 function resultEscapeHTML(value){
@@ -7383,20 +7492,109 @@ function resultNormalize(value){
     return String(value ?? '').toLowerCase().replace(/\s+/g,' ').trim();
 }
 
-function resultIsPublished(item){
-    const status = resultNormalize(item.status || item.Status);
-    return !status || status === 'publish' || status === 'published' || status === 'เผยแพร่' || status === 'เปิด';
+function resultClean(value, fallback = '-'){
+    const text = String(value ?? '').replace(/\s+/g,' ').trim();
+    return text || fallback;
+}
+
+function resultBoolPublished(item){
+    const publish = item.publish ?? item.Publish ?? item.PUBLISH;
+    if (typeof publish === 'boolean') return publish;
+    const value = resultNormalize(publish);
+    return value === 'true' || value === '1' || value === 'yes' || value === 'show' || value === 'publish' || value === 'published' || value === 'เผยแพร่' || value === 'เปิด';
 }
 
 async function fetchResultAnnouncements(){
     if (Array.isArray(resultAnnouncementCache)) return resultAnnouncementCache;
 
     const response = await fetch(RESULT_ANNOUNCEMENT_API, { cache:'no-store' });
-    if (!response.ok) throw new Error('Result_Announcement API error: ' + response.status);
+    if (!response.ok) throw new Error('Name_Check API error: ' + response.status);
 
     const data = await response.json();
-    resultAnnouncementCache = Array.isArray(data) ? data.filter(resultIsPublished) : [];
+    resultAnnouncementCache = Array.isArray(data) ? data.filter(resultBoolPublished) : [];
     return resultAnnouncementCache;
+}
+
+function resultGetField(item, keys, fallback = ''){
+    for (const key of keys){
+        if (item && item[key] !== undefined && item[key] !== null && String(item[key]).trim() !== ''){
+            return item[key];
+        }
+    }
+    return fallback;
+}
+
+function resultGroupItems(items){
+    const groups = new Map();
+
+    items.forEach((item, index) => {
+        const title = resultClean(resultGetField(item, ['title','Title']), 'รายชื่อผู้มีสิทธิ์เข้ารับการฝึกอบรม');
+        const course = resultClean(resultGetField(item, ['course','Course']), 'ยังไม่ได้ระบุวิชา');
+        const batch = resultClean(resultGetField(item, ['batch','Batch']), '-');
+        const round = resultClean(resultGetField(item, ['round','Round']), '-');
+        const reportDate = resultClean(resultGetField(item, ['reportDate','report_date','ReportDate']), '-');
+        const location = resultClean(resultGetField(item, ['location','Location']), 'ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร');
+        const contactPhone = resultClean(resultGetField(item, ['contactPhone','contact_phone','ContactPhone','phone','Phone']), '02-513-6654');
+        const facebookUrl = resultClean(resultGetField(item, ['facebookUrl','facebook_url','FacebookUrl']), '');
+
+        const key = [title, course, batch, round, reportDate, location, contactPhone, facebookUrl].join('||');
+        if (!groups.has(key)){
+            groups.set(key, {
+                title,
+                course,
+                batch,
+                round,
+                reportDate,
+                location,
+                contactPhone,
+                facebookUrl,
+                rows: []
+            });
+        }
+
+        const listType = resultClean(resultGetField(item, ['listType','list_type','ListType']), 'ตัวจริง');
+        groups.get(key).rows.push({
+            no: resultClean(resultGetField(item, ['no','No','number','Number']), String(index + 1)),
+            fullname: resultClean(resultGetField(item, ['fullname','fullName','Fullname','FullName','name','Name']), 'ยังไม่ได้ระบุชื่อ'),
+            phoneMask: resultClean(resultGetField(item, ['phoneMask','phone_mask','PhoneMask','studentPhone','StudentPhone']), '-'),
+            listType,
+            status: resultClean(resultGetField(item, ['status','Status']), '')
+        });
+    });
+
+    return Array.from(groups.values());
+}
+
+function resultRenderTable(rows, title, extraClass){
+    if (!rows.length) return '';
+
+    const body = rows
+        .sort((a,b) => Number(a.no || 999999) - Number(b.no || 999999))
+        .map(row => `
+            <tr>
+                <td class="result-no">${resultEscapeHTML(row.no)}</td>
+                <td>${resultEscapeHTML(row.fullname)}</td>
+                <td>${resultEscapeHTML(row.phoneMask)}</td>
+            </tr>
+        `).join('');
+
+    return `
+        <div class="result-table-block ${extraClass || ''}">
+            <div class="result-table-title">${resultEscapeHTML(title)}</div>
+            <div class="result-table-wrap">
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>ชื่อ-สกุล</th>
+                            <th>เบอร์โทรศัพท์</th>
+                        </tr>
+                    </thead>
+                    <tbody>${body}</tbody>
+                </table>
+            </div>
+        </div>
+    `;
 }
 
 function buildResultAnnouncementHTML(items){
@@ -7404,7 +7602,7 @@ function buildResultAnnouncementHTML(items){
         return `
             <div class="result-empty">
                 ยังไม่มีข้อมูลประกาศรายชื่อที่เผยแพร่<br>
-                กรุณาเพิ่มข้อมูลใน Sheet: Result_Announcement และตั้งค่า status เป็น publish
+                กรุณาเพิ่มข้อมูลใน Sheet: Name_Check และตั้งค่า publish เป็น TRUE
                 <div class="result-modal-footer">
                     <button class="result-modal-close-btn" type="button" onclick="closeResultAnnouncementModal()">✕ ปิดหน้าต่าง</button>
                 </div>
@@ -7412,35 +7610,40 @@ function buildResultAnnouncementHTML(items){
         `;
     }
 
-    const cards = items.map((item,index)=>{
-        const title = item.title || item.Title || 'ประกาศรายชื่อผู้มีสิทธิ์เข้ารับการฝึกอบรม';
-        const course = item.course || item.Course || '-';
-        const batch = item.batch || item.Batch || '-';
-        const round = item.round || item.Round || '-';
-        const reportDate = item.reportDate || item.report_date || item.ReportDate || '-';
-        const location = item.location || item.Location || 'ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร';
-        const phone = item.phone || item.Phone || '02-513-6654';
-        const names = item.names || item.Names || item.nameList || item.name_list || '';
-        const facebookUrl = item.facebookUrl || item.facebook_url || item.FacebookUrl || '';
+    const cards = resultGroupItems(items).map((group) => {
+        const mainRows = group.rows.filter(row => !/สำรอง/i.test(row.listType));
+        const reserveRows = group.rows.filter(row => /สำรอง/i.test(row.listType));
+        const searchSource = resultNormalize([
+            group.title, group.course, group.batch, group.round, group.reportDate,
+            group.location, group.contactPhone, group.facebookUrl,
+            group.rows.map(row => `${row.fullname} ${row.phoneMask} ${row.listType} ${row.status}`).join(' ')
+        ].join(' '));
+        const courseWarning = group.course === 'ยังไม่ได้ระบุวิชา'
+            ? '<div class="result-warning">กรุณากรอกชื่อวิชาในคอลัมน์ <strong>course</strong> ของ Sheet เพื่อให้แสดงชื่อวิชาถูกต้อง</div>'
+            : '';
 
         return `
-            <article class="result-item" data-result-search="${resultEscapeHTML(resultNormalize([title,course,batch,round,reportDate,location,phone,names].join(' ')))}">
-                <h3>${resultEscapeHTML(title)}</h3>
+            <article class="result-item" data-result-search="${resultEscapeHTML(searchSource)}">
+                <h3>${resultEscapeHTML(group.title)}</h3>
+                <div class="result-course-line"><span>วิชาที่เรียน</span>${resultEscapeHTML(group.course)}</div>
+                ${courseWarning}
                 <div class="result-meta-grid">
-                    <div class="result-meta"><strong>หลักสูตร</strong>${resultEscapeHTML(course)}</div>
-                    <div class="result-meta"><strong>รุ่น / รอบเรียน</strong>${resultEscapeHTML(batch)} ${round && round !== '-' ? ' | ' + resultEscapeHTML(round) : ''}</div>
-                    <div class="result-meta"><strong>วันรายงานตัว</strong>${resultEscapeHTML(reportDate)}</div>
-                    <div class="result-meta"><strong>สถานที่ / โทร.</strong>${resultEscapeHTML(location)} | ${resultEscapeHTML(phone)}</div>
+                    <div class="result-meta"><strong>วิชาที่เรียน</strong>${resultEscapeHTML(group.course)}</div>
+                    <div class="result-meta"><strong>รุ่น / รอบเรียน</strong>${resultEscapeHTML(group.batch)} ${group.round && group.round !== '-' ? ' | ' + resultEscapeHTML(group.round) : ''}</div>
+                    <div class="result-meta"><strong>วันรายงานตัว</strong>${resultEscapeHTML(group.reportDate)}</div>
+                    <div class="result-meta"><strong>สถานที่ / โทร.</strong>${resultEscapeHTML(group.location)} | ${resultEscapeHTML(group.contactPhone)}</div>
                 </div>
-                <div class="result-names">${resultEscapeHTML(names || 'ยังไม่ได้ระบุรายชื่อในระบบ')}</div>
-                ${facebookUrl ? `<div class="result-action-row"><a class="result-btn result-btn-facebook" href="${resultEscapeHTML(facebookUrl)}" target="_blank" rel="noopener">ตรวจสอบผ่าน facebook</a></div>` : ''}
+                <div class="result-note">หมายเหตุ: วิชานี้มีรายชื่อผู้มีสิทธิ์ ${mainRows.length} คน${reserveRows.length ? ` และสำรอง ${reserveRows.length} คน` : ''}</div>
+                ${resultRenderTable(mainRows, 'รายชื่อผู้มีสิทธิ์', 'is-main')}
+                ${resultRenderTable(reserveRows, 'รายชื่อสำรอง', 'is-reserve')}
+                ${group.facebookUrl && group.facebookUrl !== '-' ? `<div class="result-action-row"><a class="result-btn result-btn-facebook" href="${resultEscapeHTML(group.facebookUrl)}" target="_blank" rel="noopener">ตรวจสอบผ่าน Facebook</a></div>` : ''}
             </article>
         `;
     }).join('');
 
     return `
         <div class="result-toolbar">
-            <input class="result-search" id="resultSearchInput" type="search" placeholder="ค้นหาชื่อ-สกุล / หลักสูตร / รุ่นที่ฝึก..." oninput="filterResultAnnouncements(this.value)">
+            <input class="result-search" id="resultSearchInput" type="search" placeholder="ค้นหาชื่อ-สกุล / เบอร์ท้าย / วิชาที่เรียน / รุ่นที่ฝึก..." oninput="filterResultAnnouncements(this.value)">
         </div>
         <div class="result-list" id="resultAnnouncementList">${cards}</div>
         <div class="result-modal-footer">
@@ -7465,20 +7668,19 @@ async function openResultAnnouncementModal(){
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
-
-    content.innerHTML = '<div class="result-empty">กำลังโหลดข้อมูลประกาศรายชื่อ...</div>';
+    content.innerHTML = '<div class="result-loading">กำลังโหลดข้อมูลประกาศรายชื่อ...</div>';
 
     try{
         const items = await fetchResultAnnouncements();
         content.innerHTML = buildResultAnnouncementHTML(items);
-        const search = document.getElementById('resultSearchInput');
-        if (search) setTimeout(()=>search.focus(), 80);
+        const input = document.getElementById('resultSearchInput');
+        if (input) setTimeout(()=>input.focus(), 120);
     }catch(error){
         console.error(error);
         content.innerHTML = `
             <div class="result-empty">
                 ไม่สามารถโหลดข้อมูลประกาศรายชื่อได้ในขณะนี้<br>
-                กรุณาตรวจสอบ Sheet: Result_Announcement หรือสถานะการเผยแพร่ข้อมูล
+                กรุณาตรวจสอบ API URL หรือการตั้งค่า Apps Script
                 <div class="result-modal-footer">
                     <button class="result-modal-close-btn" type="button" onclick="closeResultAnnouncementModal()">✕ ปิดหน้าต่าง</button>
                 </div>
@@ -7493,20 +7695,6 @@ function closeResultAnnouncementModal(){
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden','true');
     document.body.style.overflow = '';
-}
-
-async function openResultFacebookAnnouncement(){
-    try{
-        const items = await fetchResultAnnouncements();
-        const fb = items.map(item => item.facebookUrl || item.facebook_url || item.FacebookUrl || '').find(Boolean);
-        if (fb){
-            window.open(fb, '_blank', 'noopener');
-            return;
-        }
-    }catch(error){
-        console.warn(error);
-    }
-    openResultAnnouncementModal();
 }
 
 document.addEventListener('keydown', function(event){
