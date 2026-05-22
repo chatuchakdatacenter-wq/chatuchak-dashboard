@@ -6821,7 +6821,7 @@ FINAL HOTFIX: Hero overlay asset layout
                     📋
                 </div>
 
-                <h3>
+                <h3 data-result-mobile-title="true">
                     ประกาศรายชื่อผู้มีสิทธิ์
                 </h3>
 
@@ -6831,9 +6831,7 @@ FINAL HOTFIX: Hero overlay asset layout
                 </p>
 
                 <div class="result-action-row result-card-actions">
-                    <button id="resultAnnouncementButton" class="result-btn result-btn-primary" type="button" onclick="openResultAnnouncementModal()">
-                        ประกาศรายชื่อ
-                    </button>
+                    <button id="resultAnnouncementButton" class="result-btn result-btn-primary" type="button" onclick="openResultAnnouncementModal()">ประกาศรายชื่อ</button>
                     <div id="resultAnnouncementButtonNote" class="result-button-note" aria-live="polite"></div>
                 </div>
 
@@ -7725,7 +7723,7 @@ function buildResultAnnouncementHTML(items){
                 <div class="result-note">หมายเหตุ: วิชานี้มีรายชื่อผู้มีสิทธิ์ ${mainRows.length} คน${reserveRows.length ? ` และสำรอง ${reserveRows.length} คน` : ''}</div>
                 ${resultRenderTable(mainRows, 'รายชื่อผู้มีสิทธิ์', 'is-main')}
                 ${resultRenderTable(reserveRows, 'รายชื่อสำรอง', 'is-reserve')}
-                ${group.facebookUrl && group.facebookUrl !== '-' ? `<div class="result-action-row"><a class="result-btn result-btn-facebook" href="${resultEscapeHTML(group.facebookUrl)}" target="_blank" rel="noopener">Facebook</a></div>` : ''}
+                ${group.facebookUrl && group.facebookUrl !== '-' ? `<div class="result-action-row"></div>` : ''}
             </article>
         `;
     }).join('');
@@ -8015,6 +8013,91 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
     /* expand result button */
 
 
+/* EXACT FINAL: result announcement mobile view only */
+@media (max-width:900px){
+    h3[data-result-mobile-title="true"]{
+        display:none!important;
+        visibility:hidden!important;
+        height:0!important;
+        margin:0!important;
+        padding:0!important;
+        overflow:hidden!important;
+    }
+
+    #resultAnnouncementButton{
+        display:inline-flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        width:auto!important;
+        min-width:0!important;
+        max-width:none!important;
+        padding:12px 22px!important;
+        margin:0 auto!important;
+        white-space:nowrap!important;
+        word-break:normal!important;
+        overflow:visible!important;
+        text-overflow:clip!important;
+        font-size:.95rem!important;
+        font-weight:900!important;
+        line-height:1.1!important;
+        border-radius:14px!important;
+    }
+
+    #resultAnnouncementButton .menu-icon,
+    #resultAnnouncementButton br{
+        display:none!important;
+    }
+
+    #resultAnnouncementButtonNote{
+        display:inline-flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        width:auto!important;
+        margin:8px auto 0!important;
+        padding:7px 16px!important;
+        font-size:.9rem!important;
+        font-weight:900!important;
+        line-height:1.1!important;
+        color:#ffc107!important;
+        background:linear-gradient(135deg, #99f6e4, #2dd4bf)!important;
+        border-radius:999px!important;
+        box-shadow:0 4px 14px rgba(45,212,191,.28)!important;
+        text-align:center!important;
+    }
+
+    #resultAnnouncementButtonNote:empty{
+        display:none!important;
+    }
+
+    .result-card-actions{
+        display:flex!important;
+        flex-direction:column!important;
+        align-items:center!important;
+        justify-content:center!important;
+        gap:8px!important;
+        grid-template-columns:none!important;
+    }
+
+    .result-card-actions::before,
+    .result-card-actions::after,
+    .result-card-actions .result-btn-facebook,
+    .result-card-actions .result-btn-facebook::before,
+    .result-card-actions .result-btn-facebook::after{
+        display:none!important;
+        content:none!important;
+        width:0!important;
+        height:0!important;
+        opacity:0!important;
+        visibility:hidden!important;
+        overflow:hidden!important;
+        margin:0!important;
+        padding:0!important;
+        background:none!important;
+        box-shadow:none!important;
+        border:0!important;
+    }
+}
+
 </style>
 
 <script>
@@ -8033,9 +8116,9 @@ function setResultAnnouncementButtonState(status){
         resultBtn.disabled = true;
         resultBtn.classList.add('result-is-disabled');
         resultBtn.setAttribute('aria-disabled','true');
-        resultBtn.setAttribute('title','เร็วๆนี้');
+        resultBtn.setAttribute('title','เร็วๆ นี้');
         if(note){
-            note.textContent = 'เร็วๆนี้';
+            note.textContent = 'เร็วๆ นี้';
             note.classList.add('is-warning');
         }
         return;
