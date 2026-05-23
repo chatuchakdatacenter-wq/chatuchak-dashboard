@@ -7190,10 +7190,6 @@ FINAL HOTFIX: Hero overlay asset layout
 </div>
 
 
-                <div class="news-date">
-                    18 พ.ค. 2567
-                </div>
-
             </div>
 
 
@@ -7430,6 +7426,89 @@ function loadPRNewsJSONP() {
 const OUTREACH_ACTIVITY_API =
 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=outreachActivity';
 
+function formatOutreachDate(value) {
+
+    if (!value) return '';
+
+    const raw = String(value).trim().replace(/\s+/g, ' ');
+
+    if (!raw) return '';
+
+    const thaiShortMonths = [
+        '', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+        'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+    ];
+
+    const thaiMonthMap = {
+        'ม.ค.': 1, 'มกราคม': 1,
+        'ก.พ.': 2, 'กุมภาพันธ์': 2,
+        'มี.ค.': 3, 'มีนาคม': 3,
+        'เม.ย.': 4, 'เมษายน': 4,
+        'พ.ค.': 5, 'พฤษภาคม': 5,
+        'มิ.ย.': 6, 'มิถุนายน': 6,
+        'ก.ค.': 7, 'กรกฎาคม': 7,
+        'ส.ค.': 8, 'สิงหาคม': 8,
+        'ก.ย.': 9, 'กันยายน': 9,
+        'ต.ค.': 10, 'ตุลาคม': 10,
+        'พ.ย.': 11, 'พฤศจิกายน': 11,
+        'ธ.ค.': 12, 'ธันวาคม': 12
+    };
+
+    const toThaiYear = (year) => {
+        const numberYear = Number(year);
+        if (!numberYear) return '';
+        return numberYear >= 2400 ? numberYear : numberYear + 543;
+    };
+
+    const toDisplayDate = (day, month, year) => {
+        const d = Number(day);
+        const m = Number(month);
+        const y = toThaiYear(year);
+
+        if (!d || !m || !y || m < 1 || m > 12) return raw;
+
+        return `${d} ${thaiShortMonths[m]} ${y}`;
+    };
+
+    // Google Sheet recommended input: 23/05/2569 or 23/05/2026
+    const slashDate = raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+
+    if (slashDate) {
+        return toDisplayDate(slashDate[1], slashDate[2], slashDate[3]);
+    }
+
+    // Current mixed input support: 23 พ.ค. 2026 / 23 พฤษภาคม 2569
+    const thaiTextDate = raw.match(/^(\d{1,2})\s*(ม\.ค\.|ก\.พ\.|มี\.ค\.|เม\.ย\.|พ\.ค\.|มิ\.ย\.|ก\.ค\.|ส\.ค\.|ก\.ย\.|ต\.ค\.|พ\.ย\.|ธ\.ค\.|มกราคม|กุมภาพันธ์|มีนาคม|เมษายน|พฤษภาคม|มิถุนายน|กรกฎาคม|สิงหาคม|กันยายน|ตุลาคม|พฤศจิกายน|ธันวาคม)\s*(\d{4})$/);
+
+    if (thaiTextDate) {
+        return toDisplayDate(
+            thaiTextDate[1],
+            thaiMonthMap[thaiTextDate[2]],
+            thaiTextDate[3]
+        );
+    }
+
+    // ISO / AD date from Apps Script: 2026-05-23 or 2026-05-23T00:00:00.000Z
+    const isoDate = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:T.*)?$/);
+
+    if (isoDate) {
+        return toDisplayDate(isoDate[3], isoDate[2], isoDate[1]);
+    }
+
+    // Last fallback: AD Date object only, then force Buddhist Era display.
+    const parsedDate = new Date(raw);
+
+    if (!Number.isNaN(parsedDate.getTime())) {
+        return toDisplayDate(
+            parsedDate.getDate(),
+            parsedDate.getMonth() + 1,
+            parsedDate.getFullYear()
+        );
+    }
+
+    return raw;
+}
+
 async function loadOutreachActivities() {
 
     const container =
@@ -7470,6 +7549,8 @@ async function loadOutreachActivities() {
                     <img
                         src="${item.image1}"
                         class="news-thumb"
+                        loading="lazy"
+                        decoding="async"
                         alt="${item.title || ''}"
                     >
                 ` : ''}
@@ -7478,6 +7559,8 @@ async function loadOutreachActivities() {
                     <img
                         src="${item.image2}"
                         class="news-thumb"
+                        loading="lazy"
+                        decoding="async"
                         alt="${item.title || ''}"
                     >
                 ` : ''}
@@ -7486,6 +7569,8 @@ async function loadOutreachActivities() {
                     <img
                         src="${item.image3}"
                         class="news-thumb"
+                        loading="lazy"
+                        decoding="async"
                         alt="${item.title || ''}"
                     >
                 ` : ''}
@@ -7494,6 +7579,8 @@ async function loadOutreachActivities() {
                     <img
                         src="${item.image}"
                         class="news-thumb"
+                        loading="lazy"
+                        decoding="async"
                         alt="${item.title || ''}"
                     >
                 ` : ''}
@@ -7510,6 +7597,12 @@ async function loadOutreachActivities() {
                     ${item.description || ''}
                 </p>
 
+                <div class="modern-news-meta outreach-date-row">
+                    <span class="modern-news-date">
+                        📅 ${formatOutreachDate(item.date)}
+                    </span>
+                </div>
+
                 <button
                     class="read-more-btn"
                     onclick="toggleReadMore(${index})"
@@ -7518,16 +7611,10 @@ async function loadOutreachActivities() {
                     อ่านต่อ
                 </button>
 
-                <div class="modern-news-meta">
-
-                    <span>
-                        📅 ${new Date(item.date).toLocaleDateString('th-TH') || ''}
-                    </span>
-
-                    <span>
+                <div class="modern-news-meta outreach-location-row">
+                    <span class="modern-news-location">
                         📍 ${item.location || ''}
                     </span>
-
                 </div>
 
             </div>
@@ -8767,6 +8854,54 @@ window.toggleReadMore = function(index){
     position:relative !important;
     z-index:5 !important;
     pointer-events:auto !important;
+}
+
+
+/* FINAL UX PATCH: Mobile news card separation + read-more placed after date */
+#outreachActivityContainer .outreach-date-row{
+    margin-top:12px !important;
+    margin-bottom:6px !important;
+}
+
+#outreachActivityContainer .outreach-location-row{
+    margin-top:8px !important;
+}
+
+#outreachActivityContainer .read-more-btn{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin:6px 0 8px 0 !important;
+}
+
+@media (max-width:768px){
+    #outreachActivityContainer .modern-news-card{
+        border:1.5px solid rgba(0,92,70,.22) !important;
+        border-radius:22px !important;
+        padding:14px !important;
+        margin-bottom:22px !important;
+        background:#fff !important;
+        box-shadow:0 10px 26px rgba(0,0,0,.08) !important;
+        overflow:hidden !important;
+    }
+
+    #outreachActivityContainer .modern-news-desc{
+        margin-bottom:10px !important;
+    }
+
+    #outreachActivityContainer .outreach-date-row{
+        margin-top:10px !important;
+        margin-bottom:6px !important;
+    }
+
+    #outreachActivityContainer .read-more-btn{
+        margin:4px 0 10px 0 !important;
+    }
+
+    #outreachActivityContainer .outreach-location-row{
+        padding-top:8px !important;
+        border-top:1px solid rgba(0,92,70,.10) !important;
+    }
 }
 
 </style>
