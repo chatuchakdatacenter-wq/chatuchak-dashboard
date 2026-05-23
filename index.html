@@ -6049,6 +6049,51 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
         font-size:.82rem!important;
     }
 }
+
+.modern-news-desc{
+    display:block !important;
+    overflow:visible !important;
+    white-space:pre-line !important;
+    color:#444 !important;
+    font-size:14px !important;
+    line-height:1.8 !important;
+    margin-top:8px !important;
+}
+
+.modern-news-meta{
+    margin-top:10px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+
+.read-more-btn{
+    margin-top:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border:none;
+    border-radius:999px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+    font-size:13px;
+    transition:0.25s;
+}
+
+.read-more-btn:hover{
+    transform:translateY(-1px);
+}
+
+.modern-news-desc.collapsed{
+    display:-webkit-box !important;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden !important;
+}
+
 </style>
 
 
@@ -6525,6 +6570,51 @@ FINAL HOTFIX: Hero overlay asset layout
     .hero-image.hero-image-asset-overlay .hero-overlay-logo-bma{
         width:70% !important;
     }
+}
+
+
+.modern-news-desc{
+    display:block !important;
+    overflow:visible !important;
+    white-space:pre-line !important;
+    color:#444 !important;
+    font-size:14px !important;
+    line-height:1.8 !important;
+    margin-top:8px !important;
+}
+
+.modern-news-meta{
+    margin-top:10px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+
+.read-more-btn{
+    margin-top:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border:none;
+    border-radius:999px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+    font-size:13px;
+    transition:0.25s;
+}
+
+.read-more-btn:hover{
+    transform:translateY(-1px);
+}
+
+.modern-news-desc.collapsed{
+    display:-webkit-box !important;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden !important;
 }
 
 </style>
@@ -7280,21 +7370,53 @@ async function loadOutreachActivities() {
         }
 
         container.innerHTML =
-            data.map(item => `
-                <a
-                    href="${item.image}"
-                    target="_blank"
-                    rel="noopener"
+    data.map((item, index) => `
+
+        <div class="modern-news-card">
+
+            <img
+                src="${item.image}"
+                class="news-thumb"
+                alt="${item.title || ''}"
+                decoding="async"
+                loading="lazy"
+            >
+
+            <div class="modern-news-content">
+
+                <h3 class="modern-news-title">
+                    ${item.title || ''}
+                </h3>
+
+                <p class="modern-news-desc collapsed" id="desc-${index}">
+                    ${item.description || ''}
+                </p>
+
+                <button
+                    class="read-more-btn"
+                    onclick="toggleReadMore(${index})"
+                    id="btn-${index}"
                 >
-                    <img
-                        src="${item.image}"
-                        class="news-thumb"
-                        alt="${item.title || 'กิจกรรมออกหน่วย'}"
-                        decoding="async"
-                        loading="lazy"
-                    >
-                </a>
-            `).join('');
+                    อ่านต่อ
+                </button>
+
+                <div class="modern-news-meta">
+
+                    <span>
+                        📅 ${new Date(item.date).toLocaleDateString('th-TH') || ''}
+                    </span>
+
+                    <span>
+                        📍 ${item.location || ''}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `).join('');
 
     } catch (error) {
 
@@ -7873,6 +7995,51 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
         max-width:clamp(32px, 9.5vw, 46px) !important;
     }
 }
+
+.modern-news-desc{
+    display:block !important;
+    overflow:visible !important;
+    white-space:pre-line !important;
+    color:#444 !important;
+    font-size:14px !important;
+    line-height:1.8 !important;
+    margin-top:8px !important;
+}
+
+.modern-news-meta{
+    margin-top:10px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+
+.read-more-btn{
+    margin-top:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border:none;
+    border-radius:999px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+    font-size:13px;
+    transition:0.25s;
+}
+
+.read-more-btn:hover{
+    transform:translateY(-1px);
+}
+
+.modern-news-desc.collapsed{
+    display:-webkit-box !important;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden !important;
+}
+
 </style>
 
 
@@ -7964,6 +8131,51 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
         font-size:.86rem!important;
     }
 }
+
+.modern-news-desc{
+    display:block !important;
+    overflow:visible !important;
+    white-space:pre-line !important;
+    color:#444 !important;
+    font-size:14px !important;
+    line-height:1.8 !important;
+    margin-top:8px !important;
+}
+
+.modern-news-meta{
+    margin-top:10px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+
+.read-more-btn{
+    margin-top:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border:none;
+    border-radius:999px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+    font-size:13px;
+    transition:0.25s;
+}
+
+.read-more-btn:hover{
+    transform:translateY(-1px);
+}
+
+.modern-news-desc.collapsed{
+    display:-webkit-box !important;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden !important;
+}
+
 </style>
 
 
@@ -8091,6 +8303,51 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
     }
 }
 
+
+.modern-news-desc{
+    display:block !important;
+    overflow:visible !important;
+    white-space:pre-line !important;
+    color:#444 !important;
+    font-size:14px !important;
+    line-height:1.8 !important;
+    margin-top:8px !important;
+}
+
+.modern-news-meta{
+    margin-top:10px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+
+.read-more-btn{
+    margin-top:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    border:none;
+    border-radius:999px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+    font-size:13px;
+    transition:0.25s;
+}
+
+.read-more-btn:hover{
+    transform:translateY(-1px);
+}
+
+.modern-news-desc.collapsed{
+    display:-webkit-box !important;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden !important;
+}
+
 </style>
 
 <script>
@@ -8148,6 +8405,39 @@ document.addEventListener('DOMContentLoaded', async function(){
         setResultAnnouncementButtonState('ENABLE');
     }
 });
+</script>
+
+
+<script>
+
+window.toggleReadMore = function(index){
+
+    const desc =
+        document.getElementById(`desc-${index}`);
+
+    const btn =
+        document.getElementById(`btn-${index}`);
+
+    if(!desc || !btn){
+        return;
+    }
+
+    if(desc.classList.contains('collapsed')){
+
+        desc.classList.remove('collapsed');
+
+        btn.innerHTML = 'ย่อข้อความ';
+
+    }else{
+
+        desc.classList.add('collapsed');
+
+        btn.innerHTML = 'อ่านต่อ';
+
+    }
+
+};
+
 </script>
 
 </body>
