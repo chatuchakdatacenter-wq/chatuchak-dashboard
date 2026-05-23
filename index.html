@@ -1,3 +1,19 @@
+
+<!--
+Google Sheet Headers:
+
+id
+title
+description
+image1
+image2
+image3
+date
+location
+status
+sortOrder
+-->
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -6094,6 +6110,29 @@ FINAL PATCH: PR NEWS UPDATE TEXT BADGE
     overflow:hidden !important;
 }
 
+
+.outreach-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.outreach-gallery img{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+@media(max-width:768px){
+
+    .outreach-gallery{
+        grid-template-columns:1fr;
+    }
+
+}
+
 </style>
 
 
@@ -6615,6 +6654,29 @@ FINAL HOTFIX: Hero overlay asset layout
     -webkit-line-clamp:4;
     -webkit-box-orient:vertical;
     overflow:hidden !important;
+}
+
+
+.outreach-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.outreach-gallery img{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+@media(max-width:768px){
+
+    .outreach-gallery{
+        grid-template-columns:1fr;
+    }
+
 }
 
 </style>
@@ -7374,13 +7436,41 @@ async function loadOutreachActivities() {
 
         <div class="modern-news-card">
 
-            <img
-                src="${item.image}"
-                class="news-thumb"
-                alt="${item.title || ''}"
-                decoding="async"
-                loading="lazy"
-            >
+            <div class="outreach-gallery">
+
+                ${item.image1 ? `
+                    <img
+                        src="${item.image1}"
+                        class="news-thumb"
+                        alt="${item.title || ''}"
+                    >
+                ` : ''}
+
+                ${item.image2 ? `
+                    <img
+                        src="${item.image2}"
+                        class="news-thumb"
+                        alt="${item.title || ''}"
+                    >
+                ` : ''}
+
+                ${item.image3 ? `
+                    <img
+                        src="${item.image3}"
+                        class="news-thumb"
+                        alt="${item.title || ''}"
+                    >
+                ` : ''}
+
+                ${(!item.image1 && item.image) ? `
+                    <img
+                        src="${item.image}"
+                        class="news-thumb"
+                        alt="${item.title || ''}"
+                    >
+                ` : ''}
+
+            </div>
 
             <div class="modern-news-content">
 
@@ -8040,6 +8130,29 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
     overflow:hidden !important;
 }
 
+
+.outreach-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.outreach-gallery img{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+@media(max-width:768px){
+
+    .outreach-gallery{
+        grid-template-columns:1fr;
+    }
+
+}
+
 </style>
 
 
@@ -8174,6 +8287,29 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
     -webkit-line-clamp:4;
     -webkit-box-orient:vertical;
     overflow:hidden !important;
+}
+
+
+.outreach-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.outreach-gallery img{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+@media(max-width:768px){
+
+    .outreach-gallery{
+        grid-template-columns:1fr;
+    }
+
 }
 
 </style>
@@ -8346,6 +8482,29 @@ FINAL CODE PATCH: reduce building scale 15-25% and shift right
     -webkit-line-clamp:4;
     -webkit-box-orient:vertical;
     overflow:hidden !important;
+}
+
+
+.outreach-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.outreach-gallery img{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+@media(max-width:768px){
+
+    .outreach-gallery{
+        grid-template-columns:1fr;
+    }
+
 }
 
 </style>
