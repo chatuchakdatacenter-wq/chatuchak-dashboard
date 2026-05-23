@@ -6992,100 +6992,23 @@ FINAL HOTFIX: Hero overlay asset layout
 
                         </div>
 
-                        <div class="activity-gallery">
+                        
+<div class="activity-gallery" id="outreachActivityContainer">
 
-                            <a
-                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity01.jpg"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                <img
-                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity01.jpg"
-                                    class="news-thumb"
-                                    alt="กิจกรรมออกหน่วย 1"
+    <div class="news-loading-card">
+        <div class="news-loading-spinner"></div>
 
-                                 decoding="async" loading="lazy">
-                            </a>
+        <div class="news-loading-text">
+            <h4>กำลังโหลดกิจกรรมออกหน่วย...</h4>
+            <p>กรุณารอสักครู่</p>
+        </div>
+    </div>
 
-                            <a
-                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity02.jpg"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                <img
-                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity02.jpg"
-                                    class="news-thumb"
-                                    alt="กิจกรรมออกหน่วย 2"
+</div>
 
-                                 decoding="async" loading="lazy">
-                            </a>
+</div>
+</div>
 
-                            <a
-                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity03.jpg"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                <img
-                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity03.jpg"
-                                    class="news-thumb"
-                                    alt="กิจกรรมออกหน่วย 3"
-
-                                 decoding="async" loading="lazy">
-                            </a>
-
-                            <a
-                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity04.jpg"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                <img
-                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity04.jpg"
-                                    class="news-thumb"
-                                    alt="กิจกรรมออกหน่วย 4"
-
-                                 decoding="async" loading="lazy">
-                            </a>
-
-                            <a
-                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity05.jpg"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                <img
-                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity05.jpg"
-                                    class="news-thumb"
-                                    alt="กิจกรรมออกหน่วย 5"
-
-                                 decoding="async" loading="lazy">
-                            </a>
-
-                            <a
-                                href="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity06.jpg"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                <img
-                                    src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/activities/activity06.jpg"
-                                    class="news-thumb"
-                                    alt="กิจกรรมออกหน่วย 6"
-
-                                 decoding="async" loading="lazy">
-                            </a>
-
-                        </div>
-
-                        <div class="activity-content">
-
-                            <p>
-                                ศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร ลงพื้นที่ออกหน่วยให้บริการประชาชน ณ Box Space และ ห้างโลตัส ลาดพร้าว ประจำวันที่ 14 พ.ค. 2569
-                                เพื่อส่งเสริมทักษะอาชีพ และประชาสัมพันธ์หลักสูตรฝึกอบรม
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
 
                 <div class="news-date">
                     18 พ.ค. 2567
@@ -7322,6 +7245,76 @@ function loadPRNewsJSONP() {
 
     document.body.appendChild(script);
 }
+
+
+const OUTREACH_ACTIVITY_API =
+'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=outreachActivity';
+
+async function loadOutreachActivities() {
+
+    const container =
+        document.getElementById('outreachActivityContainer');
+
+    if (!container) return;
+
+    try {
+
+        const response =
+            await fetch(OUTREACH_ACTIVITY_API);
+
+        const data =
+            await response.json();
+
+        if (!Array.isArray(data) || data.length === 0) {
+
+            container.innerHTML = `
+                <div class="news-loading-card">
+                    <div class="news-loading-text">
+                        <h4>ยังไม่มีกิจกรรมออกหน่วย</h4>
+                        <p>กรุณาตรวจสอบข้อมูลอีกครั้งภายหลัง</p>
+                    </div>
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML =
+            data.map(item => `
+                <a
+                    href="${item.image}"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <img
+                        src="${item.image}"
+                        class="news-thumb"
+                        alt="${item.title || 'กิจกรรมออกหน่วย'}"
+                        decoding="async"
+                        loading="lazy"
+                    >
+                </a>
+            `).join('');
+
+    } catch (error) {
+
+        console.error(
+            'Load outreach activity failed:',
+            error
+        );
+
+        container.innerHTML = `
+            <div class="news-loading-card">
+                <div class="news-loading-text">
+                    <h4>โหลดข้อมูลไม่สำเร็จ</h4>
+                    <p>กรุณาลองใหม่อีกครั้ง</p>
+                </div>
+            </div>
+        `;
+    }
+}
+
+loadOutreachActivities();
 
 loadPRNewsJSONP();
 </script>
