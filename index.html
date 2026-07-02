@@ -7772,7 +7772,7 @@ const courseData = Array.isArray(courseDataRaw) ? courseDataRaw : [];
 
 const stats = Array.isArray(statsData) ? (statsData[0] || {}) : {};
 
-dtcpText('totalStudentsAI', Number(stats.total_students || 0).toLocaleString('th-TH'));
+totalStudentsAI
 
 dtcpText('graduatesAI', Number(stats.graduates || 0).toLocaleString('th-TH'));
 
@@ -7783,7 +7783,7 @@ if (!ranking) return;
 ranking.classList.add('ai-donut-layout');
 
 const colors = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ec4899'];
-const icons = ['✂️','✂️','💐','🌐','🖥️'];
+const icons = ['✂️','✂️','🌟','🌐','💐'];
 const topCourses = courseData
 .map(item => ({
 course: item.course || '-',
