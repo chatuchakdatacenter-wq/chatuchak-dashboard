@@ -6708,6 +6708,26 @@ FINAL HOTFIX: Hero overlay asset layout
 }
 
 </style>
+
+<style id="mobile-remote-data-stability-patch">
+#public-relations .news-thumb {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 640 / 420;
+    object-fit: cover;
+    background: #f2f4f5;
+}
+#public-relations .modern-news-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 520px;
+}
+#public-relations .news-loading-card button {
+    margin-top: 10px;
+}
+@supports not (content-visibility: auto) {
+    #public-relations .modern-news-card { contain: layout paint; }
+}
+</style>
 </head>
 
 <body>
@@ -6725,7 +6745,7 @@ FINAL HOTFIX: Hero overlay asset layout
                 <img
                     src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/logo-bma.png"
                     alt="BMA Logo"
-                 decoding="async" loading="lazy">
+                 decoding="async" loading="lazy" fetchpriority="low" width="640" height="420" onerror="handleRemoteImageError(this)">
 
                 <img
                     src="https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/assets/images/logo-chatuchak.png"
@@ -7208,6 +7228,16 @@ Google Sheet: PR_News
 
 const PR_NEWS_BASE_URL = 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec';
 
+const REMOTE_DATA_TIMEOUT_MS = 12000;
+const REMOTE_DATA_RETRY_DELAY_MS = 1200;
+let prNewsRequestToken = 0;
+let prNewsTimeoutId = null;
+
+function createInlineRetryButton(label, handlerName) {
+    return `<button type="button" class="pr-readmore" onclick="${handlerName}()">${label}</button>`;
+}
+
+
 function escapeHTML(value) {
     return String(value ?? '')
         .replaceAll('&', '&amp;')
@@ -7345,7 +7375,12 @@ function renderPRNews(data) {
     updatePRReadMoreButtons();
 }
 
-function handlePRNewsError() {
+function handlePRNewsError(message = 'กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองใหม่') {
+
+    if (prNewsTimeoutId) {
+        clearTimeout(prNewsTimeoutId);
+        prNewsTimeoutId = null;
+    }
 
     const container =
         document.getElementById('prNewsContainer');
@@ -7358,13 +7393,27 @@ function handlePRNewsError() {
                 <div class="news-icon">⚠</div>
                 <div>
                     <h4>ไม่สามารถโหลดข่าวประชาสัมพันธ์ได้</h4>
-                    <p>กรุณาตรวจสอบ Apps Script API หรือการเชื่อมต่ออินเทอร์เน็ต</p>
+                    <p>${escapeHTML(message)}</p>
+                    ${createInlineRetryButton('ลองโหลดใหม่', 'retryPRNews')}
                 </div>
             </div>
         </div>
     `;
 }
 
+function retryPRNews() {
+    const container = document.getElementById('prNewsContainer');
+    if (container) {
+        container.innerHTML = `
+            <div class="news-item">
+                <div class="news-left">
+                    <div class="news-icon">⏳</div>
+                    <div><h4>กำลังโหลดข้อมูลข่าวประชาสัมพันธ์...</h4><p>กรุณารอสักครู่</p></div>
+                </div>
+            </div>`;
+    }
+    window.setTimeout(loadPRNewsJSONP, REMOTE_DATA_RETRY_DELAY_MS);
+}
 
 function updatePRReadMoreButtons() {
 
@@ -7403,21 +7452,41 @@ function loadPRNewsJSONP() {
     const oldScript =
         document.getElementById('prNewsJsonpScript');
 
-    if (oldScript) {
-        oldScript.remove();
-    }
+    if (oldScript) oldScript.remove();
+    if (prNewsTimeoutId) clearTimeout(prNewsTimeoutId);
 
-    const script =
-        document.createElement('script');
+    const requestToken = ++prNewsRequestToken;
+    const callbackName = `renderPRNews_${requestToken}`;
+    const script = document.createElement('script');
 
-    script.id =
-        'prNewsJsonpScript';
+    window[callbackName] = function(data) {
+        if (requestToken !== prNewsRequestToken) return;
+        clearTimeout(prNewsTimeoutId);
+        prNewsTimeoutId = null;
+        try {
+            renderPRNews(data);
+        } finally {
+            script.remove();
+            delete window[callbackName];
+        }
+    };
 
-    script.src =
-        PR_NEWS_BASE_URL + '?action=prNews&callback=renderPRNews&v=' + Date.now();
+    script.id = 'prNewsJsonpScript';
+    script.async = true;
+    script.src = PR_NEWS_BASE_URL + '?action=prNews&callback=' + encodeURIComponent(callbackName) + '&v=' + Date.now();
+    script.onerror = function() {
+        if (requestToken !== prNewsRequestToken) return;
+        script.remove();
+        delete window[callbackName];
+        handlePRNewsError('เครือข่ายตอบสนองไม่สำเร็จ กรุณาลองโหลดใหม่');
+    };
 
-    script.onerror =
-        handlePRNewsError;
+    prNewsTimeoutId = window.setTimeout(function() {
+        if (requestToken !== prNewsRequestToken) return;
+        script.remove();
+        delete window[callbackName];
+        handlePRNewsError('ใช้เวลาโหลดนานเกิน 12 วินาที กรุณาลองโหลดใหม่');
+    }, REMOTE_DATA_TIMEOUT_MS);
 
     document.body.appendChild(script);
 }
@@ -7516,16 +7585,30 @@ async function loadOutreachActivities() {
 
     if (!container) return;
 
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(
+        () => controller.abort(),
+        REMOTE_DATA_TIMEOUT_MS
+    );
+
     try {
+        const response = await fetch(
+            OUTREACH_ACTIVITY_API + '&v=' + Date.now(),
+            {
+                method: 'GET',
+                cache: 'no-store',
+                signal: controller.signal,
+                headers: { 'Accept': 'application/json' }
+            }
+        );
 
-        const response =
-            await fetch(OUTREACH_ACTIVITY_API);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
         if (!Array.isArray(data) || data.length === 0) {
-
             container.innerHTML = `
                 <div class="news-loading-card">
                     <div class="news-loading-text">
@@ -7534,111 +7617,92 @@ async function loadOutreachActivities() {
                     </div>
                 </div>
             `;
-
             return;
         }
 
-        container.innerHTML =
-    data.map((item, index) => `
+        container.innerHTML = data.map((item, index) => {
+            const safeTitle = escapeHTML(item.title || '');
+            const safeDescription = escapeHTML(item.description || '');
+            const safeLocation = escapeHTML(item.location || '');
+            const safeDate = escapeHTML(formatOutreachDate(item.date));
 
-        <div class="modern-news-card">
+            const imageTag = (url) => url ? `
+                <img
+                    src="${escapeHTML(String(url).trim())}"
+                    class="news-thumb"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                    width="640"
+                    height="420"
+                    onerror="handleRemoteImageError(this)"
+                    alt="${safeTitle}"
+                >` : '';
 
-            <div class="outreach-gallery">
+            const images = [item.image1, item.image2, item.image3]
+                .filter(Boolean)
+                .map(imageTag)
+                .join('') || imageTag(item.image);
 
-                ${item.image1 ? `
-                    <img
-                        src="${item.image1}"
-                        class="news-thumb"
-                        loading="lazy"
-                        decoding="async"
-                        alt="${item.title || ''}"
-                    >
-                ` : ''}
-
-                ${item.image2 ? `
-                    <img
-                        src="${item.image2}"
-                        class="news-thumb"
-                        loading="lazy"
-                        decoding="async"
-                        alt="${item.title || ''}"
-                    >
-                ` : ''}
-
-                ${item.image3 ? `
-                    <img
-                        src="${item.image3}"
-                        class="news-thumb"
-                        loading="lazy"
-                        decoding="async"
-                        alt="${item.title || ''}"
-                    >
-                ` : ''}
-
-                ${(!item.image1 && item.image) ? `
-                    <img
-                        src="${item.image}"
-                        class="news-thumb"
-                        loading="lazy"
-                        decoding="async"
-                        alt="${item.title || ''}"
-                    >
-                ` : ''}
-
-            </div>
-
-            <div class="modern-news-content">
-
-                <h3 class="modern-news-title">
-                    ${item.title || ''}
-                </h3>
-
-                <p class="modern-news-desc collapsed" id="desc-${index}">
-                    ${item.description || ''}
-                </p>
-
-                <div class="modern-news-meta outreach-date-row">
-                    <span class="modern-news-date">
-                        📅 ${formatOutreachDate(item.date)}
-                    </span>
-                </div>
-
-                <button
-                    class="read-more-btn"
-                    onclick="toggleReadMore(${index})"
-                    id="btn-${index}"
-                >
-                    อ่านต่อ
-                </button>
-
-                <div class="modern-news-meta outreach-location-row">
-                    <span class="modern-news-location">
-                        📍 ${item.location || ''}
-                    </span>
-                </div>
-
-            </div>
-
-        </div>
-
-    `).join('');
+            return `
+                <div class="modern-news-card">
+                    <div class="outreach-gallery">${images}</div>
+                    <div class="modern-news-content">
+                        <h3 class="modern-news-title">${safeTitle}</h3>
+                        <p class="modern-news-desc collapsed" id="desc-${index}">${safeDescription}</p>
+                        <div class="modern-news-meta outreach-date-row">
+                            <span class="modern-news-date">📅 ${safeDate}</span>
+                        </div>
+                        <button class="read-more-btn" onclick="toggleReadMore(${index})" id="btn-${index}">อ่านต่อ</button>
+                        <div class="modern-news-meta outreach-location-row">
+                            <span class="modern-news-location">📍 ${safeLocation}</span>
+                        </div>
+                    </div>
+                </div>`;
+        }).join('');
 
     } catch (error) {
-
-        console.error(
-            'Load outreach activity failed:',
-            error
-        );
+        console.error('Load outreach activity failed:', error);
+        const timeoutMessage = error && error.name === 'AbortError'
+            ? 'ใช้เวลาโหลดนานเกิน 12 วินาที'
+            : 'เครือข่ายหรือบริการข้อมูลตอบสนองไม่สำเร็จ';
 
         container.innerHTML = `
             <div class="news-loading-card">
                 <div class="news-loading-text">
-                    <h4>โหลดข้อมูลไม่สำเร็จ</h4>
-                    <p>กรุณาลองใหม่อีกครั้ง</p>
+                    <h4>โหลดข้อมูลกิจกรรมไม่สำเร็จ</h4>
+                    <p>${timeoutMessage}</p>
+                    <button type="button" class="read-more-btn" onclick="retryOutreachActivities()">ลองโหลดใหม่</button>
                 </div>
-            </div>
-        `;
+            </div>`;
+    } finally {
+        clearTimeout(timeoutId);
     }
+}
+
+function retryOutreachActivities() {
+    const container = document.getElementById('outreachActivityContainer');
+    if (container) {
+        container.innerHTML = `
+            <div class="news-loading-card">
+                <div class="news-loading-spinner"></div>
+                <div class="news-loading-text"><h4>กำลังโหลดกิจกรรมออกหน่วย...</h4><p>กรุณารอสักครู่</p></div>
+            </div>`;
+    }
+    window.setTimeout(loadOutreachActivities, REMOTE_DATA_RETRY_DELAY_MS);
+}
+
+function handleRemoteImageError(image) {
+    if (!image || image.dataset.fallbackApplied === 'true') return;
+    image.dataset.fallbackApplied = 'true';
+    image.removeAttribute('srcset');
+    image.alt = image.alt || 'ไม่สามารถโหลดภาพได้';
+    image.src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">' +
+        '<rect width="640" height="420" fill="#f2f4f5"/>' +
+        '<text x="320" y="210" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" fill="#68737d">ไม่สามารถโหลดภาพได้</text>' +
+        '</svg>'
+    );
 }
 
 loadOutreachActivities();
