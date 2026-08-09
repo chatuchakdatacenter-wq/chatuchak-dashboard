@@ -7871,26 +7871,50 @@ async function loadOutreachActivities() {
    Apps Script ต้องรองรับ action=webSettings จึงจะอ่านค่า ON/OFF ได้
    ========================================================= */
 function renderWebSettings(data) {
-    const rows = Array.isArray(data) ? data : [];
-    const settings = {};
-    rows.forEach(row => {
-        const key = String(row?.key ?? '').trim().toLowerCase();
-        if (!key) return;
-        settings[key] = {
-            value: String(row?.value ?? '').trim(),
-            text: String(row?.text ?? '').trim()
-        };
-    });
+    // Apps Script ปัจจุบันส่งกลับมาเป็น object:
+    // { online_hot:{value:'ON',text:'HOT!'}, km_hot:{...} }
+    // แต่ยังรองรับ array แบบเก่าเผื่อใช้งานย้อนหลัง
+    let settings = {};
+
+    if (Array.isArray(data)) {
+        data.forEach(row => {
+            const key = String(row?.key ?? '').trim().toLowerCase();
+            if (!key) return;
+            settings[key] = {
+                value: String(row?.value ?? '').trim(),
+                text: String(row?.text ?? '').trim()
+            };
+        });
+    } else if (data && typeof data === 'object') {
+        Object.keys(data).forEach(rawKey => {
+            const key = String(rawKey || '').trim().toLowerCase();
+            const row = data[rawKey] || {};
+            settings[key] = {
+                value: String(row?.value ?? '').trim(),
+                text: String(row?.text ?? '').trim()
+            };
+        });
+    }
 
     const applyHot = (key, elementId) => {
         const el = document.getElementById(elementId);
         if (!el) return;
+
         const item = settings[key];
-        const enabled = item && ['ON','TRUE','1','YES'].includes(item.value.toUpperCase());
-        el.classList.toggle('is-visible', !!enabled);
+        const enabled = !!(
+            item &&
+            ['ON','TRUE','1','YES'].includes(
+                String(item.value || '').trim().toUpperCase()
+            )
+        );
+
+        el.classList.toggle('is-visible', enabled);
         el.setAttribute('aria-hidden', enabled ? 'false' : 'true');
+
         const textEl = el.querySelector('.hot-text');
-        if (textEl && item?.text) textEl.textContent = item.text;
+        if (textEl) {
+            textEl.textContent = (item && item.text) ? item.text : 'HOT!';
+        }
     };
 
     applyHot('online_hot', 'onlineHotBadge');
