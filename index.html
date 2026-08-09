@@ -23,7 +23,7 @@ sortOrder
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Digital Training Center Portal</title>
-<!-- DTCP Portal: FINAL_COMPLETE v18 | hero buttons removed | hero title single-line resized | gallery layout restored | duplicate activity button removed | article width fixed | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
+<!-- DTCP Portal: FINAL_COMPLETE v18 + OUTREACH SORT CACHE FIX + WEBSETTINGS HOT READY | hero buttons removed | hero title single-line resized | gallery layout restored | duplicate activity button removed | article width fixed | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
 
 <style>
 
@@ -201,6 +201,66 @@ MENU
     display:flex;
     justify-content:center;
     font-size:18px;
+}
+
+
+
+/* =========================================================
+   HOT BADGE - Google Sheet WebSettings ready
+   ใช้รูปแบบตามที่ผู้ใช้กำหนด
+   ========================================================= */
+.hot-badge {
+    position: relative;
+    display: none;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #ff1744, #ff6d00);
+    box-shadow:
+        0 0 8px rgba(255, 23, 68, .8),
+        0 0 20px rgba(255, 109, 0, .5);
+    overflow: hidden;
+    animation: hotPulse 1s infinite;
+    margin-left:auto;
+    flex-shrink:0;
+}
+.hot-badge.is-visible { display:inline-flex; }
+.hot-badge::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent);
+    transform: skewX(-20deg);
+    animation: hotShine 1.6s infinite;
+}
+.hot-fire { animation: fireShake .35s infinite alternate; }
+.hot-text {
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 8px rgba(255,255,255,.8);
+}
+@keyframes hotPulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.08); filter: brightness(1.35); }
+}
+@keyframes hotShine {
+    0% { left: -100%; }
+    60%, 100% { left: 140%; }
+}
+@keyframes fireShake {
+    from { transform: rotate(-8deg) scale(1); }
+    to { transform: rotate(8deg) scale(1.15); }
+}
+@media(max-width:960px){
+    .hot-badge{padding:3px 8px;font-size:10px;gap:3px;margin-left:4px;}
 }
 
 /* =========================
@@ -6783,6 +6843,10 @@ FINAL HOTFIX: Hero overlay asset layout
             <a href="https://chatuchakdatacenter-wq.github.io/training-register/">
                 <span class="menu-icon">📝</span>
                 สมัครเรียนออนไลน์
+                <span class="hot-badge" id="onlineHotBadge" aria-hidden="true">
+                    <span class="hot-fire">🔥</span>
+                    <span class="hot-text">HOT!</span>
+                </span>
             </a>
 
             <a href="#" onclick="openResultAnnouncementModal(); return false;">
@@ -6806,6 +6870,10 @@ FINAL HOTFIX: Hero overlay asset layout
             <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/">
                 <span class="menu-icon">🧠</span>
                 KM SMART HUB
+                <span class="hot-badge" id="kmHotBadge" aria-hidden="true">
+                    <span class="hot-fire">🔥</span>
+                    <span class="hot-text">HOT!</span>
+                </span>
             </a>
 
         </div>
@@ -7556,6 +7624,11 @@ function loadPRNewsJSONP() {
 const OUTREACH_ACTIVITY_API =
 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=outreachActivity';
 
+function getFreshOutreachActivityUrl() {
+    const joiner = OUTREACH_ACTIVITY_API.includes('?') ? '&' : '?';
+    return OUTREACH_ACTIVITY_API + joiner + '_ts=' + Date.now();
+}
+
 function formatOutreachDate(value) {
 
     if (!value) return '';
@@ -7751,9 +7824,13 @@ async function loadOutreachActivities() {
     const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     try {
-        const response = await fetch(OUTREACH_ACTIVITY_API, {
-            cache: 'default',
-            signal: controller.signal
+        const response = await fetch(getFreshOutreachActivityUrl(), {
+            cache: 'no-store',
+            signal: controller.signal,
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
         });
 
         if (!response.ok) {
@@ -7785,8 +7862,54 @@ async function loadOutreachActivities() {
     }
 }
 
+/* =========================================================
+   WEB SETTINGS - Google Sheet WebSettings
+   Apps Script ต้องรองรับ action=webSettings จึงจะอ่านค่า ON/OFF ได้
+   ========================================================= */
+function renderWebSettings(data) {
+    const rows = Array.isArray(data) ? data : [];
+    const settings = {};
+    rows.forEach(row => {
+        const key = String(row?.key ?? '').trim().toLowerCase();
+        if (!key) return;
+        settings[key] = {
+            value: String(row?.value ?? '').trim(),
+            text: String(row?.text ?? '').trim()
+        };
+    });
+
+    const applyHot = (key, elementId) => {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const item = settings[key];
+        const enabled = item && ['ON','TRUE','1','YES'].includes(item.value.toUpperCase());
+        el.classList.toggle('is-visible', !!enabled);
+        el.setAttribute('aria-hidden', enabled ? 'false' : 'true');
+        const textEl = el.querySelector('.hot-text');
+        if (textEl && item?.text) textEl.textContent = item.text;
+    };
+
+    applyHot('online_hot', 'onlineHotBadge');
+    applyHot('km_hot', 'kmHotBadge');
+}
+
+function loadWebSettingsJSONP() {
+    const oldScript = document.getElementById('webSettingsJsonpScript');
+    if (oldScript) oldScript.remove();
+
+    const script = document.createElement('script');
+    script.id = 'webSettingsJsonpScript';
+    script.src = PR_NEWS_BASE_URL + '?action=webSettings&callback=renderWebSettings&_ts=' + Date.now();
+    script.onerror = function(){
+        // ถ้า Apps Script ยังไม่รองรับ webSettings จะไม่กระทบส่วนอื่นของเว็บ
+        script.remove();
+    };
+    document.body.appendChild(script);
+}
+
 function startRemoteContentLoading() {
     loadPRNewsJSONP();
+    loadWebSettingsJSONP();
 
     window.setTimeout(function () {
         loadOutreachActivities();
