@@ -6800,6 +6800,64 @@ FINAL HOTFIX: Hero overlay asset layout
 }
 </style>
    
+
+<style id="hot-badge-mobile-layout-fix">
+/* HOT badge: compact and pinned to upper-right of menu label/card */
+.quick-links a {
+    position: relative !important;
+}
+.quick-links .hot-badge {
+    position: absolute !important;
+    top: 7px !important;
+    right: 9px !important;
+    left: auto !important;
+    bottom: auto !important;
+    z-index: 5 !important;
+    padding: 2px 7px !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 999px !important;
+    font-size: 9px !important;
+    line-height: 1.15 !important;
+    letter-spacing: .45px !important;
+    transform-origin: top right !important;
+}
+.quick-links .hot-badge.is-visible {
+    display: inline-flex !important;
+}
+.quick-links .hot-fire {
+    font-size: 10px !important;
+    line-height: 1 !important;
+}
+.quick-links .hot-text {
+    font-size: 9px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+/* Keep KM SMART HUB visually as two lines on narrow mobile screens */
+.quick-links a[href*="km-smart-hub"] {
+    padding-right: 58px !important;
+}
+.quick-links a[href*="km-smart-hub"] .menu-label,
+.quick-links a[href*="km-smart-hub"] .menu-text {
+    line-height: 1.25 !important;
+}
+
+@media (max-width: 600px) {
+    .quick-links .hot-badge {
+        top: 6px !important;
+        right: 7px !important;
+        padding: 2px 6px !important;
+        font-size: 8px !important;
+    }
+    .quick-links .hot-fire { font-size: 9px !important; }
+    .quick-links .hot-text { font-size: 8px !important; }
+}
+</style>
+
 </head>
 
 <body>
