@@ -6858,6 +6858,195 @@ FINAL HOTFIX: Hero overlay asset layout
 }
 </style>
 
+
+<style id="real-menu-hot-layout-fix">
+/* Correct target: sidebar .menu cards */
+.menu a {
+    position: relative !important;
+}
+
+/* HOT badge compact at top-right of actual menu card */
+.menu a > .hot-badge {
+    position: absolute !important;
+    top: 6px !important;
+    right: 7px !important;
+    left: auto !important;
+    bottom: auto !important;
+    z-index: 20 !important;
+
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    padding: 2px 6px !important;
+
+    border-radius: 999px !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+    letter-spacing: .35px !important;
+
+    transform-origin: top right !important;
+}
+
+.menu a > .hot-badge.is-visible {
+    display: inline-flex !important;
+}
+
+.menu a > .hot-badge .hot-fire {
+    font-size: 9px !important;
+    line-height: 1 !important;
+}
+
+.menu a > .hot-badge .hot-text {
+    font-size: 8px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+/* Force KM SMART HUB to exactly 2 lines */
+.menu .km-menu-link {
+    padding-right: 48px !important;
+}
+
+.menu .km-menu-text {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    line-height: 1.22 !important;
+    text-align: center !important;
+}
+
+/* Desktop: allow natural compact appearance */
+@media (min-width: 961px) {
+    .menu .km-menu-text {
+        text-align: left !important;
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 960px) {
+    .menu .km-menu-link {
+        padding-left: 8px !important;
+        padding-right: 42px !important;
+        gap: 6px !important;
+    }
+
+    .menu .km-menu-text {
+        font-size: 14px !important;
+        line-height: 1.18 !important;
+        letter-spacing: 0 !important;
+    }
+
+    .menu a > .hot-badge {
+        top: 5px !important;
+        right: 5px !important;
+        padding: 2px 5px !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .menu .km-menu-text {
+        font-size: 13px !important;
+    }
+}
+</style>
+
+
+<style id="km-hot-overlay-no-push-final">
+/* FINAL: HOT must NEVER consume menu layout width */
+.menu .km-menu-link {
+    position: relative !important;
+    padding: 10px 8px !important;   /* no reserved right padding for HOT */
+    justify-content: center !important;
+    gap: 8px !important;
+    overflow: visible !important;
+}
+
+/* KM label is always exactly two visual lines:
+   line 1 = KM SMART
+   line 2 = HUB */
+.menu .km-menu-link .km-menu-text {
+    display: inline-block !important;
+    flex: 0 0 auto !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    line-height: 1.18 !important;
+}
+
+/* HOT floats over top-right corner and takes ZERO flex space */
+.menu .km-menu-link > #kmHotBadge {
+    position: absolute !important;
+    top: 5px !important;
+    right: 6px !important;
+
+    margin: 0 !important;
+    flex: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    padding: 2px 5px !important;
+    gap: 2px !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+
+    z-index: 50 !important;
+    pointer-events: none !important;
+    transform-origin: top right !important;
+}
+
+/* Important: showing HOT must not change display/flex geometry of the menu */
+.menu .km-menu-link > #kmHotBadge.is-visible {
+    display: inline-flex !important;
+}
+
+/* Same overlay behavior for online HOT */
+.menu a > #onlineHotBadge {
+    position: absolute !important;
+    top: 5px !important;
+    right: 6px !important;
+    margin: 0 !important;
+    flex: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 2px 5px !important;
+    z-index: 50 !important;
+    pointer-events: none !important;
+    transform-origin: top right !important;
+}
+
+/* mobile tuning */
+@media (max-width: 960px) {
+    .menu .km-menu-link {
+        padding: 10px 6px !important;
+        gap: 6px !important;
+    }
+
+    .menu .km-menu-link .km-menu-text {
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .menu .km-menu-link .km-menu-text {
+        font-size: 13px !important;
+    }
+
+    .menu .km-menu-link > #kmHotBadge,
+    .menu a > #onlineHotBadge {
+        top: 4px !important;
+        right: 5px !important;
+        padding: 2px 4px !important;
+    }
+}
+</style>
+
 </head>
 
 <body>
@@ -6925,9 +7114,9 @@ FINAL HOTFIX: Hero overlay asset layout
                 ข่าวประชาสัมพันธ์
             </a>
 
-            <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/">
+            <a href="https://chatuchakdatacenter-wq.github.io/km-smart-hub/" class="km-menu-link">
                 <span class="menu-icon">🧠</span>
-                KM SMART HUB
+                <span class="km-menu-text">KM SMART<br>HUB</span>
                 <span class="hot-badge" id="kmHotBadge" aria-hidden="true">
                     <span class="hot-fire">🔥</span>
                     <span class="hot-text">HOT!</span>
