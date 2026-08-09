@@ -23,7 +23,7 @@ sortOrder
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Digital Training Center Portal</title>
-<!-- DTCP Portal: FINAL_COMPLETE v18 + OUTREACH SORT CACHE FIX + WEBSETTINGS HOT READY | hero buttons removed | hero title single-line resized | gallery layout restored | duplicate activity button removed | article width fixed | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
+<!-- DTCP Portal: FINAL_COMPLETE v18 + OUTREACH IMAGE/BADGE CORS FIX + SORT + WEBSETTINGS HOT | hero buttons removed | hero title single-line resized | gallery layout restored | duplicate activity button removed | article width fixed | hotline updated | KM URL fixed | hero image flex-right/full-detail | logo order BMA -> Chatuchak | all lower sections preserved -->
 
 <style>
 
@@ -7315,7 +7315,7 @@ const PR_NEWS_BASE_URL = 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCC
 
 const DTCP_CACHE_KEYS = {
     prNews: 'dtcp_pr_news_v1',
-    outreach: 'dtcp_outreach_v1'
+    outreach: 'dtcp_outreach_v2'
 };
 
 function readLocalDataCache(key) {
@@ -7343,12 +7343,18 @@ function writeLocalDataCache(key, data) {
 }
 
 function normalizeImageUrl(value) {
-    return String(value || '')
-        .trim()
-        .replace(
-            'https://raw.githubusercontent.com/chatuchakdatacenter-wq/chatuchak-dtcp/main/',
-            'https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/'
-        );
+    let url = String(value || '').trim();
+
+    // รองรับกรณีข้อมูลถูกเก็บ/ส่งมาเป็น [https://...](https://...)
+    const markdownMatch = url.match(/^\[https?:\/\/[^\]]+\]\((https?:\/\/[^)]+)\)$/i);
+    if (markdownMatch) {
+        url = markdownMatch[1];
+    }
+
+    return url.replace(
+        'https://raw.githubusercontent.com/chatuchakdatacenter-wq/chatuchak-dtcp/main/',
+        'https://chatuchakdatacenter-wq.github.io/chatuchak-dtcp/'
+    );
 }
 
 
@@ -7777,7 +7783,7 @@ function renderOutreachActivities(data) {
                 </div>
 
                 <div class="modern-news-content">
-                    <h3 class="modern-news-title">${String(item.isUpdate).toLowerCase()==="true"?`<span class="update-badge">UPDATE</span>`:""}${title}</h3>
+                    <h3 class="modern-news-title">${["TRUE","1","YES","ON","UPDATE"].includes(String(item.isUpdate || "").trim().toUpperCase())?`<span class="update-badge">UPDATE</span>`:""}${title}</h3>
 
                     <p class="modern-news-desc collapsed" id="desc-${index}">
                         ${description}
@@ -7824,13 +7830,11 @@ async function loadOutreachActivities() {
     const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     try {
+        // ใช้ query timestamp กัน cache โดยคงเป็น simple GET
+        // ไม่ส่ง custom headers เพื่อหลีกเลี่ยง CORS preflight กับ Google Apps Script
         const response = await fetch(getFreshOutreachActivityUrl(), {
             cache: 'no-store',
-            signal: controller.signal,
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
-            }
+            signal: controller.signal
         });
 
         if (!response.ok) {
