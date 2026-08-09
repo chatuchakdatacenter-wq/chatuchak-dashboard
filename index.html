@@ -7812,12 +7812,15 @@ function renderOutreachActivities(data) {
     }).join('');
 }
 
+let outreachAutoUpdateInProgress = false;
+
 async function loadOutreachActivities() {
 
     const container =
         document.getElementById('outreachActivityContainer');
 
-    if (!container) return;
+    if (!container || outreachAutoUpdateInProgress) return;
+    outreachAutoUpdateInProgress = true;
 
     const cachedData =
         readLocalDataCache(DTCP_CACHE_KEYS.outreach);
@@ -7863,6 +7866,7 @@ async function loadOutreachActivities() {
         `;
     } finally {
         clearTimeout(timeoutId);
+        outreachAutoUpdateInProgress = false;
     }
 }
 
@@ -7935,6 +7939,21 @@ function loadWebSettingsJSONP() {
     document.body.appendChild(script);
 }
 
+const DTCP_AUTO_UPDATE_MS = 30000;
+let dtcpAutoUpdateTimer = null;
+
+function refreshAutoUpdateContent() {
+    // ไม่ยิง request ขณะผู้ใช้ย่อแท็บ/สลับไปหน้าอื่น
+    if (document.hidden) return;
+
+    // HOT: อ่าน WebSettings ใหม่ทุกครั้ง
+    loadWebSettingsJSONP();
+
+    // กิจกรรมเพื่อประชาชน: อัปเดต sortOrder / isUpdate /
+    // รูปภาพ / ข้อความ / รายการใหม่ โดยไม่ reload ทั้งหน้า
+    loadOutreachActivities();
+}
+
 function startRemoteContentLoading() {
     loadPRNewsJSONP();
     loadWebSettingsJSONP();
@@ -7942,6 +7961,23 @@ function startRemoteContentLoading() {
     window.setTimeout(function () {
         loadOutreachActivities();
     }, 350);
+
+    // ป้องกัน interval ซ้ำ หากฟังก์ชันถูกเรียกมากกว่าหนึ่งครั้ง
+    if (dtcpAutoUpdateTimer) {
+        clearInterval(dtcpAutoUpdateTimer);
+    }
+
+    dtcpAutoUpdateTimer = window.setInterval(
+        refreshAutoUpdateContent,
+        DTCP_AUTO_UPDATE_MS
+    );
+
+    // เมื่อกลับมาที่แท็บ ให้ตรวจข้อมูลทันที ไม่ต้องรอรอบ 30 วินาที
+    document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) {
+            refreshAutoUpdateContent();
+        }
+    });
 }
 
 if (document.readyState === 'loading') {
