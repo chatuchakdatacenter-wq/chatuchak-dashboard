@@ -9620,21 +9620,17 @@ window.toggleReadMore = function(index){
    Developer & Copyright
    ========================================== */
 
-.developer-credit {
-    max-width: 850px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 10px 20px 5px;
-    color: rgba(255, 255, 255, 0.88);
-}
+```css
+/* ==========================================
+   Developer & Copyright
+   ========================================== */
 
-/* หัวข้อ */
-.website-developer-label {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    margin-bottom: 5px;
-    color: rgba(255, 255, 255, 0.65);
+.developer-credit {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 12px 20px 8px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.88);
 }
 
 /* ชื่อผู้พัฒนา */
@@ -9643,43 +9639,34 @@ window.toggleReadMore = function(index){
     font-weight: 700;
     line-height: 1.5;
     color: #ffffff;
-    margin-bottom: 1px;
+    margin: 0;
 }
 
 /* ตำแหน่ง */
 .website-developer-position {
     font-size: 13px;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.72);
-    margin-bottom: 12px;
+    color: rgba(255, 255, 255, 0.70);
+    margin: 2px 0 14px;
 }
 
 /* Copyright */
 .copyright-license {
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.90);
+    max-width: 800px;
+    margin: 0 auto 8px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+/* บรรทัด Copyright แรก */
+.copyright-license:first-of-type {
     padding-top: 10px;
-    margin-top: 4px;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-/* รายละเอียดลิขสิทธิ์ */
-.copyright-detail {
-    max-width: 760px;
-    margin: 8px auto 0;
-    font-size: 11px;
-    line-height: 1.75;
-    color: rgba(255, 255, 255, 0.58);
-}
-
-/* เน้นชื่อเจ้าของลิขสิทธิ์ */
-.copyright-detail strong {
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(255, 255, 255, 0.90);
     font-weight: 600;
 }
-
 
 /* ==========================================
    Mobile
@@ -9688,11 +9675,7 @@ window.toggleReadMore = function(index){
 @media (max-width: 600px) {
 
     .developer-credit {
-        padding: 8px 15px 4px;
-    }
-
-    .website-developer-label {
-        font-size: 12px;
+        padding: 10px 15px 6px;
     }
 
     .website-developer-name {
@@ -9701,21 +9684,21 @@ window.toggleReadMore = function(index){
 
     .website-developer-position {
         font-size: 12px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
 
     .copyright-license {
-        font-size: 12px;
+        max-width: 100%;
+        font-size: 10.5px;
+        line-height: 1.7;
+        margin-bottom: 7px;
+    }
+
+    .copyright-license:first-of-type {
         padding-top: 9px;
     }
-
-    .copyright-detail {
-        font-size: 10px;
-        line-height: 1.7;
-        text-align: center;
-    }
 }
-
+```
 
 </footer>
     
