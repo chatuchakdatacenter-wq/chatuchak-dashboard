@@ -7530,6 +7530,376 @@ FINAL HOTFIX: Hero overlay asset layout
 }
 
 </style>
+
+<style>
+/* =========================================================
+   DAILY LEARNING — SOCIAL GALLERY (Facebook / LINE inspired)
+   แสดงตัวอย่างสูงสุด 5 รูป + เปิดดูทั้งหมดใน Lightbox
+   ========================================================= */
+
+.daily-learning-shell{
+    overflow:visible !important;
+}
+
+.daily-learning-gallery-head{
+    margin:10px 0 12px !important;
+    padding:0 2px !important;
+    min-height:42px !important;
+    border:0 !important;
+    background:transparent !important;
+    border-radius:0 !important;
+}
+
+.daily-learning-gallery-title{
+    font-size:18px !important;
+    color:#172b25 !important;
+}
+
+.daily-learning-photo-count{
+    min-height:30px !important;
+    padding:6px 12px !important;
+    border-radius:999px !important;
+    background:#ecfdf5 !important;
+    border:1px solid #d1fae5 !important;
+    color:#047857 !important;
+    font-size:12px !important;
+    box-shadow:none !important;
+}
+
+/* Facebook-style mosaic: 1 รูปใหญ่ + 4 รูปย่อย */
+.daily-learning-gallery.social-gallery{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    grid-template-rows:repeat(2,190px) !important;
+    gap:5px !important;
+    width:100% !important;
+    margin:0 !important;
+    border-radius:20px !important;
+    overflow:hidden !important;
+    background:#eef4f1 !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo{
+    min-height:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    background:#dfe9e4 !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo:first-child{
+    grid-column:span 2 !important;
+    grid-row:span 2 !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo img{
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    object-position:center !important;
+    transition:transform .2s ease, filter .2s ease !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo:hover img{
+    transform:scale(1.025) !important;
+    filter:brightness(.94) !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo::after{
+    display:none !important;
+}
+
+/* รูปสุดท้ายที่แสดง: +จำนวนรูปที่เหลือ */
+.daily-learning-more-overlay{
+    position:absolute;
+    inset:0;
+    z-index:4;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:rgba(10,20,17,.58);
+    color:#fff;
+    text-align:center;
+    pointer-events:none;
+    backdrop-filter:blur(1px);
+}
+
+.daily-learning-more-overlay strong{
+    font-size:34px;
+    line-height:1;
+    font-weight:900;
+    text-shadow:0 2px 10px rgba(0,0,0,.35);
+}
+
+.daily-learning-more-overlay span{
+    margin-top:6px;
+    font-size:14px;
+    font-weight:800;
+}
+
+.daily-learning-gallery-actions{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+}
+
+.daily-learning-view-all{
+    border:1px solid #d7e8e1;
+    background:#fff;
+    color:#047857;
+    min-height:40px;
+    padding:9px 16px;
+    border-radius:999px;
+    font-family:inherit;
+    font-size:14px;
+    font-weight:900;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:.2s ease;
+}
+
+.daily-learning-view-all:hover{
+    background:#ecfdf5;
+    border-color:#bbf7d0;
+    transform:translateY(-1px);
+}
+
+/* ---------- Full-screen social lightbox ---------- */
+.daily-lightbox{
+    padding:0 !important;
+    background:rgba(10,16,14,.96) !important;
+    backdrop-filter:blur(12px) !important;
+}
+
+.daily-lightbox-stage{
+    width:100vw !important;
+    height:100vh !important;
+    max-width:none !important;
+    display:grid !important;
+    grid-template-rows:auto 1fr auto !important;
+    padding:18px 24px 14px !important;
+}
+
+.daily-lightbox-topbar{
+    min-height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    color:#fff;
+    z-index:3;
+}
+
+.daily-lightbox-info{
+    min-width:0;
+}
+
+.daily-lightbox-info-title{
+    font-size:16px;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.daily-lightbox-info-meta{
+    margin-top:3px;
+    color:rgba(255,255,255,.68);
+    font-size:12px;
+    font-weight:700;
+}
+
+.daily-lightbox-top-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.daily-lightbox-counter{
+    position:static !important;
+    transform:none !important;
+    left:auto !important;
+    bottom:auto !important;
+    min-width:58px;
+    text-align:center;
+    padding:7px 11px !important;
+    background:rgba(255,255,255,.10) !important;
+}
+
+.daily-lightbox-close{
+    position:static !important;
+    width:42px !important;
+    height:42px !important;
+    border-radius:50% !important;
+    font-size:25px !important;
+    background:rgba(255,255,255,.10) !important;
+}
+
+.daily-lightbox-main{
+    min-height:0;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 76px;
+}
+
+.daily-lightbox-image{
+    max-width:100% !important;
+    max-height:calc(100vh - 190px) !important;
+    width:auto !important;
+    height:auto !important;
+    object-fit:contain !important;
+    border-radius:10px !important;
+    box-shadow:0 20px 60px rgba(0,0,0,.45) !important;
+}
+
+.daily-lightbox-nav{
+    top:50% !important;
+    transform:translateY(-50%) !important;
+    width:50px !important;
+    height:50px !important;
+    border-radius:50% !important;
+    background:rgba(255,255,255,.12) !important;
+    font-size:30px !important;
+    z-index:4;
+}
+
+.daily-lightbox-prev{left:14px !important;}
+.daily-lightbox-next{right:14px !important;}
+
+.daily-lightbox-thumbs{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:10px 4px 2px;
+    scrollbar-width:thin;
+    scroll-behavior:smooth;
+}
+
+.daily-lightbox-thumb{
+    flex:0 0 76px;
+    width:76px;
+    height:54px;
+    padding:0;
+    border:2px solid transparent;
+    border-radius:9px;
+    overflow:hidden;
+    background:#17201d;
+    opacity:.58;
+    cursor:pointer;
+    transition:.18s ease;
+}
+
+.daily-lightbox-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.daily-lightbox-thumb:hover{
+    opacity:.9;
+}
+
+.daily-lightbox-thumb.is-active{
+    opacity:1;
+    border-color:#34d399;
+    transform:translateY(-1px);
+}
+
+/* Tablet */
+@media(max-width:980px){
+    .daily-learning-gallery.social-gallery{
+        grid-template-rows:repeat(2,155px) !important;
+    }
+    .daily-lightbox-main{
+        padding-left:58px;
+        padding-right:58px;
+    }
+}
+
+/* Mobile */
+@media(max-width:640px){
+    .daily-learning-gallery.social-gallery{
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        grid-template-rows:200px 104px 104px !important;
+        gap:4px !important;
+        border-radius:16px !important;
+    }
+
+    .daily-learning-gallery.social-gallery .daily-learning-photo:first-child{
+        grid-column:1 / -1 !important;
+        grid-row:1 !important;
+    }
+
+    /* มือถือแสดง 5 รูป: 1 ใหญ่ + 4 เล็ก */
+    .daily-learning-gallery.social-gallery .daily-learning-photo:nth-child(n+2){
+        grid-column:auto !important;
+        grid-row:auto !important;
+    }
+
+    .daily-learning-more-overlay strong{
+        font-size:28px;
+    }
+
+    .daily-learning-gallery-actions{
+        margin-top:10px;
+    }
+
+    .daily-learning-view-all{
+        width:100%;
+    }
+
+    .daily-lightbox-stage{
+        padding:10px 10px 8px !important;
+    }
+
+    .daily-lightbox-topbar{
+        min-height:48px;
+    }
+
+    .daily-lightbox-info-title{
+        font-size:14px;
+    }
+
+    .daily-lightbox-info-meta{
+        font-size:11px;
+    }
+
+    .daily-lightbox-main{
+        padding:6px 40px;
+    }
+
+    .daily-lightbox-image{
+        max-height:calc(100vh - 175px) !important;
+        border-radius:8px !important;
+    }
+
+    .daily-lightbox-nav{
+        width:38px !important;
+        height:38px !important;
+        font-size:24px !important;
+    }
+
+    .daily-lightbox-prev{left:0 !important;}
+    .daily-lightbox-next{right:0 !important;}
+
+    .daily-lightbox-thumb{
+        flex-basis:62px;
+        width:62px;
+        height:46px;
+    }
+}
+</style>
+
 </head>
 
 <body>
@@ -10107,10 +10477,11 @@ window.toggleReadMore = function(index){
    ========================================================= */
 const DAILY_LEARNING_API =
     'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=dailyLearning';
-const DAILY_LEARNING_CACHE_KEY = 'dtcp_daily_learning_v3_layout_drive_fix';
+const DAILY_LEARNING_CACHE_KEY = 'dtcp_daily_learning_v4_social_gallery';
 let dailyLearningImages = [];
 let dailyLearningLightboxIndex = 0;
 let dailyLearningLoading = false;
+let dailyLearningMeta = {date:'-', courseType:'-', courseCount:'0', studentCount:'0'};
 
 function getFreshDailyLearningUrl(){
     const joiner = DAILY_LEARNING_API.includes('?') ? '&' : '?';
@@ -10192,20 +10563,53 @@ function renderDailyLearning(row, fromCache=false){
     const courseCount = String(row.courseCount || '0').trim();
     const studentCount = String(row.studentCount || '0').trim();
 
+    dailyLearningMeta = {date:dateText, courseType, courseCount, studentCount};
+
+    const previewCount = Math.min(5, dailyLearningImages.length);
+    const hiddenCount = Math.max(0, dailyLearningImages.length - previewCount);
+
     const gallery = dailyLearningImages.length ? `
         <div class="daily-learning-gallery-head">
             <div class="daily-learning-gallery-title">📷 ภาพบรรยากาศการเรียน</div>
-            <div class="daily-learning-photo-count">${dailyLearningImages.length} / 20 รูป</div>
+            <div class="daily-learning-photo-count">${dailyLearningImages.length} รูป</div>
         </div>
-        <div class="daily-learning-gallery">
-            ${dailyLearningImages.map((url,index)=>`
-                <button class="daily-learning-photo ${index===0?'is-hero':''}" type="button" onclick="openDailyLearningLightbox(${index})" aria-label="เปิดภาพกิจกรรมรูปที่ ${index+1}">
-                    <img src="${escapeHTML(url)}" alt="กิจกรรมการเรียนประจำวันที่ ${escapeHTML(dateText)} รูปที่ ${index+1}" loading="lazy" decoding="async" ${index===0?'fetchpriority="high"':'fetchpriority="low"'} onerror="this.closest('.daily-learning-photo').style.display='none'">
-                </button>`).join('')}
+
+        <div class="daily-learning-gallery social-gallery">
+            ${dailyLearningImages.slice(0,previewCount).map((url,index)=>{
+                const isLastPreview = index === previewCount - 1;
+                const moreOverlay = isLastPreview && hiddenCount > 0
+                    ? `<div class="daily-learning-more-overlay">
+                           <strong>+${hiddenCount}</strong>
+                           <span>ดูทั้งหมด</span>
+                       </div>`
+                    : '';
+
+                return `
+                    <button class="daily-learning-photo"
+                            type="button"
+                            onclick="openDailyLearningLightbox(${index})"
+                            aria-label="เปิดภาพกิจกรรมรูปที่ ${index+1}">
+                        <img src="${escapeHTML(url)}"
+                             alt="กิจกรรมการเรียนประจำวันที่ ${escapeHTML(dateText)} รูปที่ ${index+1}"
+                             loading="lazy"
+                             decoding="async"
+                             ${index===0?'fetchpriority="high"':'fetchpriority="low"'}
+                             onerror="this.closest('.daily-learning-photo').style.display='none'">
+                        ${moreOverlay}
+                    </button>`;
+            }).join('')}
+        </div>
+
+        <div class="daily-learning-gallery-actions">
+            <button class="daily-learning-view-all"
+                    type="button"
+                    onclick="openDailyLearningLightbox(0)">
+                ▣ ดูรูปทั้งหมด ${dailyLearningImages.length} รูป
+            </button>
         </div>` : `
         <div class="daily-learning-empty">
             <strong>ข้อมูลกิจกรรมพร้อมแล้ว — ยังไม่มีรูปภาพ</strong>
-            เพิ่มลิงก์รูปในช่อง image1 ถึง image20 ของชีต Daily_Learning ได้สูงสุด 20 รูป
+            เพิ่มรูปภาพในโฟลเดอร์ Google Drive ของ Daily Learning ได้สูงสุด 20 รูป
         </div>`;
 
     card.innerHTML = `
@@ -10287,48 +10691,149 @@ async function loadDailyLearning(){
 function ensureDailyLearningLightbox(){
     let box = document.getElementById('dailyLearningLightbox');
     if(box) return box;
+
     box = document.createElement('div');
     box.id = 'dailyLearningLightbox';
     box.className = 'daily-lightbox';
     box.setAttribute('role','dialog');
     box.setAttribute('aria-modal','true');
-    box.innerHTML = `<div class="daily-lightbox-stage">
-        <img class="daily-lightbox-image" id="dailyLightboxImage" alt="ภาพกิจกรรมการเรียน">
-        <button class="daily-lightbox-close" type="button" onclick="closeDailyLearningLightbox()" aria-label="ปิด">×</button>
-        <button class="daily-lightbox-nav daily-lightbox-prev" type="button" onclick="stepDailyLearningLightbox(-1)" aria-label="ภาพก่อนหน้า">‹</button>
-        <button class="daily-lightbox-nav daily-lightbox-next" type="button" onclick="stepDailyLearningLightbox(1)" aria-label="ภาพถัดไป">›</button>
-        <div class="daily-lightbox-counter" id="dailyLightboxCounter"></div>
-    </div>`;
-    box.addEventListener('click',e=>{if(e.target===box) closeDailyLearningLightbox();});
+
+    box.innerHTML = `
+        <div class="daily-lightbox-stage">
+            <div class="daily-lightbox-topbar">
+                <div class="daily-lightbox-info">
+                    <div class="daily-lightbox-info-title">ภาพบรรยากาศการเรียน</div>
+                    <div class="daily-lightbox-info-meta" id="dailyLightboxMeta"></div>
+                </div>
+                <div class="daily-lightbox-top-actions">
+                    <div class="daily-lightbox-counter" id="dailyLightboxCounter"></div>
+                    <button class="daily-lightbox-close"
+                            type="button"
+                            onclick="closeDailyLearningLightbox()"
+                            aria-label="ปิด">×</button>
+                </div>
+            </div>
+
+            <div class="daily-lightbox-main">
+                <button class="daily-lightbox-nav daily-lightbox-prev"
+                        type="button"
+                        onclick="stepDailyLearningLightbox(-1)"
+                        aria-label="ภาพก่อนหน้า">‹</button>
+
+                <img class="daily-lightbox-image"
+                     id="dailyLightboxImage"
+                     alt="ภาพกิจกรรมการเรียน">
+
+                <button class="daily-lightbox-nav daily-lightbox-next"
+                        type="button"
+                        onclick="stepDailyLearningLightbox(1)"
+                        aria-label="ภาพถัดไป">›</button>
+            </div>
+
+            <div class="daily-lightbox-thumbs" id="dailyLightboxThumbs"></div>
+        </div>`;
+
+    box.addEventListener('click',e=>{
+        if(e.target===box) closeDailyLearningLightbox();
+    });
+
     document.body.appendChild(box);
     return box;
 }
+
+function renderDailyLearningLightboxThumbs(){
+    const rail = document.getElementById('dailyLightboxThumbs');
+    if(!rail) return;
+
+    rail.innerHTML = dailyLearningImages.map((url,index)=>`
+        <button class="daily-lightbox-thumb ${index===dailyLearningLightboxIndex?'is-active':''}"
+                type="button"
+                data-daily-thumb="${index}"
+                onclick="jumpDailyLearningLightbox(${index})"
+                aria-label="ดูรูปที่ ${index+1}">
+            <img src="${escapeHTML(url)}"
+                 alt="รูปตัวอย่าง ${index+1}"
+                 loading="lazy"
+                 decoding="async">
+        </button>
+    `).join('');
+}
+
 function openDailyLearningLightbox(index){
     if(!dailyLearningImages.length) return;
-    dailyLearningLightboxIndex = Math.max(0,Math.min(index,dailyLearningImages.length-1));
-    const box=ensureDailyLearningLightbox();
+
+    dailyLearningLightboxIndex = Math.max(
+        0,
+        Math.min(index,dailyLearningImages.length-1)
+    );
+
+    const box = ensureDailyLearningLightbox();
+    renderDailyLearningLightboxThumbs();
     updateDailyLearningLightbox();
+
     box.classList.add('is-open');
     document.body.style.overflow='hidden';
 }
+
 function updateDailyLearningLightbox(){
-    const img=document.getElementById('dailyLightboxImage');
-    const counter=document.getElementById('dailyLightboxCounter');
-    if(img) img.src=dailyLearningImages[dailyLearningLightboxIndex] || '';
-    if(counter) counter.textContent=(dailyLearningLightboxIndex+1)+' / '+dailyLearningImages.length;
+    const img = document.getElementById('dailyLightboxImage');
+    const counter = document.getElementById('dailyLightboxCounter');
+    const meta = document.getElementById('dailyLightboxMeta');
+
+    if(img){
+        img.src = dailyLearningImages[dailyLearningLightboxIndex] || '';
+    }
+
+    if(counter){
+        counter.textContent =
+            (dailyLearningLightboxIndex+1) + ' / ' + dailyLearningImages.length;
+    }
+
+    if(meta){
+        meta.textContent =
+            `${dailyLearningMeta.date} · ${dailyLearningMeta.courseType} · ${dailyLearningMeta.courseCount} วิชา · ${dailyLearningMeta.studentCount} คน`;
+    }
+
+    document.querySelectorAll('.daily-lightbox-thumb').forEach((thumb,index)=>{
+        thumb.classList.toggle('is-active', index===dailyLearningLightboxIndex);
+    });
+
+    const active = document.querySelector(
+        `.daily-lightbox-thumb[data-daily-thumb="${dailyLearningLightboxIndex}"]`
+    );
+
+    active?.scrollIntoView({
+        behavior:'smooth',
+        block:'nearest',
+        inline:'center'
+    });
 }
-function stepDailyLearningLightbox(step){
+
+function jumpDailyLearningLightbox(index){
     if(!dailyLearningImages.length) return;
-    dailyLearningLightboxIndex=(dailyLearningLightboxIndex+step+dailyLearningImages.length)%dailyLearningImages.length;
+    dailyLearningLightboxIndex =
+        Math.max(0,Math.min(index,dailyLearningImages.length-1));
     updateDailyLearningLightbox();
 }
+
+function stepDailyLearningLightbox(step){
+    if(!dailyLearningImages.length) return;
+    dailyLearningLightboxIndex =
+        (dailyLearningLightboxIndex + step + dailyLearningImages.length)
+        % dailyLearningImages.length;
+    updateDailyLearningLightbox();
+}
+
 function closeDailyLearningLightbox(){
-    document.getElementById('dailyLearningLightbox')?.classList.remove('is-open');
+    document.getElementById('dailyLearningLightbox')
+        ?.classList.remove('is-open');
     document.body.style.overflow='';
 }
+
 document.addEventListener('keydown',e=>{
-    const box=document.getElementById('dailyLearningLightbox');
+    const box = document.getElementById('dailyLearningLightbox');
     if(!box?.classList.contains('is-open')) return;
+
     if(e.key==='Escape') closeDailyLearningLightbox();
     if(e.key==='ArrowLeft') stepDailyLearningLightbox(-1);
     if(e.key==='ArrowRight') stepDailyLearningLightbox(1);
