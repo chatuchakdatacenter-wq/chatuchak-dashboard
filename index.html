@@ -7157,6 +7157,312 @@ FINAL HOTFIX: Hero overlay asset layout
     margin: 6px auto 0 !important;
 }
 </style>
+
+
+<style>
+/* =========================================================
+   DAILY LEARNING KPI + 20 PHOTO MODERN GALLERY
+   Google Sheet: 1gNd959wTQc2MfT6c6qKEGN5E9PYN7YOiu5NIq59ph18 / gid=0
+   ========================================================= */
+.daily-learning-section{
+    margin:24px 0;
+}
+.daily-learning-shell{
+    background:#fff;
+    border:1px solid #dfece7;
+    border-radius:28px;
+    padding:24px;
+    box-shadow:0 10px 30px rgba(0,77,64,.07);
+    overflow:hidden;
+}
+.daily-learning-head{
+    display:grid;
+    grid-template-columns:minmax(0,1.6fr) minmax(360px,.9fr);
+    gap:22px;
+    align-items:stretch;
+    margin-bottom:20px;
+}
+.daily-learning-title-card{
+    position:relative;
+    overflow:hidden;
+    padding:24px 26px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#064e3b 0%,#047857 58%,#0f766e 100%);
+    color:#fff;
+    min-height:168px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.daily-learning-title-card::after{
+    content:'';
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    right:-52px;
+    top:-74px;
+    background:rgba(255,255,255,.08);
+}
+.daily-learning-kicker{
+    width:max-content;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 11px;
+    margin-bottom:10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.17);
+    font-size:13px;
+    font-weight:800;
+}
+.daily-learning-title{
+    position:relative;
+    z-index:1;
+    margin:0;
+    font-size:clamp(25px,2.4vw,36px);
+    line-height:1.25;
+    font-weight:900;
+    letter-spacing:-.35px;
+}
+.daily-learning-subtitle{
+    position:relative;
+    z-index:1;
+    margin-top:8px;
+    font-size:16px;
+    line-height:1.6;
+    color:rgba(255,255,255,.9);
+}
+.daily-learning-kpis{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+}
+.daily-learning-kpi{
+    min-height:78px;
+    padding:15px 16px;
+    border:1px solid #dcebe5;
+    border-radius:18px;
+    background:linear-gradient(180deg,#fff,#f8fbfa);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.daily-learning-kpi.is-wide{grid-column:1 / -1;}
+.daily-learning-kpi-label{
+    color:#6b7280;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:3px;
+}
+.daily-learning-kpi-value{
+    color:#064e3b;
+    font-size:clamp(20px,1.7vw,26px);
+    line-height:1.15;
+    font-weight:900;
+}
+.daily-learning-gallery-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:4px 0 12px;
+}
+.daily-learning-gallery-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#18352e;
+    font-size:17px;
+    font-weight:900;
+}
+.daily-learning-photo-count{
+    padding:5px 10px;
+    border-radius:999px;
+    background:#ecfdf5;
+    color:#047857;
+    font-size:12px;
+    font-weight:900;
+    white-space:nowrap;
+}
+.daily-learning-gallery{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    grid-auto-rows:154px;
+    gap:10px;
+}
+.daily-learning-photo{
+    position:relative;
+    border:0;
+    padding:0;
+    margin:0;
+    border-radius:16px;
+    overflow:hidden;
+    background:#e8f1ed;
+    cursor:zoom-in;
+    min-width:0;
+    box-shadow:inset 0 0 0 1px rgba(0,77,64,.05);
+}
+.daily-learning-photo.is-hero{
+    grid-column:span 2;
+    grid-row:span 2;
+    border-radius:20px;
+}
+.daily-learning-photo img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    object-position:center;
+    transition:transform .28s ease, filter .28s ease;
+}
+.daily-learning-photo:hover img{
+    transform:scale(1.035);
+    filter:brightness(.96);
+}
+.daily-learning-photo::after{
+    content:'↗';
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    width:30px;
+    height:30px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.48);
+    color:#fff;
+    font-size:14px;
+    opacity:0;
+    transform:translateY(4px);
+    transition:.2s ease;
+}
+.daily-learning-photo:hover::after{opacity:1;transform:none;}
+.daily-learning-empty{
+    padding:28px 18px;
+    border:1px dashed #bdd7cc;
+    border-radius:18px;
+    background:#f8fbfa;
+    text-align:center;
+    color:#4b5563;
+    line-height:1.75;
+}
+.daily-learning-empty strong{
+    display:block;
+    color:#065f46;
+    font-size:18px;
+    margin-bottom:4px;
+}
+.daily-learning-status-row{
+    margin-top:12px;
+    display:flex;
+    justify-content:flex-end;
+    color:#789087;
+    font-size:12px;
+    font-weight:700;
+}
+
+/* Lightbox */
+.daily-lightbox{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:rgba(7,18,15,.94);
+    backdrop-filter:blur(7px);
+}
+.daily-lightbox.is-open{display:flex;}
+.daily-lightbox-stage{
+    position:relative;
+    width:min(1180px,94vw);
+    height:min(820px,88vh);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.daily-lightbox-image{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    border-radius:14px;
+    box-shadow:0 22px 60px rgba(0,0,0,.38);
+}
+.daily-lightbox-close,
+.daily-lightbox-nav{
+    position:absolute;
+    border:0;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    backdrop-filter:blur(8px);
+}
+.daily-lightbox-close{
+    right:0;
+    top:0;
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    font-size:24px;
+}
+.daily-lightbox-nav{
+    top:50%;
+    transform:translateY(-50%);
+    width:48px;
+    height:58px;
+    border-radius:15px;
+    font-size:27px;
+}
+.daily-lightbox-prev{left:0;}
+.daily-lightbox-next{right:0;}
+.daily-lightbox-counter{
+    position:absolute;
+    left:50%;
+    bottom:0;
+    transform:translateX(-50%);
+    padding:7px 12px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    font-size:13px;
+    font-weight:800;
+}
+
+@media(max-width:1180px){
+    .daily-learning-head{grid-template-columns:1fr;}
+    .daily-learning-kpis{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .daily-learning-kpi.is-wide{grid-column:auto;}
+    .daily-learning-gallery{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:145px;}
+}
+@media(max-width:768px){
+    .daily-learning-section{margin:18px 0;}
+    .daily-learning-shell{padding:14px;border-radius:22px;}
+    .daily-learning-head{gap:12px;margin-bottom:14px;}
+    .daily-learning-title-card{min-height:auto;padding:19px 18px;border-radius:18px;}
+    .daily-learning-kicker{font-size:12px;padding:5px 9px;}
+    .daily-learning-title{font-size:23px;}
+    .daily-learning-subtitle{font-size:14px;}
+    .daily-learning-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+    .daily-learning-kpi{min-height:68px;padding:11px 12px;border-radius:15px;}
+    .daily-learning-kpi.is-wide{grid-column:1 / -1;}
+    .daily-learning-kpi-value{font-size:20px;}
+    .daily-learning-gallery{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:118px;gap:7px;}
+    .daily-learning-photo{border-radius:12px;}
+    .daily-learning-photo.is-hero{grid-column:1 / -1;grid-row:span 2;border-radius:15px;}
+    .daily-learning-photo::after{display:none;}
+    .daily-lightbox{padding:10px;}
+    .daily-lightbox-stage{width:100%;height:90vh;}
+    .daily-lightbox-nav{width:42px;height:52px;}
+}
+
+</style>
 </head>
 
 <body>
@@ -7577,6 +7883,23 @@ FINAL HOTFIX: Hero overlay asset layout
 
         </section>
 
+
+
+
+        <!-- DAILY LEARNING KPI -->
+        <section class="daily-learning-section" id="daily-learning" aria-label="กิจกรรมการเรียนประจำวัน">
+            <div class="section-title">
+                <span class="section-line"></span>
+                กิจกรรมการเรียนประจำวัน
+            </div>
+
+            <div class="daily-learning-shell" id="dailyLearningCard">
+                <div class="daily-learning-empty">
+                    <strong>กำลังโหลดกิจกรรมการเรียนประจำวัน...</strong>
+                    กำลังอ่านข้อมูลล่าสุดจาก Google Sheet
+                </div>
+            </div>
+        </section>
 
         <!-- NEWS -->
 
@@ -9683,6 +10006,257 @@ window.toggleReadMore = function(index){
     #outreachActivityContainer .outreach-gallery{aspect-ratio:16 / 9 !important;gap:5px !important;border-radius:13px !important;margin-bottom:13px !important;}
 }
 </style>
+
+
+
+<script>
+/* =========================================================
+   DAILY LEARNING - Apps Script / latest overwrite mode
+   API action: dailyLearning
+   Sheet: Daily_Learning
+   Headers:
+   id | date | courseType | courseCount | studentCount | title |
+   description | location | image1...image20 | status | sortOrder
+   ========================================================= */
+const DAILY_LEARNING_API =
+    'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=dailyLearning';
+const DAILY_LEARNING_CACHE_KEY = 'dtcp_daily_learning_v2';
+let dailyLearningImages = [];
+let dailyLearningLightboxIndex = 0;
+let dailyLearningLoading = false;
+
+function getFreshDailyLearningUrl(){
+    const joiner = DAILY_LEARNING_API.includes('?') ? '&' : '?';
+    return DAILY_LEARNING_API + joiner + '_ts=' + Date.now();
+}
+
+function normalizeDailyLearningRow(raw){
+    const lower = {};
+    Object.keys(raw || {}).forEach(k => lower[String(k).trim().toLowerCase()] = raw[k]);
+    const pick = (...names) => {
+        for (const n of names) {
+            const key = String(n).toLowerCase();
+            if (lower[key] !== undefined && String(lower[key]).trim() !== '') return lower[key];
+        }
+        return '';
+    };
+
+    const row = {
+        id: pick('id'),
+        date: pick('date','วันที่'),
+        courseType: pick('coursetype','course','หลักสูตร','ประเภทหลักสูตร'),
+        courseCount: pick('coursecount','courses','จำนวนวิชา','จำนวนวิชาเรียน'),
+        studentCount: pick('studentcount','students','จำนวนคน','ผู้เรียน','จำนวนผู้เรียน'),
+        title: pick('title','หัวข้อ'),
+        description: pick('description','รายละเอียด'),
+        location: pick('location','สถานที่'),
+        status: pick('status','สถานะ'),
+        sortOrder: pick('sortorder','ลำดับ')
+    };
+
+    row.images = [];
+    for(let i=1;i<=20;i++){
+        const value = pick('image'+i, 'รูป'+i, 'photo'+i);
+        const url = normalizeImageUrl(value);
+        if(url) row.images.push(url);
+    }
+    return row;
+}
+
+function dailyLearningDateScore(value, fallbackIndex){
+    const raw = String(value || '').trim();
+    if(!raw) return fallbackIndex;
+    let m = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if(m){
+        let y = Number(m[3]); if(y >= 2400) y -= 543;
+        return new Date(y, Number(m[2])-1, Number(m[1])).getTime();
+    }
+    m = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if(m){
+        let y = Number(m[1]); if(y >= 2400) y -= 543;
+        return new Date(y, Number(m[2])-1, Number(m[3])).getTime();
+    }
+    const d = new Date(raw);
+    return Number.isNaN(d.getTime()) ? fallbackIndex : d.getTime();
+}
+
+function selectLatestDailyLearning(rows){
+    const normalized = (rows || []).map(normalizeDailyLearningRow).filter(row => {
+        const s = String(row.status || '').trim().toUpperCase();
+        return !s || ['PUBLISHED','SHOW','ON','TRUE','1','YES','UPDATE'].includes(s);
+    });
+    if(!normalized.length) return null;
+    return normalized
+        .map((row,index)=>({row,index,score:dailyLearningDateScore(row.date,index)}))
+        .sort((a,b)=>(b.score-a.score)||(b.index-a.index))[0].row;
+}
+
+function renderDailyLearning(row, fromCache=false){
+    const card = document.getElementById('dailyLearningCard');
+    if(!card) return;
+    if(!row){
+        card.innerHTML = `<div class="daily-learning-empty"><strong>ยังไม่มีกิจกรรมการเรียนประจำวัน</strong>เพิ่มข้อมูลในชีต Daily_Learning และกำหนด status เป็น published</div>`;
+        return;
+    }
+
+    dailyLearningImages = Array.isArray(row.images) ? row.images.slice(0,20) : [];
+    const dateText = formatOutreachDate(row.date) || '-';
+    const courseType = String(row.courseType || '-').trim();
+    const courseCount = String(row.courseCount || '0').trim();
+    const studentCount = String(row.studentCount || '0').trim();
+
+    const gallery = dailyLearningImages.length ? `
+        <div class="daily-learning-gallery-head">
+            <div class="daily-learning-gallery-title">📷 ภาพบรรยากาศการเรียน</div>
+            <div class="daily-learning-photo-count">${dailyLearningImages.length} / 20 รูป</div>
+        </div>
+        <div class="daily-learning-gallery">
+            ${dailyLearningImages.map((url,index)=>`
+                <button class="daily-learning-photo ${index===0?'is-hero':''}" type="button" onclick="openDailyLearningLightbox(${index})" aria-label="เปิดภาพกิจกรรมรูปที่ ${index+1}">
+                    <img src="${escapeHTML(url)}" alt="กิจกรรมการเรียนประจำวันที่ ${escapeHTML(dateText)} รูปที่ ${index+1}" loading="lazy" decoding="async" ${index===0?'fetchpriority="high"':'fetchpriority="low"'} onerror="this.closest('.daily-learning-photo').style.display='none'">
+                </button>`).join('')}
+        </div>` : `
+        <div class="daily-learning-empty">
+            <strong>ข้อมูลกิจกรรมพร้อมแล้ว — ยังไม่มีรูปภาพ</strong>
+            เพิ่มลิงก์รูปในช่อง image1 ถึง image20 ของชีต Daily_Learning ได้สูงสุด 20 รูป
+        </div>`;
+
+    card.innerHTML = `
+        <div class="daily-learning-head">
+            <div class="daily-learning-title-card">
+                <div class="daily-learning-kicker">● DAILY LEARNING UPDATE</div>
+                <h2 class="daily-learning-title">กิจกรรมการเรียนประจำวันที่ ${escapeHTML(dateText)}</h2>
+                <div class="daily-learning-subtitle">อัปเดตภาพบรรยากาศและข้อมูลการเรียนล่าสุดของศูนย์ฝึกอาชีพกรุงเทพมหานคร เขตจตุจักร</div>
+            </div>
+            <div class="daily-learning-kpis">
+                <div class="daily-learning-kpi is-wide">
+                    <div class="daily-learning-kpi-label">หลักสูตร</div>
+                    <div class="daily-learning-kpi-value">${escapeHTML(courseType)}</div>
+                </div>
+                <div class="daily-learning-kpi">
+                    <div class="daily-learning-kpi-label">จำนวนวิชา</div>
+                    <div class="daily-learning-kpi-value">${escapeHTML(courseCount)} วิชา</div>
+                </div>
+                <div class="daily-learning-kpi">
+                    <div class="daily-learning-kpi-label">ผู้เรียนรวม</div>
+                    <div class="daily-learning-kpi-value">${escapeHTML(studentCount)} คน</div>
+                </div>
+            </div>
+        </div>
+        ${gallery}
+        <div class="daily-learning-status-row">${fromCache?'แสดงข้อมูลล่าสุดที่บันทึกไว้ · กำลังตรวจข้อมูลใหม่':'อัปเดตจาก Daily_Learning ผ่าน Apps Script อัตโนมัติ'}</div>`;
+}
+
+async function loadDailyLearning(){
+    if(dailyLearningLoading) return;
+    dailyLearningLoading = true;
+    const card = document.getElementById('dailyLearningCard');
+    let cached = null;
+
+    try{
+        cached = JSON.parse(localStorage.getItem(DAILY_LEARNING_CACHE_KEY) || 'null');
+        if(cached?.row) renderDailyLearning(cached.row, true);
+    }catch(e){}
+
+    const controller = new AbortController();
+    const timer = setTimeout(()=>controller.abort(),20000);
+
+    try{
+        const response = await fetch(getFreshDailyLearningUrl(), {
+            cache:'no-store',
+            signal:controller.signal
+        });
+        if(!response.ok) throw new Error('HTTP '+response.status);
+
+        const payload = await response.json();
+        if(payload && payload.success === false){
+            throw new Error(payload.error || 'Apps Script returned an error');
+        }
+
+        // Apps Script ปัจจุบันส่ง Daily Learning เป็น object เดียว
+        // แต่รองรับ array เผื่อปรับ API ภายหลัง
+        const latest = Array.isArray(payload)
+            ? selectLatestDailyLearning(payload)
+            : (payload && typeof payload === 'object' ? normalizeDailyLearningRow(payload) : null);
+
+        renderDailyLearning(latest, false);
+        if(latest){
+            localStorage.setItem(
+                DAILY_LEARNING_CACHE_KEY,
+                JSON.stringify({savedAt:Date.now(),row:latest})
+            );
+        }
+    }catch(error){
+        console.error('Daily Learning load failed:', error);
+        if(!cached?.row && card){
+            card.innerHTML = `<div class="daily-learning-empty"><strong>การเชื่อมต่อกิจกรรมการเรียนล่าช้า</strong>ไม่กระทบส่วนอื่นของเว็บไซต์ กรุณาตรวจสอบการทำให้ใช้งานได้ของ Apps Script แล้วลองใหม่อีกครั้ง<br><button type="button" class="read-more-btn" onclick="loadDailyLearning()" style="margin-top:10px">ลองโหลดอีกครั้ง</button></div>`;
+        }
+    }finally{
+        clearTimeout(timer);
+        dailyLearningLoading = false;
+    }
+}
+
+function ensureDailyLearningLightbox(){
+    let box = document.getElementById('dailyLearningLightbox');
+    if(box) return box;
+    box = document.createElement('div');
+    box.id = 'dailyLearningLightbox';
+    box.className = 'daily-lightbox';
+    box.setAttribute('role','dialog');
+    box.setAttribute('aria-modal','true');
+    box.innerHTML = `<div class="daily-lightbox-stage">
+        <img class="daily-lightbox-image" id="dailyLightboxImage" alt="ภาพกิจกรรมการเรียน">
+        <button class="daily-lightbox-close" type="button" onclick="closeDailyLearningLightbox()" aria-label="ปิด">×</button>
+        <button class="daily-lightbox-nav daily-lightbox-prev" type="button" onclick="stepDailyLearningLightbox(-1)" aria-label="ภาพก่อนหน้า">‹</button>
+        <button class="daily-lightbox-nav daily-lightbox-next" type="button" onclick="stepDailyLearningLightbox(1)" aria-label="ภาพถัดไป">›</button>
+        <div class="daily-lightbox-counter" id="dailyLightboxCounter"></div>
+    </div>`;
+    box.addEventListener('click',e=>{if(e.target===box) closeDailyLearningLightbox();});
+    document.body.appendChild(box);
+    return box;
+}
+function openDailyLearningLightbox(index){
+    if(!dailyLearningImages.length) return;
+    dailyLearningLightboxIndex = Math.max(0,Math.min(index,dailyLearningImages.length-1));
+    const box=ensureDailyLearningLightbox();
+    updateDailyLearningLightbox();
+    box.classList.add('is-open');
+    document.body.style.overflow='hidden';
+}
+function updateDailyLearningLightbox(){
+    const img=document.getElementById('dailyLightboxImage');
+    const counter=document.getElementById('dailyLightboxCounter');
+    if(img) img.src=dailyLearningImages[dailyLearningLightboxIndex] || '';
+    if(counter) counter.textContent=(dailyLearningLightboxIndex+1)+' / '+dailyLearningImages.length;
+}
+function stepDailyLearningLightbox(step){
+    if(!dailyLearningImages.length) return;
+    dailyLearningLightboxIndex=(dailyLearningLightboxIndex+step+dailyLearningImages.length)%dailyLearningImages.length;
+    updateDailyLearningLightbox();
+}
+function closeDailyLearningLightbox(){
+    document.getElementById('dailyLearningLightbox')?.classList.remove('is-open');
+    document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{
+    const box=document.getElementById('dailyLearningLightbox');
+    if(!box?.classList.contains('is-open')) return;
+    if(e.key==='Escape') closeDailyLearningLightbox();
+    if(e.key==='ArrowLeft') stepDailyLearningLightbox(-1);
+    if(e.key==='ArrowRight') stepDailyLearningLightbox(1);
+});
+
+if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',()=>{
+        loadDailyLearning();
+        window.setInterval(()=>{if(!document.hidden) loadDailyLearning();},30000);
+    },{once:true});
+}else{
+    loadDailyLearning();
+    window.setInterval(()=>{if(!document.hidden) loadDailyLearning();},30000);
+}
+</script>
 
 <footer class="copyright-footer">
     <div class="website-developer-title">
