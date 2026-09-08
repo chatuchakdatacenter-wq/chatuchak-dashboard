@@ -8758,7 +8758,7 @@ function loadPRNewsJSONP() {
                 </div>
             </div>
         `;
-    }, 20000);
+    }, 5000);
 
     document.body.appendChild(script);
 }
@@ -8968,7 +8968,7 @@ async function loadOutreachActivities() {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 20000);
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
     try {
         // ใช้ query timestamp กัน cache โดยคงเป็น simple GET
@@ -10694,7 +10694,7 @@ async function loadDailyLearning(){
     }catch(e){}
 
     const controller = new AbortController();
-    const timer = setTimeout(()=>controller.abort(),20000);
+    const timer = setTimeout(()=>controller.abort(),5000);
 
     try{
         const response = await fetch(getFreshDailyLearningUrl(), {
