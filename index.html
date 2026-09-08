@@ -9113,7 +9113,7 @@ function loadWebSettingsJSONP() {
     document.body.appendChild(script);
 }
 
-const DTCP_AUTO_UPDATE_MS = 30000;
+const DTCP_AUTO_UPDATE_MS = 60000;
 let dtcpAutoUpdateTimer = null;
 
 function refreshAutoUpdateContent() {
@@ -10882,15 +10882,14 @@ document.addEventListener('keydown',e=>{
     if(e.key==='ArrowLeft') stepDailyLearningLightbox(-1);
     if(e.key==='ArrowRight') stepDailyLearningLightbox(1);
 });
-
-if(document.readyState==='loading'){
+if(document.readyState=='loading'){
     document.addEventListener('DOMContentLoaded',()=>{
         loadDailyLearning();
-        window.setInterval(()=>{if(!document.hidden) loadDailyLearning();},30000);
+        window.setInterval(()=>{if(!document.hidden) loadDailyLearning();},60000);
     },{once:true});
 }else{
     loadDailyLearning();
-    window.setInterval(()=>{if(!document.hidden) loadDailyLearning();},30000);
+    // ไม่ต้องมี setInterval ใน else แล้ว เพราะ if จะทำงานเมื่อ DOM โหลดเสร็จ
 }
 </script>
 
