@@ -9042,12 +9042,7 @@ function renderWebSettings(data) {
     const heroImg = document.querySelector('.hero-image.hero-image-asset-overlay > img.hero-building-img');
     const heroImageUrl = settings['hero_image_url']?.value || '';
     const heroImageEnabled = ['ON','TRUE','1','YES'].includes(String(settings['hero_image_enable']?.value || '').trim().toUpperCase());
-
-    if (heroImg && heroImageUrl && heroImageEnabled) {
-        heroImg.src = heroImageUrl; // เปลี่ยนรูปตามที่กำหนดใน Sheet
-        heroImg.style.display = 'block'; // แสดงรูป
-    }
-
+    
     // ===== ส่วนเดิม: เปิด/ปิด HOT Badge =====
     const applyHot = (key, elementId) => {
         const el = document.getElementById(elementId);
@@ -11124,25 +11119,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>  
-<script>
-(function() {
-    const cachedPR = localStorage.getItem('dtcp_pr_news_v1');
-    if (cachedPR) {
-        try { const p = JSON.parse(cachedPR); if (p.data?.length) renderPRNews(p.data); } catch(e) {}
-    }
-    const cachedOutreach = localStorage.getItem('dtcp_outreach_v2');
-    if (cachedOutreach) {
-        try { const p = JSON.parse(cachedOutreach); if (p.data?.length) renderOutreachActivities(p.data); } catch(e) {}
-    }
-    const cachedDaily = localStorage.getItem('dtcp_daily_learning_v4_social_gallery');
-    if (cachedDaily) {
-        try { const p = JSON.parse(cachedDaily); if (p.row) renderDailyLearning(p.row, true); } catch(e) {}
-    }
-    const cachedHero = localStorage.getItem('dtcp_hero_image');
-    if (cachedHero) {
-        try { const img = document.querySelector('.hero-image.hero-image-asset-overlay > img.hero-building-img'); if (img) img.src = cachedHero; } catch(e) {}
-    }
-})();
 </script>    
 </body>
 </html>
