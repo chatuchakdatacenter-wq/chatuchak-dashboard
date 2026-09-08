@@ -10181,8 +10181,13 @@ function setResultAnnouncementButtonState(status){
 }
 
 document.addEventListener('DOMContentLoaded', async function(){
-    const RESULT_API =
-    'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=nameCheck';
+    const RESULT_API = 'https://script.google.com/macros/s/AKfycbyhTOS2x9xKLCCWTlXpfYRd1_tysMu2aVge8i9r8ag1Fri3jteaRWkoZx5xVp38D3kd/exec?action=nameCheck';
+
+    // ใช้ Cache ก่อนเสมอ
+    const cachedStatus = localStorage.getItem('dtcp_result_button_status');
+    if (cachedStatus) {
+        setResultAnnouncementButtonState(cachedStatus);
+    }
 
     try{
         const response = await fetch(RESULT_API);
@@ -10191,11 +10196,11 @@ document.addEventListener('DOMContentLoaded', async function(){
         const statusItem = rows.find(item =>
             String(item?.resultButtonStatus || '').trim() !== ''
         );
-        const status = String(statusItem?.resultButtonStatus || 'ENABLE')
-            .trim()
-            .toUpperCase();
-
+        const status = String(statusItem?.resultButtonStatus || 'ENABLE').trim().toUpperCase();
         setResultAnnouncementButtonState(status);
+        
+        // บันทึก Cache ไว้ใช้คราวหน้า
+        localStorage.setItem('dtcp_result_button_status', status);
     }catch(error){
         setResultAnnouncementButtonState('ENABLE');
     }
@@ -11076,5 +11081,68 @@ if(document.readyState=='loading'){
     }
 })();
 </script>
+<style>
+/* =========================================================
+   IMAGE LOADING OPTIMIZATION - LAZY LOAD
+   ========================================================= */
+img[loading="lazy"] {
+    transition: opacity 0.3s ease;
+}
+
+/* ทำให้รูปที่ยังไม่โหลด ไม่บล็อกการแสดงผล */
+.hero-image.hero-image-asset-overlay > img.hero-building-img {
+    transition: opacity 0.5s ease;
+    opacity: 0;
+}
+.hero-image.hero-image-asset-overlay > img.hero-building-img.loaded {
+    opacity: 1;
+}
+
+/* ตรวจจับเมื่อรูปโหลดเสร็จแล้วให้แสดง */
+.hero-image.hero-image-asset-overlay > img.hero-building-img.onload {
+    opacity: 1;
+}
+</style>
+
+<script>
+// ให้รูป hero โหลดแบบ Lazy และแสดงเมื่อโหลดเสร็จ
+document.addEventListener('DOMContentLoaded', function() {
+    const heroImg = document.querySelector('.hero-image.hero-image-asset-overlay > img.hero-building-img');
+    if (heroImg) {
+        heroImg.loading = 'lazy';
+        heroImg.decoding = 'async';
+        
+        // เมื่อโหลดเสร็จ ให้แสดงรูป
+        heroImg.addEventListener('load', function() {
+            heroImg.classList.add('loaded');
+        });
+        
+        // ถ้ารูปโหลดไม่สำเร็จ ให้ซ่อนหรือใช้ fallback
+        heroImg.addEventListener('error', function() {
+            heroImg.style.display = 'none';
+        });
+    }
+});
+</script>  
+<script>
+(function() {
+    const cachedPR = localStorage.getItem('dtcp_pr_news_v1');
+    if (cachedPR) {
+        try { const p = JSON.parse(cachedPR); if (p.data?.length) renderPRNews(p.data); } catch(e) {}
+    }
+    const cachedOutreach = localStorage.getItem('dtcp_outreach_v2');
+    if (cachedOutreach) {
+        try { const p = JSON.parse(cachedOutreach); if (p.data?.length) renderOutreachActivities(p.data); } catch(e) {}
+    }
+    const cachedDaily = localStorage.getItem('dtcp_daily_learning_v4_social_gallery');
+    if (cachedDaily) {
+        try { const p = JSON.parse(cachedDaily); if (p.row) renderDailyLearning(p.row, true); } catch(e) {}
+    }
+    const cachedHero = localStorage.getItem('dtcp_hero_image');
+    if (cachedHero) {
+        try { const img = document.querySelector('.hero-image.hero-image-asset-overlay > img.hero-building-img'); if (img) img.src = cachedHero; } catch(e) {}
+    }
+})();
+</script>    
 </body>
 </html>
