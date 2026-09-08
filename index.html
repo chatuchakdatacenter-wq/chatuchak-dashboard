@@ -9038,6 +9038,42 @@ function renderWebSettings(data) {
         });
     }
 
+    // ===== ส่วนใหม่: อัปเดตรูป Hero =====
+    const heroImg = document.querySelector('.hero-image.hero-image-asset-overlay > img.hero-building-img');
+    const heroImageUrl = settings['hero_image_url']?.value || '';
+    const heroImageEnabled = ['ON','TRUE','1','YES'].includes(String(settings['hero_image_enable']?.value || '').trim().toUpperCase());
+
+    if (heroImg && heroImageUrl && heroImageEnabled) {
+        heroImg.src = heroImageUrl; // เปลี่ยนรูปตามที่กำหนดใน Sheet
+        heroImg.style.display = 'block'; // แสดงรูป
+    }
+
+    // ===== ส่วนเดิม: เปิด/ปิด HOT Badge =====
+    const applyHot = (key, elementId) => {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+
+        const item = settings[key];
+        const enabled = !!(
+            item &&
+            ['ON','TRUE','1','YES'].includes(
+                String(item.value || '').trim().toUpperCase()
+            )
+        );
+
+        el.classList.toggle('is-visible', enabled);
+        el.setAttribute('aria-hidden', enabled ? 'false' : 'true');
+
+        const textEl = el.querySelector('.hot-text');
+        if (textEl) {
+            textEl.textContent = (item && item.text) ? item.text : 'HOT!';
+        }
+    };
+
+    applyHot('online_hot', 'onlineHotBadge');
+    applyHot('km_hot', 'kmHotBadge');
+}
+
     const applyHot = (key, elementId) => {
         const el = document.getElementById(elementId);
         if (!el) return;
@@ -10565,7 +10601,7 @@ function renderDailyLearning(row, fromCache=false){
 
     dailyLearningMeta = {date:dateText, courseType, courseCount, studentCount};
 
-    const previewCount = Math.min(5, dailyLearningImages.length);
+       const previewCount = Math.min(4, dailyLearningImages.length);
     const hiddenCount = Math.max(0, dailyLearningImages.length - previewCount);
 
     const gallery = dailyLearningImages.length ? `
@@ -10575,15 +10611,7 @@ function renderDailyLearning(row, fromCache=false){
         </div>
 
         <div class="daily-learning-gallery social-gallery">
-            ${dailyLearningImages.slice(0,previewCount).map((url,index)=>{
-                const isLastPreview = index === previewCount - 1;
-                const moreOverlay = isLastPreview && hiddenCount > 0
-                    ? `<div class="daily-learning-more-overlay">
-                           <strong>+${hiddenCount}</strong>
-                           <span>ดูทั้งหมด</span>
-                       </div>`
-                    : '';
-
+            ${dailyLearningImages.slice(0, previewCount).map((url, index) => {
                 return `
                     <button class="daily-learning-photo"
                             type="button"
@@ -10595,9 +10623,25 @@ function renderDailyLearning(row, fromCache=false){
                              decoding="async"
                              ${index===0?'fetchpriority="high"':'fetchpriority="low"'}
                              onerror="this.closest('.daily-learning-photo').style.display='none'">
-                        ${moreOverlay}
                     </button>`;
             }).join('')}
+            
+              ${hiddenCount > 0 ? `
+                <button class="daily-learning-photo"
+                        type="button"
+                        onclick="openDailyLearningLightbox(${previewCount})"
+                        aria-label="ดูรูปทั้งหมด">
+                    <img src="${escapeHTML(dailyLearningImages[previewCount])}"
+                         alt="รูปภาพกิจกรรม"
+                         loading="lazy"
+                         decoding="async"
+                         onerror="this.style.display='none'">
+                    <div class="daily-learning-more-overlay">
+                        <strong>+${hiddenCount}</strong>
+                        <span>ดูทั้งหมด</span>
+                    </div>
+                </button>
+            ` : ''}
         </div>
 
         <div class="daily-learning-gallery-actions">
@@ -10871,6 +10915,148 @@ if(document.readyState==='loading'){
         © 2569 นางสาวนิภาพร เอี่ยมเจริญ | สงวนสิทธิ์ในผลงานและการพัฒนาระบบ
     </div>
 </footer>
-    
+    <style>
+/* =========================================================
+   DAILY LEARNING - FACEBOOK EXACT LAYOUT (LOCKED 2x3)
+   ========================================================= */
+
+.daily-learning-gallery.social-gallery {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    grid-template-rows: 1.2fr 1fr !important;
+    gap: 3px !important;
+    width: 100% !important;
+    height: 460px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    background: #eef4f1 !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo:nth-child(1),
+.daily-learning-gallery.social-gallery .daily-learning-photo:nth-child(2) {
+    grid-column: span 3 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo:nth-child(3),
+.daily-learning-gallery.social-gallery .daily-learning-photo:nth-child(4),
+.daily-learning-gallery.social-gallery .daily-learning-photo:nth-child(5) {
+    grid-column: span 2 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+}
+
+.daily-learning-gallery.social-gallery .daily-learning-photo img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+    border-radius: 0 !important;
+}
+
+.daily-learning-more-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.28) !important; /* จางมาก เห็นภาพชัด */
+    color: #ffffff !important;
+    font-size: 26px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    pointer-events: none !important;
+    border-radius: 0 !important;
+    backdrop-filter: none !important;        /* ล้างการเบลอออกให้หมด */
+    -webkit-backdrop-filter: none !important; /* ล้างการเบลอสำหรับ Safari */
+    filter: none !important;                  /* ล้าง filter อื่นๆ */
+    -webkit-filter: none !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95) !important; /* เงาตัวเลขคมชัด */
+}
+
+.daily-learning-more-overlay strong {
+    font-size: 26px !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+}
+
+.daily-learning-more-overlay span {
+    display: none !important;
+}
+
+.daily-learning-gallery-actions {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+</style>
+<style>
+/* =========================================================
+   DAILY LEARNING - KPI CARD CENTER ALIGNMENT
+   ========================================================= */
+
+/* จัดการ์ด KPI ทั้งหมดให้อยู่กึ่งกลาง */
+.daily-learning-kpi {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;  /* จัดแนวนอนให้อยู่กึ่งกลาง */
+    justify-content: center !important; /* จัดแนวตั้งให้อยู่กึ่งกลาง */
+    text-align: center !important;
+    padding: 12px !important;
+}
+
+/* จัดการ์ด "หลักสูตร" (ที่เป็น is-wide) ให้อยู่กึ่งกลางด้วย */
+.daily-learning-kpi.is-wide {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+/* จัดตัวหนังสือ Label (หลักสูตร, จำนวนวิชา, ผู้เรียนรวม) ให้กึ่งกลาง */
+.daily-learning-kpi-label {
+    text-align: center !important;
+    width: 100% !important;
+    margin-bottom: 4px !important;
+}
+
+/* จัดตัวเลข/ค่าตัวหนังสือ ให้กึ่งกลาง */
+.daily-learning-kpi-value {
+    text-align: center !important;
+    width: 100% !important;
+}
+
+/* ถ้าอยากให้การ์ด "หลักสูตร" (อันบน) กว้างขึ้นและสวยงามขึ้น */
+.daily-learning-kpi.is-wide {
+    width: 100% !important;
+}
+</style>
+
 </body>
 </html>
